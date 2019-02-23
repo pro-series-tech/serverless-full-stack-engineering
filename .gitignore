@@ -25,3 +25,4 @@ yarn-error.log*
 
 # backend ignore
 .serverless
+*.env

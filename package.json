@@ -12,7 +12,7 @@
     "react-scripts": "2.1.5"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "env-cmd ./.dev.env react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -28,5 +28,14 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "env-cmd": "^8.0.2",
+    "install": "^0.12.2",
+    "npm": "^6.8.0",
+    "serverless-dynamodb-local": "^0.2.36",
+    "serverless-offline": "^4.6.0",
+    "serverless-stack-output": "^0.2.3",
+    "serverless-webpack": "^5.2.0"
+  }
 }
