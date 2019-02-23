@@ -25,9 +25,7 @@ provider:
 
 plugins:
   - serverless-stack-output
-  # - serverless-webpack
-  # - serverless-dynamodb-local
-  # - serverless-offline
+  - serverless-webpack
 
 custom:
   output:
@@ -105,8 +103,8 @@ resources:
           - AttributeName: handle
             AttributeType: S
         ProvisionedThroughput:
-          ReadCapacityUnits: 10
-          WriteCapacityUnits: 10
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
         TableName: "Users"
     TweetsTable:
       Type: "AWS::DynamoDB::Table"
@@ -124,8 +122,8 @@ resources:
           - AttributeName: created_at
             AttributeType: S
         ProvisionedThroughput:
-          ReadCapacityUnits: 10
-          WriteCapacityUnits: 10
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
         TableName: "Tweets"
         GlobalSecondaryIndexes:
           - IndexName: top-index
@@ -137,8 +135,8 @@ resources:
             Projection:
               ProjectionType: ALL
             ProvisionedThroughput:
-              ReadCapacityUnits: 50
-              WriteCapacityUnits: 50
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
           - IndexName: tweet-index
             KeySchema:
               - AttributeName: handle
@@ -148,8 +146,8 @@ resources:
             Projection:
               ProjectionType: ALL
             ProvisionedThroughput:
-              ReadCapacityUnits: 50
-              WriteCapacityUnits: 50
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
     ServiceRole:
       Type: "AWS::IAM::Role"
       Properties:
