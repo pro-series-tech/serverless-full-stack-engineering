@@ -1,4 +1,17 @@
 Resources:
+  CognitoIdentityPool:
+    Type: AWS::Cognito::IdentityPool
+    Properties:
+      # Generate a name based on the stage
+      IdentityPoolName: ${self:provider.stage}IdentityPool
+      # Don't allow unathenticated users
+      AllowUnauthenticatedIdentities: false
+      # Link to our User Pool
+      CognitoIdentityProviders:
+        - ClientId:
+            Ref: CognitoUserPoolClient
+          ProviderName:
+            Fn::GetAtt: [ "CognitoUserPool", "ProviderName" ]
   CognitoUserPool:
     Type: AWS::Cognito::UserPool
     Properties:
@@ -64,6 +77,9 @@ Resources:
       Roles:
         - Ref: ServiceRole
 Outputs:
+  IdentityPoolId:
+    Value:
+      Ref: CognitoIdentityPool
   UserPoolId:
     Value:
       Ref: CognitoUserPool
