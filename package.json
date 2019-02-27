@@ -16,7 +16,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "cd backend && serverless deploy -v --stage",
-    "remove": "cd backend && serverless remove -v --stage",
+    "remove": "cd backend && serverless remove",
     "invoke": "cd backend && serverless invoke --function"
   },
   "eslintConfig": {
@@ -37,6 +37,7 @@
     "imports-loader": "^0.8.0",
     "install": "^0.12.2",
     "npm": "^6.8.0",
+    "serverless-dynamodb-autoscaling": "^0.6.2",
     "serverless-stack-output": "^0.2.3",
     "serverless-webpack": "^5.2.0",
     "webpack": "^4.29.5",

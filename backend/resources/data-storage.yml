@@ -1,0 +1,22 @@
+Resources:
+  PicturesTable:
+    Type: "AWS::DynamoDB::Table"
+    Properties:
+      TableName: ${self:provider.stage}-pictures-table
+      AttributeDefinitions:
+        - 
+          AttributeName: userId
+          AttributeType: S
+        - 
+          AttributeName: pictureId
+          AttributeType: S
+      KeySchema:
+        - 
+          AttributeName: userId
+          KeyType: HASH
+        - 
+          AttributeName: pictureId
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1

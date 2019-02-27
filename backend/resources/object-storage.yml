@@ -1,0 +1,26 @@
+Resources:
+  FrontEndBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: ${self:provider.stage}-front-end
+      AccessControl: PublicRead
+      CorsConfiguration:
+        CorsRules:
+        - AllowedHeaders: ['*']
+          AllowedMethods: [GET,HEAD]
+          AllowedOrigins: ['*']
+          ExposedHeaders: [Date]
+  PicturesBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: ${self:provider.stage}-pictures
+      CorsConfiguration:
+        CorsRules:
+        - AllowedHeaders: ['*']
+          AllowedMethods: [GET,PUT,POST,DELETE,HEAD]
+          AllowedOrigins: ['*']
+          ExposedHeaders: [Date]
+Outputs:
+  FrontEndBucketName:
+    Value:
+      Ref: FrontEndBucket

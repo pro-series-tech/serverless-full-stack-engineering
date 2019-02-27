@@ -26,11 +26,21 @@ provider:
 plugins:
   - serverless-stack-output
   - serverless-webpack
+  - serverless-dynamodb-autoscaling
 
 custom:
   output:
     handler: ./scripts/config.handler # Same syntax as you already know
-
+  capacities:
+    - table: PicturesTable  # DynamoDB Resource
+      read:
+        minimum: 1        # Minimum read capacity
+        maximum: 10     # Maximum read capacity
+        usage: 0.75       # Targeted usage percentage
+      write:
+        minimum: 1       # Minimum write capacity
+        maximum: 10      # Maximum write capacity
+        usage: 0.5        # Targeted usage percentage
 # you can define service wide environment variables here
 #  environment:
 #    variable1: value1
@@ -57,142 +67,9 @@ functions:
           path: graphql
           method: get
           cors: true
-#    The following are a few example events you can configure
-#    NOTE: Please make sure to change your handler code to work with those events
-#    Check the event documentation for details
-#    events:
-#      - http:
-#          path: users/create
-#          method: get
-#      - websocket: $connect
-#      - s3: ${env:BUCKET}
-#      - schedule: rate(10 minutes)
-#      - sns: greeter-topic
-#      - stream: arn:aws:dynamodb:region:XXXXXX:table/foo/stream/1970-01-01T00:00:00.000
-#      - alexaSkill: amzn1.ask.skill.xx-xx-xx-xx
-#      - alexaSmartHome: amzn1.ask.skill.xx-xx-xx-xx
-#      - iot:
-#          sql: "SELECT * FROM 'some_topic'"
-#      - cloudwatchEvent:
-#          event:
-#            source:
-#              - "aws.ec2"
-#            detail-type:
-#              - "EC2 Instance State-change Notification"
-#            detail:
-#              state:
-#                - pending
-#      - cloudwatchLog: '/aws/lambda/hello'
-#      - cognitoUserPool:
-#          pool: MyUserPool
-#          trigger: PreSignUp
-
-#    Define function environment variables here
-#    environment:
-#      variable2: value2
 
 # you can add CloudFormation resource templates here
 resources:
-  Resources:
-    UserTable:
-      Type: "AWS::DynamoDB::Table"
-      Properties:
-        KeySchema:
-          - AttributeName: handle
-            KeyType: HASH
-        AttributeDefinitions:
-          - AttributeName: handle
-            AttributeType: S
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-        TableName: "Users"
-    TweetsTable:
-      Type: "AWS::DynamoDB::Table"
-      Properties:
-        KeySchema:
-          - AttributeName: tweet_id
-            KeyType: HASH
-        AttributeDefinitions:
-          - AttributeName: tweet_id
-            AttributeType: S
-          - AttributeName: handle
-            AttributeType: S
-          - AttributeName: retweet_count
-            AttributeType: N
-          - AttributeName: created_at
-            AttributeType: S
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-        TableName: "Tweets"
-        GlobalSecondaryIndexes:
-          - IndexName: top-index
-            KeySchema:
-              - AttributeName: handle
-                KeyType: HASH
-              - AttributeName: retweet_count
-                KeyType: RANGE
-            Projection:
-              ProjectionType: ALL
-            ProvisionedThroughput:
-              ReadCapacityUnits: 1
-              WriteCapacityUnits: 1
-          - IndexName: tweet-index
-            KeySchema:
-              - AttributeName: handle
-                KeyType: HASH
-              - AttributeName: created_at
-                KeyType: RANGE
-            Projection:
-              ProjectionType: ALL
-            ProvisionedThroughput:
-              ReadCapacityUnits: 1
-              WriteCapacityUnits: 1
-    ServiceRole:
-      Type: "AWS::IAM::Role"
-      Properties:
-        RoleName: "DynamoRole"
-        AssumeRolePolicyDocument:
-          Version: "2012-10-17"
-          Statement:
-            - Effect: "Allow"
-              Principal:
-                Service:
-                  - "lambda.amazonaws.com"
-              Action:
-                - "sts:AssumeRole"
-        Policies:
-          - PolicyName: "Dynamo-ServiceRole-Policy"
-            PolicyDocument:
-              Version: "2012-10-17"
-              Statement:
-                - Effect: "Allow"
-                  Action:
-                    - "dynamodb:Query"
-                    - "dynamodb:BatchWriteItem"
-                    - "dynamodb:GetItem"
-                    - "dynamodb:DeleteItem"
-                    - "dynamodb:PutItem"
-                    - "dynamodb:Scan"
-                    - "dynamodb:UpdateItem"
-                  Resource:
-                    - "arn:aws:dynamodb:us-east-1:*:table/Users"
-                    - "arn:aws:dynamodb:us-east-1:*:table/Users/*"
-                    - "arn:aws:dynamodb:us-east-1:*:table/Tweets"
-                    - "arn:aws:dynamodb:us-east-1:*:table/Tweets/*"
-    XrayLambdaRolePolicy:
-      Type: "AWS::IAM::Policy"
-      Properties:
-        PolicyName: "xray-policy"
-        PolicyDocument:
-          Version: "2012-10-17"
-          Statement:
-            - Effect: "Allow"
-              Action:
-                - "xray:PutTraceSegments"
-                - "xray:PutTelemetryRecords"
-              Resource:
-                - "*"
-        Roles:
-          - Ref: ServiceRole
+    - ${file(resources/security.yml)}
+    - ${file(resources/data-storage.yml)}
+    - ${file(resources/object-storage.yml)}
