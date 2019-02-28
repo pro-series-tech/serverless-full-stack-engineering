@@ -42,8 +42,9 @@ custom:
         maximum: 10      # Maximum write capacity
         usage: 0.5        # Targeted usage percentage
 # you can define service wide environment variables here
-#  environment:
-#    variable1: value1
+environment:
+  PICTURE_TABLE:
+    Fn::GetAtt: [ "PicturesTable", "Properties", "TableName"]
 
 # you can add packaging information here
 #package:

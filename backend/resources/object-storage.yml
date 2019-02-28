@@ -24,3 +24,6 @@ Outputs:
   FrontEndBucketName:
     Value:
       Ref: FrontEndBucket
+  PicturesBucketName:
+    Value:
+      Ref: PicturesBucket

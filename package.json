@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": false,
   "dependencies": {
+    "amazon-cognito-identity-js": "^3.0.7",
     "antd": "^3.13.4",
     "apollo-server-lambda": "^2.4.6",
     "graphql": "^14.1.1",
@@ -29,7 +30,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "aws-sdk": "^2.409.0",
+    "aws-sdk": "^2.411.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.5",
     "babel-preset-env": "^1.7.0",
@@ -40,7 +41,8 @@
     "serverless-dynamodb-autoscaling": "^0.6.2",
     "serverless-stack-output": "^0.2.3",
     "serverless-webpack": "^5.2.0",
-    "webpack": "^4.29.5",
+    "standard": "^12.0.1",
+    "webpack": "4.28.3",
     "webpack-node-externals": "^1.7.2"
   }
 }
