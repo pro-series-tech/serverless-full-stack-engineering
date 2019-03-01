@@ -1,13 +1,27 @@
-import AmazonCognitoIdentity from "amazon-cognito-identity-js";
+import * as AmazonCognitoIdentity from "amazon-cognito-identity-js";
+import {USER_POOL_ID, USER_POOL_CLIENT_ID} from "./environment";
 /* the user pool for registration and login operations */
 const userPool = new AmazonCognitoIdentity.CognitoUserPool({
-	UserPoolId: process.env.REACT_APP_USER_POOL_ID,
-	ClientId: process.env.REACT_APP_USER_POOL_CLIENT_ID
+	UserPoolId: USER_POOL_ID,
+	ClientId: USER_POOL_CLIENT_ID
 });
-
+/**
+ * Examples of Amazon Cognito Identity can be found at:
+ * https://docs.aws.amazon.com/cognito/latest/developerguide/using-amazon-cognito-user-identity-pools-javascript-examples.html
+ */
 export default class Authentication {
 	constructor(){
 		this.cognitoUser = null;
+	}
+	getCognitoUser(username){
+		if(this.cognitoUser){
+			return this.cognitoUser;
+		}
+		/* otherwise return current user in session */
+		return new AmazonCognitoIdentity.CognitoUser({
+			Username: username,
+			Pool: userPool
+		});
 	}
 	/**
 	 * Sign up user to serverless user pool.
@@ -22,13 +36,13 @@ export default class Authentication {
 				return new AmazonCognitoIdentity.CognitoUserAttribute(a);
 			});
 			/* sign up user */
-			userPool.signUp(username, password, cognitoAttributes, null, function (err, result) {
+			userPool.signUp(username, password, cognitoAttributes, null, (err, result)=> {
 				if (err) {
 					reject(err);
 				}else{
 					/* set the user */
 					this.cognitoUser = result.user;
-					console.log("result for sign up:", result);
+					/* resolve */
 					resolve(result.user);
 				}
 			});
@@ -46,59 +60,61 @@ export default class Authentication {
 				Username: username,
 				Password: password
 			});
-			let userData = {
-				Username: username,
-				Pool: userPool
-			};
-			let cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+			let cognitoUser = this.getCognitoUser(username);
 			/* sign in this user to the pool */
 			cognitoUser.authenticateUser(authenticationDetails, {
-				onSuccess: function (result) {
+				onSuccess: (result) => {
 					/* set the user */
 					this.cognitoUser = cognitoUser;
-					console.log("result for authentication", result);
 					/* resolve authentication credentials */
 					resolve({
 						accessToken: result.getAccessToken().getJwtToken(),
-						idToken: esult.getIdToken().getJwtToken(),
+						idToken: result.getIdToken().getJwtToken(),
 						refreshToken: result.getRefreshToken().getToken()
 					});
 				},
-				onFailure: function (err) {
+				onFailure: (err) => {
 					reject(err);
 				}
 			});
 		});
 	}
 	/**
-	 * Resend confirmation code to user email.
+	 * 	Resend confirmation code to user email.
+	 * @param {String} username 
 	 */
-	resendConfirmation(){
+	resendConfirmation(username){
+		let cognitoUser = this.getCognitoUser(username);
 		return new Promise((resolve, reject)=>{
-			this.cognitoUser.resendConfirmationCode(function (err, result) {
-				if (err) {
-					reject(err);
-				}else{
-					console.log("result from resend confirm registration", result);
-					resolve(result);
-				}
+			cognitoUser.resendConfirmationCode((err, result) => {
+				(err) ? reject(err) : resolve(result);
 			});
 		});
 	}
 	/**
 	 * Validate using sign up using code.
-	 * 
+	 * @param {String} username 
 	 * @param {String} code 
 	 */
-	confirmRegistration (code){
+	confirmRegistration(username, code){
+		let cognitoUser = this.getCognitoUser(username);
 		return new Promise((resolve, reject) => {
-			this.cognitoUser.confirmRegistration(code, true, function (err, result) {
-				if (err) {
-					reject(err);
-				} else {
-					console.log("result from resend confirm registration", result);
-					resolve(result);
-				}
+			cognitoUser.confirmRegistration(code, true, (err, result)=> {
+				(err) ? reject(err) : resolve(result);
+			});
+		});
+	}
+	/**
+	 * 
+	 * @param {String} username 
+	 * @param {String} oldPassword 
+	 * @param {String} newPassword 
+	 */
+	changePassword(username, oldPassword, newPassword) {
+		let cognitoUser = this.getCognitoUser(username);
+		return new Promise((resolve, reject) => {
+			cognitoUser.changePassword(oldPassword, newPassword, (err, result) => {
+				(err) ? reject(err) : resolve(result);
 			});
 		});
 	}
