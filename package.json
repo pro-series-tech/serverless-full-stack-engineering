@@ -9,12 +9,15 @@
     "graphql": "^14.1.1",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
-    "react-scripts": "2.1.5"
+    "react-redux": "^6.0.1",
+    "react-scripts": "2.1.5",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
-    "start": "env-cmd ./.dev.env react-scripts start",
-    "build": "env-cmd ./.pro.env react-scripts build",
-    "test": "react-scripts test",
+    "start": "env-cmd ./.dev.env react-app-rewired start",
+    "build": "env-cmd ./.pro.env react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "deploy": "cd backend && serverless deploy -v --stage",
     "remove": "cd backend && serverless remove",
@@ -38,6 +41,7 @@
     "imports-loader": "^0.8.0",
     "install": "^0.12.2",
     "npm": "^6.8.0",
+    "react-app-rewired": "^2.1.0",
     "serverless-dynamodb-autoscaling": "^0.6.2",
     "serverless-stack-output": "^0.2.3",
     "serverless-webpack": "^5.2.0",
