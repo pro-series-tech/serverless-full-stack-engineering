@@ -5,10 +5,20 @@ import {
 	Form, Icon, Input, Button, Checkbox,
 } from 'antd';
 
+const pwdRegex  = /^(?=.*[0-9])(?=.*[!@#$%^&*\.])[a-zA-Z0-9!@#$%^&*\.]{8,16}$/;
+const invalidPwdMsg = `
+Password must follow:
+8 to 16 characters long
+, at least one number
+, at least one special character: ! @ # $ % ^ & * .
+, at least one uppercase letter
+, and at least one lowercase letter.
+`;
+
 class SignUp extends Component {
 	state = {
 		confirmDirty: false
-	};
+	}
 	handleConfirmBlur = (e) => {
 		const value = e.target.value;
 		this.setState({ confirmDirty: this.state.confirmDirty || !!value });
@@ -18,13 +28,25 @@ class SignUp extends Component {
 		if (value && this.state.confirmDirty) {
 			form.validateFields(['confirm'], { force: true });
 		}
-		callback();
+		if (value && !pwdRegex.test(value)){
+			callback(invalidPwdMsg);
+		}else{
+			callback();
+		}
+	}
+	compareToFirstPassword = (rule, value, callback) => {
+		const form = this.props.form;
+		if (value && value !== form.getFieldValue('password')) {
+			callback('Two passwords that you enter is inconsistent!');
+		} else {
+			callback();
+		}
 	}
 	handleSubmit = (e) => {
 		e.preventDefault();
 		this.props.form.validateFields(async (err, values) => {
 			if (!err) {
-				let result = await this.props.signUp(values.userName, values.password);
+				let result = await this.props.signUp(values.userName, values.email, values.password);
 				console.log('Sign in result', result);
 			}
 		});
@@ -42,9 +64,23 @@ class SignUp extends Component {
 					)}
 				</Form.Item>
 				<Form.Item>
-					{getFieldDecorator('password', {
-						rules: [{ required: true, message: 'Please input your Password!' }],
+					{getFieldDecorator('email', {
+						rules: [{
+							type: 'email', message: 'The input is not valid E-mail!',
+						}, {
+							required: true, message: 'Please input your E-mail!',
+						}],
 					})(
+						<Input prefix={<Icon type="mail" style={styles.field} />} placeholder="Email" />
+					)}
+				</Form.Item>
+				<Form.Item>
+					{getFieldDecorator('password', {
+						rules: [{ required: true, message: 'Please input your Password!' 
+						},{
+								validator: this.validateToNextPassword,
+						}
+					]})(
 						<Input prefix={<Icon type="lock" style={styles.field} />} type="password" placeholder="Password" />
 					)}
 				</Form.Item>
