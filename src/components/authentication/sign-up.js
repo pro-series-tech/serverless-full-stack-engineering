@@ -46,8 +46,16 @@ class SignUp extends Component {
 		e.preventDefault();
 		this.props.form.validateFields(async (err, values) => {
 			if (!err) {
-				let result = await this.props.signUp(values.userName, values.email, values.password);
-				console.log('Sign in result', result);
+				let error = await this.props.signUp(values.userName, values.email, values.password);
+				if(error){
+					/* show validation */
+					this.props.form.setFields({
+						userName: {
+							value: values.userName,
+							errors: [new Error(error)]
+						},
+					});
+				}
 			}
 		});
 	}

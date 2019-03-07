@@ -11,21 +11,23 @@ import Authentication from "lib/authentication";
 const auth = new Authentication();
 
 export const signUp = (username, email, password) => async dispatch => {
-    
-    let attributes = [
-        {
-            Name: "email",
-            Value: email
-        }
-    ];
-    let result = await auth.signUp(username, password, attributes);
-    
-    // dispatch({
-    //     type: AUTHENTICATE_SIGN_UP,
-    //     payload: "someuser111"
-    // });
 
-    return result;
+    try{
+        let attributes = [
+            {
+                Name: "email",
+                Value: email
+            }
+        ];
+        let user = await auth.signUp(username, password, attributes);
+        /* dispatch authenticated user */
+        dispatch({
+            type: AUTHENTICATE_SIGN_UP,
+            payload: user
+        });
+    }catch(e){
+        return e.message;
+    }
 };
 
 export const signIn = (username, password) => async dispatch => {};
