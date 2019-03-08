@@ -1,60 +1,74 @@
-
 import {
-    AUTHENTICATE_SIGN_IN,
-    AUTHENTICATE_SIGN_OUT,
-    AUTHENTICATE_SIGN_UP
+    AUTHENTICATION_SIGN_IN,
+    AUTHENTICATION_SIGN_UP,
+    AUTHENTICATION_SIGN_OUT,
+    AUTHENTICATION_RESEND_CODE,
+    AUTHENTICATION_CHANGE_PASSWORD,
+    AUTHENTICATION_CONFIRM_REGISTRATION,
 } from "lib/types";
 
 import Authentication from "lib/authentication";
-
 /* instantiate authentication object */
 const auth = new Authentication();
-
-export const signUp = (username, email, password) => async dispatch => {
-
+/** */
+const authHelper = async (dispatch, actionType, authFunc, authParams)=>{
     try{
-        let attributes = [
-            {
-                Name: "email",
-                Value: email
-            }
-        ];
-        let user = await auth.signUp(username, password, attributes);
-        /* dispatch authenticated user */
+        let result = await authFunc(...authParams);
         dispatch({
-            type: AUTHENTICATE_SIGN_UP,
-            payload: user
+            type: actionType,
+            payload: result
         });
+        return result;
     }catch(e){
         return e.message;
     }
 };
-
-export const signIn = (username, password) => async dispatch => {};
-
-export const signOut = () => async dispatch => {};
-
-/*
-let attributes = [
-	{
-		Name: "email",
-		Value: "some.email@mail.com"
-	},
-	{
-		Name: "phone_number",
-		Value: "+11543344333"
-	}
-];
-
-let result = await auth.signUp("some.email@mail.com", "SomePassword123..", attributes);
-console.log("Results from sign up is:", result);
-
-let result = await auth.signIn("some.email@mail.com", "SomePassword123..");
-console.log("Sign in results:", result);
-
-let result = await auth.resendConfirmation("some.email@mail.com");
-console.log("Resend confirmation results:", result);
-
-let result = await auth.confirmRegistration("some.email@mail.com", "091660");
-console.log("Confirmation results:", result);
-*/
+export const signUp = (username, email, password) => async dispatch => {
+    let attributes = [{
+        Name: 'email',
+        Value: email
+    }];
+    return await authHelper(
+        dispatch, 
+        AUTHENTICATION_SIGN_UP, 
+        auth.signUp, 
+        [username, password, attributes]
+    );
+};
+export const signIn = (username, password) => async dispatch => {
+    return await authHelper(
+        dispatch,
+        AUTHENTICATION_SIGN_IN,
+        auth.signIn,
+        [username, password]
+    );
+};
+export const confirmRegistration = (username, code) => async dispatch => {
+    return await authHelper(
+        dispatch,
+        AUTHENTICATION_CONFIRM_REGISTRATION,
+        auth.confirmRegistration,
+        [username, code]
+    );
+};
+export const resendConfirmation = (username) => async dispatch => {
+    return await authHelper(
+        dispatch,
+        AUTHENTICATION_RESEND_CODE,
+        auth.resendConfirmation,
+        [username]
+    );
+};
+export const changePassword = (username, oldPassword, newPassword) => async dispatch => {
+    return await authHelper(
+        dispatch,
+        AUTHENTICATION_CHANGE_PASSWORD,
+        auth.changePassword,
+        [username, oldPassword, newPassword]
+    );
+};
+export const signOut = () => async dispatch => {
+    dispatch({
+        type: AUTHENTICATION_SIGN_OUT
+    });
+};

@@ -10,7 +10,7 @@ class Landing extends Component {
             <Row type="flex" align="middle" style={styles.row}>
                 <Col xs={2} sm={4} md={6} lg={9} xl={9}></Col>
                 <Col xs={20} sm={16} md={12} lg={6} xl={6} style={styles.col}>
-                    <SignUp/>
+                    <SignIn/>
                 </Col>
                 <Col xs={2} sm={4} md={6} lg={9} xl={9}></Col>
             </Row>

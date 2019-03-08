@@ -13,7 +13,7 @@ export default class Authentication {
 	constructor(){
 		this.cognitoUser = null;
 	}
-	getCognitoUser(username){
+	getCognitoUser = (username) => {
 		if(this.cognitoUser){
 			return this.cognitoUser;
 		}
@@ -29,7 +29,7 @@ export default class Authentication {
 	 * @param {String} password
 	 * @param {String[]} attributes
 	 */
-	signUp(username, password, attributes) {
+	signUp = (username, password, attributes) => {
 		return new Promise((resolve, reject) => {
 			/* convert all attributes to cognito attributes */
 			let cognitoAttributes = attributes.map(a => {
@@ -53,7 +53,7 @@ export default class Authentication {
 	 * @param {String} username
 	 * @param {String} password
 	 */
-	signIn(username, password) {
+	signIn = (username, password) => {
 		return new Promise((resolve, reject) => {
 			/* the authentication details */
 			let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
@@ -83,7 +83,7 @@ export default class Authentication {
 	 * 	Resend confirmation code to user email.
 	 * @param {String} username 
 	 */
-	resendConfirmation(username){
+	resendConfirmation = (username) => {
 		let cognitoUser = this.getCognitoUser(username);
 		return new Promise((resolve, reject)=>{
 			cognitoUser.resendConfirmationCode((err, result) => {
@@ -96,7 +96,7 @@ export default class Authentication {
 	 * @param {String} username 
 	 * @param {String} code 
 	 */
-	confirmRegistration(username, code){
+	confirmRegistration = (username, code) => {
 		let cognitoUser = this.getCognitoUser(username);
 		return new Promise((resolve, reject) => {
 			cognitoUser.confirmRegistration(code, true, (err, result)=> {
@@ -110,7 +110,7 @@ export default class Authentication {
 	 * @param {String} oldPassword 
 	 * @param {String} newPassword 
 	 */
-	changePassword(username, oldPassword, newPassword) {
+	changePassword = (username, oldPassword, newPassword) => {
 		let cognitoUser = this.getCognitoUser(username);
 		return new Promise((resolve, reject) => {
 			cognitoUser.changePassword(oldPassword, newPassword, (err, result) => {

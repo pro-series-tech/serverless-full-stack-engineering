@@ -1,7 +1,7 @@
 import { 
-    AUTHENTICATE_SIGN_IN,
-    AUTHENTICATE_SIGN_OUT,
-    AUTHENTICATE_SIGN_UP
+    AUTHENTICATION_SIGN_IN,
+    AUTHENTICATION_SIGN_OUT,
+    AUTHENTICATION_SIGN_UP
 } from "lib/types";
 
 const initialState = {
@@ -12,16 +12,16 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case AUTHENTICATE_SIGN_UP:
+        case AUTHENTICATION_SIGN_UP:
             return {
                 ...state,
                 username: action.payload
             }
-        case AUTHENTICATE_SIGN_IN:
+        case AUTHENTICATION_SIGN_IN:
             return {
                 ...state
             }
-        case AUTHENTICATE_SIGN_OUT:
+        case AUTHENTICATION_SIGN_OUT:
             return {
                 ...state
             }
