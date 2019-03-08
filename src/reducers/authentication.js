@@ -5,9 +5,8 @@ import {
 } from "lib/types";
 
 const initialState = {
-    username: "someuser",
-    email: "",
-    password: ""
+    username: null,
+    email: null,
 };
 
 export default (state = initialState, action) => {

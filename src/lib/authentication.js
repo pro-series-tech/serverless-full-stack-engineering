@@ -105,7 +105,6 @@ export default class Authentication {
 		});
 	}
 	/**
-	 * 
 	 * @param {String} username 
 	 * @param {String} oldPassword 
 	 * @param {String} newPassword 

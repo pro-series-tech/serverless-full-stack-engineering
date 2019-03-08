@@ -4,13 +4,15 @@ import { SignIn, SignUp } from "components/authentication";
 import { Row, Col } from 'antd';
 
 class Landing extends Component {
-
+    determineAuthForm = () =>{
+        switch()
+    }
     render() {
         return (
             <Row type="flex" align="middle" style={styles.row}>
                 <Col xs={2} sm={4} md={6} lg={9} xl={9}></Col>
                 <Col xs={20} sm={16} md={12} lg={6} xl={6} style={styles.col}>
-                    <SignIn/>
+                    {this.determineAuthForm()}
                 </Col>
                 <Col xs={2} sm={4} md={6} lg={9} xl={9}></Col>
             </Row>

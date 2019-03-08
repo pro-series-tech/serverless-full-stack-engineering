@@ -1,10 +1,12 @@
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import authentication from 'reducers/authentication.js';
+import global from 'reducers/global';
+import authentication from 'reducers/authentication';
 
 // Use ES6 object literal shorthand syntax to define the object shape
 const rootReducer = combineReducers({
- authentication
+    global,
+    authentication
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
