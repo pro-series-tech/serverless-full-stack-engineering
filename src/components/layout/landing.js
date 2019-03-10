@@ -1,11 +1,26 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { SignIn, SignUp } from "components/authentication";
+import { SignIn, SignUp, ForgotPwd, ConfirmAccount } from "components/authentication";
 import { Row, Col } from 'antd';
+import {
+    NAVIGATION_AUTHENTICATION_SIGN_IN,
+    NAVIGATION_AUTHENTICATION_SIGN_UP,
+    NAVIGATION_AUTHENTICATION_FORGOT_PASSWORD,
+    NAVIGATION_AUTHENTICATION_CONFIRM_ACCOUNT
+} from 'lib/types';
 
 class Landing extends Component {
     determineAuthForm = () =>{
-        switch()
+        switch (this.props.authenticationForm){
+            case NAVIGATION_AUTHENTICATION_SIGN_IN:
+                return <SignIn/>;
+            case NAVIGATION_AUTHENTICATION_SIGN_UP:
+                return <SignUp/>
+            case NAVIGATION_AUTHENTICATION_FORGOT_PASSWORD:
+                return <ForgotPwd />
+            case NAVIGATION_AUTHENTICATION_CONFIRM_ACCOUNT:
+                return <ConfirmAccount />
+        }
     }
     render() {
         return (
@@ -31,7 +46,7 @@ const styles = {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        username: state.authentication.username
+        authenticationForm: state.global.authenticationForm
     };
 };
 const mapDispatchToProps = {

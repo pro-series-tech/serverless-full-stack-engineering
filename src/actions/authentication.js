@@ -1,10 +1,15 @@
 import {
+    AUTHENTICATION_SET_USERNAME,
     AUTHENTICATION_SIGN_IN,
     AUTHENTICATION_SIGN_UP,
     AUTHENTICATION_SIGN_OUT,
     AUTHENTICATION_RESEND_CODE,
     AUTHENTICATION_CHANGE_PASSWORD,
     AUTHENTICATION_CONFIRM_REGISTRATION,
+    AUTHENTICATION_FORGOT_PASSWORD,
+    AUTHENTICATION_CONFIRM_PASSWORD,
+    NAVIGATION_AUTHENTICATION_SWITCH_FORM,
+    NAVIGATION_AUTHENTICATION_CONFIRM_ACCOUNT
 } from "lib/types";
 
 import Authentication from "lib/authentication";
@@ -28,12 +33,20 @@ export const signUp = (username, email, password) => async dispatch => {
         Name: 'email',
         Value: email
     }];
-    return await authHelper(
+    let error = await authHelper(
         dispatch, 
         AUTHENTICATION_SIGN_UP, 
         auth.signUp, 
         [username, password, attributes]
     );
+    /* if sign up succeed, dispatch other actions */
+    if(!error){
+        dispatch({
+            type: NAVIGATION_AUTHENTICATION_SWITCH_FORM,
+            payload: NAVIGATION_AUTHENTICATION_CONFIRM_ACCOUNT
+        });
+    }
+    return error;
 };
 export const signIn = (username, password) => async dispatch => {
     return await authHelper(
@@ -67,8 +80,30 @@ export const changePassword = (username, oldPassword, newPassword) => async disp
         [username, oldPassword, newPassword]
     );
 };
-export const signOut = () => async dispatch => {
+export const forgotPassword = (username) => async dispatch => {
+    return await authHelper(
+        dispatch,
+        AUTHENTICATION_FORGOT_PASSWORD,
+        auth.forgotPassword,
+        [username]
+    );
+};
+export const confirmPassword = (username, verificationCode, newPassword) => async dispatch => {
+    return await authHelper(
+        dispatch,
+        AUTHENTICATION_CONFIRM_PASSWORD,
+        auth.confirmPassword,
+        [username, verificationCode, newPassword]
+    );
+};
+export const signOut = () => dispatch => {
     dispatch({
         type: AUTHENTICATION_SIGN_OUT
+    });
+};
+export const setUsername = (username) => dispatch => {
+    dispatch({
+        type: AUTHENTICATION_SET_USERNAME,
+        payload: username
     });
 };

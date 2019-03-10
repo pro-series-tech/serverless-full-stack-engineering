@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { signUp} from "actions/authentication";
+import { forgotPassword, confirmPassword} from "actions/authentication";
 import { switchAuthenticationForm } from "actions/global";
 import {
 	Form, Icon, Input, Button, Checkbox,
@@ -11,9 +11,15 @@ import {
 	AUTHENTICATION_PWD_VALIDATION_REGEX
 } from 'lib/types';
 
-class SignUp extends Component {
+/* local enumerators for forgot password workflow */
+const CODE_REQUEST_NOT_YET_SEND = "CODE_REQUEST_NOT_YET_SEND";
+const CODE_REQUEST_SEND = "CODE_REQUEST_SEND";
+
+class ForgotPwd extends Component {
 	state = {
-		confirmDirty: false
+		confirmDirty: false,
+		currentUsername: null,
+		workflowStep: CODE_REQUEST_NOT_YET_SEND
 	}
 	handleConfirmBlur = (e) => {
 		const value = e.target.value;
@@ -38,53 +44,65 @@ class SignUp extends Component {
 			callback();
 		}
 	}
-	handleSubmit = (e) => {
-		e.preventDefault();
-		this.props.form.validateFields(async (err, values) => {
+	sendCodeRequest = async () =>{
+		const form = this.props.form;
+		form.validateFields(async (err, values) => {
 			if (!err) {
-				let error = await this.props.signUp(values.userName, values.email, values.password);
-				if(error){
-					/* show validation */
-					this.props.form.setFields({
-						userName: {
-							value: values.userName,
-							errors: [new Error(error)]
-						},
-					});
-				}
+				let username = form.getFieldValue('username');
+				let result = await this.props.forgotPassword(username);
+				console.log("result is", result);
 			}
 		});
 	}
-	render(){
+	confirmPassword = async () =>{
 
+	}
+	renderGoToSignInLink = () =>{
+		return (<Form.Item>
+			<hr />
+			<a onClick={() => {
+				this.props.switchAuthenticationForm(NAVIGATION_AUTHENTICATION_SIGN_IN);
+			}}>Login Instead</a>
+		</Form.Item>)
+	}
+	renderCodeRequestNotYetSendForm = () => {
 		const { getFieldDecorator } = this.props.form;
 		return (
-			<Form onSubmit={this.handleSubmit} >
+			<Form >
 				<Form.Item>
-					{getFieldDecorator('userName', {
+					{getFieldDecorator('username', {
 						rules: [{ required: true, message: 'Please input your username!' }],
 					})(
 						<Input prefix={<Icon type="user" style={styles.field} />} placeholder="Username" />
 					)}
 				</Form.Item>
 				<Form.Item>
-					{getFieldDecorator('email', {
-						rules: [{
-							type: 'email', message: 'The input is not valid E-mail!',
-						}, {
-							required: true, message: 'Please input your E-mail!',
-						}],
-					})(
-						<Input prefix={<Icon type="mail" style={styles.field} />} placeholder="Email" />
+					<Button type="primary" onClick={this.sendCodeRequest} className="login-form-button">
+						Send Forgot Request Email
+					</Button>
+				</Form.Item>
+				{this.renderGoToSignInLink()}
+			</Form>
+		)
+	}
+	renderCodeRequestSend = () => {
+		const { getFieldDecorator } = this.props.form;
+		return (
+			<Form >
+				<Form.Item>
+					{getFieldDecorator('userName', {})(
+						<Input enable prefix={<Icon type="user" style={styles.field} />} disabled={true} defaultValue={this.state.currentUsername}/>
 					)}
 				</Form.Item>
 				<Form.Item>
 					{getFieldDecorator('password', {
-						rules: [{ required: true, message: 'Please input your Password!' 
-						},{
-								validator: this.validateToNextPassword,
+						rules: [{
+							required: true, message: 'Please input your Password!'
+						}, {
+							validator: this.validateToNextPassword,
 						}
-					]})(
+						]
+					})(
 						<Input prefix={<Icon type="lock" style={styles.field} />} type="password" placeholder="Password" />
 					)}
 				</Form.Item>
@@ -100,19 +118,22 @@ class SignUp extends Component {
 					)}
 				</Form.Item>
 				<Form.Item>
-					<Button type="primary" htmlType="submit" className="login-form-button">
-						Sign Up
-         			 </Button>
-					<hr/>
-					<a onClick={() => {
-						this.props.switchAuthenticationForm(NAVIGATION_AUTHENTICATION_SIGN_IN);
-					}}>Login Instead</a>
+					<Button type="primary" onClick={this.confirmPassword} className="login-form-button">
+						Change Password
+					</Button>
 				</Form.Item>
-
+				{this.renderGoToSignInLink()}
 			</Form>
 		)
 	}
-
+	render(){
+		switch (this.state.workflowStep) {
+			case CODE_REQUEST_NOT_YET_SEND:
+				return this.renderCodeRequestNotYetSendForm();
+			case CODE_REQUEST_SEND:
+				return this.renderCodeRequestSend();
+		}
+	}
 }
 
 const styles = {
@@ -122,18 +143,17 @@ const styles = {
 };
 
 /* wrap the form before passing it out to redux connect */
-const WrappeSignInForm = Form.create({ name: 'normal_login' })(SignUp);
+const WrappeForgotPasswordForm = Form.create({ name: 'normal_login' })(ForgotPwd);
 
 const mapStateToProps = (state, ownProps) => {
-	return {
-		username: state.authentication.username
-	};
+	return {};
 };
 const mapDispatchToProps = { 
-	signUp,
+	forgotPassword,
+	confirmPassword,
 	switchAuthenticationForm
 };
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(WrappeSignInForm);
+)(WrappeForgotPasswordForm);

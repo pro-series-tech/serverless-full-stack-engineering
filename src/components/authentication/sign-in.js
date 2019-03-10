@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { signIn} from "actions/authentication";
+import { signIn, setUsername} from "actions/authentication";
+import { switchAuthenticationForm} from "actions/global";
+import {
+	NAVIGATION_AUTHENTICATION_SIGN_UP,
+	NAVIGATION_AUTHENTICATION_FORGOT_PASSWORD,
+	NAVIGATION_AUTHENTICATION_CONFIRM_ACCOUNT
+} from "lib/types";
 import {
 	Form, Icon, Input, Button, Checkbox,
 } from 'antd';
@@ -10,10 +16,29 @@ class SignIn extends Component {
 		e.preventDefault();
 		this.props.form.validateFields(async (err, values) => {
 			if (!err) {
-				let result = await this.props.signIn(values.userName, values.password);
-				console.log('Sign in result', result);
+				let error = await this.props.signIn(values.userName, values.password);
+				/* if there was an error, and is type is not confirmed */
+				if (error){
+					console.log("error is", error);
+					this.evaluateSignInResult(error, values);
+				}
 			}
 		});
+	}
+	evaluateSignInResult = (error, values) =>{
+		switch (true) {
+			case error.includes("not confirmed"):
+				this.props.setUsername(values.userName);
+				this.props.switchAuthenticationForm(NAVIGATION_AUTHENTICATION_CONFIRM_ACCOUNT);
+				break;
+			default:
+				this.props.form.setFields({
+					userName: {
+						value: values.userName,
+						errors: [new Error(error)]
+					}
+				});
+		}
 	}
 	render(){
 
@@ -33,7 +58,9 @@ class SignIn extends Component {
 					})(
 						<Input prefix={<Icon type="lock" style={styles.field} />} type="password" placeholder="Password" />
 					)}
-					<a className="login-form-forgot" href="">Forgot Password</a>
+					<a onClick={() => {
+						this.props.switchAuthenticationForm(NAVIGATION_AUTHENTICATION_FORGOT_PASSWORD);
+					}}>Forgot Password</a>
 				</Form.Item>
 				<Form.Item>
 
@@ -48,7 +75,9 @@ class SignIn extends Component {
 						<Checkbox>Remember Me</Checkbox>
 					)}
 					<hr/>
-					<a href="">Create Account</a>
+					<a onClick={()=>{
+						this.props.switchAuthenticationForm(NAVIGATION_AUTHENTICATION_SIGN_UP);
+					}}>Create Account</a>
 				</Form.Item>
 
 			</Form>
@@ -72,7 +101,9 @@ const mapStateToProps = (state, ownProps) => {
 	};
 };
 const mapDispatchToProps = { 
-	signIn
+	signIn,
+	setUsername,
+	switchAuthenticationForm
 };
 export default connect(
 	mapStateToProps,

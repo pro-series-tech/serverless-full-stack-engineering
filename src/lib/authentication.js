@@ -40,10 +40,8 @@ export default class Authentication {
 				if (err) {
 					reject(err);
 				}else{
-					/* set the user */
-					this.cognitoUser = result.user;
 					/* resolve */
-					resolve(result.user);
+					resolve(username);
 				}
 			});
 		});
@@ -114,6 +112,41 @@ export default class Authentication {
 		return new Promise((resolve, reject) => {
 			cognitoUser.changePassword(oldPassword, newPassword, (err, result) => {
 				(err) ? reject(err) : resolve(result);
+			});
+		});
+	}
+	/**
+	 * @param {String} username 
+	 */
+	forgotPassword = (username) => {
+		let cognitoUser = this.getCognitoUser(username);
+		return new Promise((resolve, reject) => {
+			cognitoUser.forgotPassword({
+				onSuccess: (result) => {
+					/* resolve authentication credentials */
+					resolve(result);
+				},
+				onFailure: (err) => {
+					reject(err);
+				}
+			});
+		});
+	}
+	/**
+	 * @param {String} username
+	 * @param {String} verificationCode
+	 * @param {String} newPassword
+	 */
+	confirmPassword = (username, verificationCode, newPassword) => {
+		let cognitoUser = this.getCognitoUser(username);
+		return new Promise((resolve, reject) => {
+			cognitoUser.confirmPassword(verificationCode, newPassword,{
+				onSuccess: (result) => {
+					resolve(result);
+				},
+				onFailure: (err) => {
+					reject(err);
+				}
 			});
 		});
 	}
