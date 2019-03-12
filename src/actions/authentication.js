@@ -23,7 +23,6 @@ const authHelper = async (dispatch, actionType, authFunc, authParams)=>{
             type: actionType,
             payload: result
         });
-        return result;
     }catch(e){
         return e.message;
     }

@@ -45,6 +45,8 @@ class ForgotPwd extends Component {
 		}
 	}
 	sendCodeRequest = async () =>{
+		/* switch on loading spin on parent component */
+		this.props.switchLoading(true);
 		const form = this.props.form;
 		form.validateFields(async (err, values) => {
 			if (!err) {
@@ -52,10 +54,12 @@ class ForgotPwd extends Component {
 				let result = await this.props.forgotPassword(username);
 				console.log("result is", result);
 			}
+			/* dissable loading */
+			this.props.switchLoading(false);
 		});
 	}
-	confirmPassword = async () =>{
-
+	confirmPassword = () =>{
+		/* TODO: implement confirm password body */
 	}
 	renderGoToSignInLink = () =>{
 		return (<Form.Item>

@@ -6,7 +6,7 @@ import LandingLayout from "./landing";
 
 class Layout extends Component {
     render() {
-        if (!this.props.user){
+        if (!this.props.credentials){
             return <LandingLayout/>
         }else{
             return <HomeLayout/>
@@ -15,7 +15,7 @@ class Layout extends Component {
 }
 const mapStateToProps = (state, ownProps) => {
     return {
-        user: state.authentication.user
+        credentials: state.authentication.credentials
     };
 };
 const mapDispatchToProps = {

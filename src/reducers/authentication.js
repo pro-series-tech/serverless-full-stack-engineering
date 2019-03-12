@@ -1,3 +1,9 @@
+import AWS from 'aws-sdk';
+import { 
+    USER_POOL_ID, 
+    IDENTITY_POOL_ID, 
+    AWS_REGION
+} from 'lib/environment';
 import { 
     AUTHENTICATION_SIGN_IN,
     AUTHENTICATION_SIGN_OUT,
@@ -7,7 +13,7 @@ import {
 
 const initialState = {
     username: null,
-    user: null
+    credentials: null
 };
 
 export default (state = initialState, action) => {
@@ -23,8 +29,18 @@ export default (state = initialState, action) => {
                 username: action.payload
             }
         case AUTHENTICATION_SIGN_IN:
+
+            let loginUrl = `cognito-idp.${AWS_REGION}.amazonaws.com/${USER_POOL_ID}`;
+            /* create credentials object */
+            let credentials = new AWS.CognitoIdentityCredentials({
+                IdentityPoolId: IDENTITY_POOL_ID,
+                Logins: {
+                    [loginUrl]: action.payload
+                }
+            });
             return {
-                ...state
+                ...state,
+                credentials
             }
         case AUTHENTICATION_SIGN_OUT:
             return {

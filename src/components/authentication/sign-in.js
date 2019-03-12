@@ -14,15 +14,19 @@ import {
 class SignIn extends Component {
 	handleSubmit = (e) => {
 		e.preventDefault();
+		/* switch on loading spin on parent component */
+		this.props.switchLoading(true);
+		/* validate fields */
 		this.props.form.validateFields(async (err, values) => {
 			if (!err) {
 				let error = await this.props.signIn(values.userName, values.password);
 				/* if there was an error, and is type is not confirmed */
 				if (error){
-					console.log("error is", error);
 					this.evaluateSignInResult(error, values);
 				}
 			}
+			/* dissable loading */
+			this.props.switchLoading(false);
 		});
 	}
 	evaluateSignInResult = (error, values) =>{
@@ -97,6 +101,7 @@ const WrappeSignInForm = Form.create({ name: 'normal_login' })(SignIn);
 
 const mapStateToProps = (state, ownProps) => {
 	return {
+		switchLoading: ownProps.switchLoading,
 		username: state.authentication.username
 	};
 };

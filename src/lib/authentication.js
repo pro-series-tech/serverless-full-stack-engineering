@@ -14,14 +14,16 @@ export default class Authentication {
 		this.cognitoUser = null;
 	}
 	getCognitoUser = (username) => {
-		if(this.cognitoUser){
-			return this.cognitoUser;
+		let user = userPool.getCurrentUser();
+		if (user){
+			return user
+		}else{
+			/* otherwise return current user in session */
+			return new AmazonCognitoIdentity.CognitoUser({
+				Username: username,
+				Pool: userPool
+			});
 		}
-		/* otherwise return current user in session */
-		return new AmazonCognitoIdentity.CognitoUser({
-			Username: username,
-			Pool: userPool
-		});
 	}
 	/**
 	 * Sign up user to serverless user pool.
@@ -62,14 +64,8 @@ export default class Authentication {
 			/* sign in this user to the pool */
 			cognitoUser.authenticateUser(authenticationDetails, {
 				onSuccess: (result) => {
-					/* set the user */
-					this.cognitoUser = cognitoUser;
 					/* resolve authentication credentials */
-					resolve({
-						accessToken: result.getAccessToken().getJwtToken(),
-						idToken: result.getIdToken().getJwtToken(),
-						refreshToken: result.getRefreshToken().getToken()
-					});
+					resolve(result.getIdToken().getJwtToken());
 				},
 				onFailure: (err) => {
 					reject(err);

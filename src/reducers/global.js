@@ -15,6 +15,11 @@ export default (state = initialState, action) => {
                 ...state,
                 authenticationForm: action.payload
             }
+        case NAVIGATION_AUTHENTICATION_SWITCH_FORM:
+            return {
+                ...state,
+                authenticationForm: action.payload
+            }
         default:
             return state
     }

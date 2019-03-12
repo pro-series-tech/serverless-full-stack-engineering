@@ -40,6 +40,9 @@ class SignUp extends Component {
 	}
 	handleSubmit = (e) => {
 		e.preventDefault();
+		/* switch on loading spin on parent component */
+		this.props.switchLoading(true);
+		/* validate fields */
 		this.props.form.validateFields(async (err, values) => {
 			if (!err) {
 				let error = await this.props.signUp(values.userName, values.email, values.password);
@@ -53,6 +56,8 @@ class SignUp extends Component {
 					});
 				}
 			}
+			/* dissable loading */
+			this.props.switchLoading(false);
 		});
 	}
 	render(){
@@ -126,6 +131,7 @@ const WrappeSignInForm = Form.create({ name: 'normal_login' })(SignUp);
 
 const mapStateToProps = (state, ownProps) => {
 	return {
+		switchLoading: ownProps.switchLoading,
 		username: state.authentication.username
 	};
 };
