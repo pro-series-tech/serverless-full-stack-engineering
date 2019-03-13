@@ -15,6 +15,8 @@ import {
 import Authentication from "lib/authentication";
 /* instantiate authentication object */
 const auth = new Authentication();
+auth.getCachedUser();
+
 /** */
 const authHelper = async (dispatch, actionType, authFunc, authParams)=>{
     try{
@@ -95,10 +97,13 @@ export const confirmPassword = (username, verificationCode, newPassword) => asyn
         [username, verificationCode, newPassword]
     );
 };
-export const signOut = () => dispatch => {
-    dispatch({
-        type: AUTHENTICATION_SIGN_OUT
-    });
+export const signOut = () => async dispatch => {
+    return await authHelper(
+        dispatch,
+        AUTHENTICATION_SIGN_OUT,
+        auth.signOut,
+        []
+    );
 };
 export const setUsername = (username) => dispatch => {
     dispatch({

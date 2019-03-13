@@ -10,20 +10,30 @@ const userPool = new AmazonCognitoIdentity.CognitoUserPool({
  * https://docs.aws.amazon.com/cognito/latest/developerguide/using-amazon-cognito-user-identity-pools-javascript-examples.html
  */
 export default class Authentication {
-	constructor(){
-		this.cognitoUser = null;
-	}
 	getCognitoUser = (username) => {
-		let user = userPool.getCurrentUser();
-		if (user){
-			return user
-		}else{
-			/* otherwise return current user in session */
-			return new AmazonCognitoIdentity.CognitoUser({
-				Username: username,
-				Pool: userPool
-			});
-		}
+		/* otherwise return current user in session */
+		return new AmazonCognitoIdentity.CognitoUser({
+			Username: username,
+			Pool: userPool
+		});
+	}
+	getCachedUser = () =>{
+		return new Promise((resolve, reject) => {
+			let user = userPool.getCurrentUser();
+			if (user != null) {
+				user.getSession((err, session)=> {
+					if (err) {
+						reject();
+					} else if (session.isValid()){
+						resolve(session.getIdToken().getJwtToken());
+					}else{
+						resolve();
+					}
+				});
+			}else{
+				resolve();
+			}
+		});
 	}
 	/**
 	 * Sign up user to serverless user pool.
@@ -54,7 +64,18 @@ export default class Authentication {
 	 * @param {String} password
 	 */
 	signIn = (username, password) => {
-		return new Promise((resolve, reject) => {
+		return new Promise(async (resolve, reject) => {
+			/* try to login if cached user first */
+			let loggedIDToken = await this.getCachedUser();
+			/* if user is valid */
+			if (loggedIDToken){
+				resolve(loggedIDToken);
+				return;
+			}else if(!username || !password){
+				reject("No user cached and no credentials provided");
+				return;
+			}
+
 			/* the authentication details */
 			let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
 				Username: username,
@@ -71,6 +92,22 @@ export default class Authentication {
 					reject(err);
 				}
 			});
+		});
+	}
+	/**
+	 * Sign out user and clears all tokens
+	 */
+	signOut = () => {
+		return new Promise((resolve, reject) => {
+			console.log(" here");
+			/* get cached user */
+			let cognitoUser = userPool.getCurrentUser();
+			if (cognitoUser != null) {
+				/* sign out and clear local storage */
+				cognitoUser.signOut();
+			}
+			/* resolve the promise */
+			resolve();
 		});
 	}
 	/**

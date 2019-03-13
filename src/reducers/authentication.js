@@ -44,7 +44,8 @@ export default (state = initialState, action) => {
             }
         case AUTHENTICATION_SIGN_OUT:
             return {
-                ...state
+                ...state,
+                credentials: initialState.credentials
             }
         default:
             return state

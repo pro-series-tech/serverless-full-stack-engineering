@@ -23,10 +23,10 @@ class SignIn extends Component {
 				/* if there was an error, and is type is not confirmed */
 				if (error){
 					this.evaluateSignInResult(error, values);
+					/* dissable loading */
+					this.props.switchLoading(false);
 				}
 			}
-			/* dissable loading */
-			this.props.switchLoading(false);
 		});
 	}
 	evaluateSignInResult = (error, values) =>{
