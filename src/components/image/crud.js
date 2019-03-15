@@ -1,7 +1,7 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Modal, Upload, Icon, Button } from 'antd';
+import { Modal, Upload, Icon, Button, Input, Rate } from 'antd';
 import { 
     switchModalVisibility
 } from 'actions/crud';
@@ -9,6 +9,7 @@ import {
 const initialState = {
     confirmLoading: false,
     image: null,
+    rating: 1
 }
 class ImageCRUD extends Component {
     state = initialState;
@@ -47,13 +48,18 @@ class ImageCRUD extends Component {
             image: null
         });
     }
+    handleRateChange = (value)=>{
+        this.setState({
+            rating: value
+        });
+    }
     render() {
 
         let uploadButton; 
         if(!this.state.image){
             uploadButton = (
                 <div style={styles.uploadDiv}>
-                    <Button type="primary" shape="round" icon="upload" size={50}>Browser Picture</Button>
+                    <Button type="primary" shape="round" icon="upload" size='large'>Browser Picture</Button>
                 </div>
             );
         }
@@ -82,6 +88,20 @@ class ImageCRUD extends Component {
                         {uploadButton}
                     </Upload>
                  </div>
+                 <br/>
+                <Input
+                    prefix={<Icon type="picture" />}
+                    placeholder="Picture Name"
+                />
+                <br />
+                <br />
+                <Rate
+                    style={styles.rating}
+                    tooltips={['bad', 'ok', 'good', 'excellent', 'outstanding']}
+                    onChange={this.handleRateChange}
+                    character={<Icon type="heart" />}
+                    value={this.state.rating}
+                />
             </Modal>
         )
     }
@@ -91,6 +111,9 @@ const styles = {
         paddingTop: 20,
         width: '100%',
         textAlign: 'center'
+    },
+    rating:{
+        color: 'red'
     }
 };
 const mapStateToProps = (state, ownProps) => {
