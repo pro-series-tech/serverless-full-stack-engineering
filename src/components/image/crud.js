@@ -2,14 +2,19 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Modal, Upload, Icon, Button, Input, Rate } from 'antd';
+import ReactQuill from 'react-quill';
 import { 
     switchModalVisibility
 } from 'actions/crud';
 
+import 'react-quill/dist/quill.snow.css';
+
 const initialState = {
     confirmLoading: false,
     image: null,
-    rating: 1
+    rating: 1,
+    name: '',
+    description: ''
 }
 class ImageCRUD extends Component {
     state = initialState;
@@ -53,6 +58,23 @@ class ImageCRUD extends Component {
             rating: value
         });
     }
+    handleNameChange = (e) => {
+        this.setState({
+            name: e.target.value
+        });
+    }
+    handleDescriptionChange = (value) =>{
+        this.setState({
+            description: value
+        });
+    }
+    dataIsValid = ()=>{
+        let nameIsValid = this.state.name.trim() !== '';
+        let descriptionIsValid = this.state.description.trim() !== '';
+        let imageIsValid = this.state.image != null;
+        
+        return nameIsValid && descriptionIsValid && imageIsValid;
+    }
     render() {
 
         let uploadButton; 
@@ -73,6 +95,9 @@ class ImageCRUD extends Component {
                 confirmLoading={this.state.confirmLoading}
                 onOk={this.handleOk}
                 onCancel={this.handleCancel}
+                okButtonProps={{
+                    disabled: !this.dataIsValid()
+                }}
             >
                 <div style={styles.uploadDiv}>
                     <Upload
@@ -88,13 +113,6 @@ class ImageCRUD extends Component {
                         {uploadButton}
                     </Upload>
                  </div>
-                 <br/>
-                <Input
-                    prefix={<Icon type="picture" />}
-                    placeholder="Picture Name"
-                />
-                <br />
-                <br />
                 <Rate
                     style={styles.rating}
                     tooltips={['bad', 'ok', 'good', 'excellent', 'outstanding']}
@@ -102,6 +120,20 @@ class ImageCRUD extends Component {
                     character={<Icon type="heart" />}
                     value={this.state.rating}
                 />
+                 <br/>
+                <Input
+                    style={styles.name}
+                    value={this.state.name}
+                    prefix={<Icon type="picture" />}
+                    onChange={this.handleNameChange}
+                    placeholder="Picture Name"
+                />
+                <br/>
+                <ReactQuill
+                    value={this.state.description}
+                    onChange={this.handleDescriptionChange} 
+                    placeholder="Picture Description"
+                />    
             </Modal>
         )
     }
@@ -112,8 +144,13 @@ const styles = {
         width: '100%',
         textAlign: 'center'
     },
-    rating:{
+    rating: {
+        marginTop: 15,
+        marginBottom: 15,
         color: 'red'
+    },
+    name: {
+        marginBottom: 15
     }
 };
 const mapStateToProps = (state, ownProps) => {
