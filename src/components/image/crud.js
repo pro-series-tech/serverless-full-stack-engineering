@@ -6,6 +6,7 @@ import ReactQuill from 'react-quill';
 import { 
     switchModalVisibility
 } from 'actions/crud';
+import DataStorage from 'lib/data-storage';
 
 import 'react-quill/dist/quill.snow.css';
 
@@ -18,7 +19,7 @@ const initialState = {
 }
 class ImageCRUD extends Component {
     state = initialState;
-    handleOk = () => {
+    handleOk = async () => {
         this.setState({
             confirmLoading: true
         });
