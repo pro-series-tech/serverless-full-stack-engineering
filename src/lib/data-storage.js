@@ -10,6 +10,7 @@ export default class DataStorage{
             region: AWS_REGION,
             credentials 
         });
+        this.identityId = credentials.identityId;
     }
     getPictureRecords = async ()=>{
         let params = {
@@ -26,6 +27,7 @@ export default class DataStorage{
     putPictureRecord = ({name, description, rating})=>{
         let params = {
             TableName: DATA_TABLE_NAME,
+
             Item: {
                 userId: this.identityId, 
                 pictureId: nanoid(),

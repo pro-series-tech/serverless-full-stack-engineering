@@ -29,18 +29,9 @@ export default (state = initialState, action) => {
                 username: action.payload
             }
         case AUTHENTICATION_SIGN_IN:
-
-            let loginUrl = `cognito-idp.${AWS_REGION}.amazonaws.com/${USER_POOL_ID}`;
-            /* create credentials object */
-            let credentials = new AWS.CognitoIdentityCredentials({
-                IdentityPoolId: IDENTITY_POOL_ID,
-                Logins: {
-                    [loginUrl]: action.payload
-                }
-            });
             return {
                 ...state,
-                credentials
+                credentials: action.payload
             }
         case AUTHENTICATION_SIGN_OUT:
             return {

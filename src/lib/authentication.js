@@ -1,5 +1,11 @@
+import AWS from 'aws-sdk';
 import * as AmazonCognitoIdentity from "amazon-cognito-identity-js";
-import {USER_POOL_ID, USER_POOL_CLIENT_ID} from "lib/environment";
+import { 
+	USER_POOL_ID, 
+	USER_POOL_CLIENT_ID, 
+	IDENTITY_POOL_ID,
+	AWS_REGION
+} from "lib/environment";
 /* the user pool for registration and login operations */
 const userPool = new AmazonCognitoIdentity.CognitoUserPool({
 	UserPoolId: USER_POOL_ID,
@@ -17,15 +23,34 @@ export default class Authentication {
 			Pool: userPool
 		});
 	}
+	getAWSCredentials = async (token)=>{
+		/* set aws region */
+		AWS.config.region = AWS_REGION;
+		/* build the login url */
+		let loginUrl = `cognito-idp.${AWS_REGION}.amazonaws.com/${USER_POOL_ID}`;
+		/* create credentials object */
+		let credentials = new AWS.CognitoIdentityCredentials({
+			IdentityPoolId: IDENTITY_POOL_ID,
+			Logins: {
+				[loginUrl]: token
+			}
+		});
+		/* get all user credentials */
+		await credentials.getPromise();
+		/* return async credentials */
+		return credentials;
+	}
 	getCachedUser = () =>{
 		return new Promise((resolve, reject) => {
 			let user = userPool.getCurrentUser();
 			if (user != null) {
-				user.getSession((err, session)=> {
+				user.getSession(async (err, session)=> {
 					if (err) {
 						reject();
 					} else if (session.isValid()){
-						resolve(session.getIdToken().getJwtToken());
+						let token = session.getIdToken().getJwtToken();
+						let credentials = await this.getAWSCredentials(token);
+						resolve(credentials);
 					}else{
 						resolve();
 					}
@@ -66,10 +91,10 @@ export default class Authentication {
 	signIn = (username, password) => {
 		return new Promise(async (resolve, reject) => {
 			/* try to login if cached user first */
-			let loggedIDToken = await this.getCachedUser();
+			let credentials = await this.getCachedUser();
 			/* if user is valid */
-			if (loggedIDToken){
-				resolve(loggedIDToken);
+			if (credentials){
+				resolve(credentials);
 				return;
 			}else if(!username || !password){
 				reject("No user cached and no credentials provided");
@@ -84,9 +109,11 @@ export default class Authentication {
 			let cognitoUser = this.getCognitoUser(username);
 			/* sign in this user to the pool */
 			cognitoUser.authenticateUser(authenticationDetails, {
-				onSuccess: (result) => {
+				onSuccess: async (result) => {
 					/* resolve authentication credentials */
-					resolve(result.getIdToken().getJwtToken());
+					let token = result.getIdToken().getJwtToken();
+					let credentials = await this.getAWSCredentials(token);
+					resolve(credentials);
 				},
 				onFailure: (err) => {
 					reject(err);

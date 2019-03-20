@@ -11,6 +11,7 @@ import DataStorage from 'lib/data-storage';
 import 'react-quill/dist/quill.snow.css';
 
 const initialState = {
+    dataStorageClient: null,
     confirmLoading: false,
     image: null,
     rating: 1,
@@ -19,19 +20,27 @@ const initialState = {
 }
 class ImageCRUD extends Component {
     state = initialState;
+    componentDidMount = () => {
+        this.setState({
+            dataStorageClient: new DataStorage(this.props.credentials)
+        });
+    }
     handleOk = async () => {
         this.setState({
             confirmLoading: true
         });
-        /* TODO: 
-         - Apply save operation here 
-         - hide if success
-         - show error popup if error
-         */
-        setTimeout(() => {
+        try{
+            let result = await this.state.dataStorageClient.putPictureRecord(this.state);
+            console.log("result for insert", result);
             this.setState(initialState);
             this.props.switchModalVisibility(false);
-        }, 2000);
+        }catch(e){
+            this.setState({
+                confirmLoading: false
+            });
+            /*TODO: set failure alert here */
+            console.log("ERROR occured while persisting",e);
+        }
     }
     handleCancel = () => {
         this.setState(initialState);

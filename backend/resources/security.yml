@@ -32,50 +32,89 @@ Resources:
       ExplicitAuthFlows:
         - ADMIN_NO_SRP_AUTH
       GenerateSecret: false
-  ServiceRole:
-        Type: "AWS::IAM::Role"
-        Properties:
-          RoleName: "DynamoRole"
-          AssumeRolePolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: "Allow"
-                Principal:
-                  Service:
-                    - "lambda.amazonaws.com"
-                Action:
-                  - "sts:AssumeRole"
-          Policies:
-            - PolicyName: "Dynamo-ServiceRole-Policy"
-              PolicyDocument:
-                Version: "2012-10-17"
-                Statement:
-                  - Effect: "Allow"
-                    Action:
-                      - "dynamodb:Query"
-                      - "dynamodb:BatchWriteItem"
-                      - "dynamodb:GetItem"
-                      - "dynamodb:DeleteItem"
-                      - "dynamodb:PutItem"
-                      - "dynamodb:Scan"
-                      - "dynamodb:UpdateItem"
-                    Resource:
-                      - "arn:aws:dynamodb:us-east-1:*:table/${self:provider.stage}-pictures-table"
-  XrayLambdaRolePolicy:
-    Type: "AWS::IAM::Policy"
+  # IAM roles
+  CognitoIdentityPoolRoles:
+    Type: AWS::Cognito::IdentityPoolRoleAttachment
     Properties:
-      PolicyName: "xray-policy"
-      PolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: "Allow"
-            Action:
-              - "xray:PutTraceSegments"
-              - "xray:PutTelemetryRecords"
-            Resource:
-              - "*"
+      IdentityPoolId:
+        Ref: CognitoIdentityPool
       Roles:
-        - Ref: ServiceRole
+        authenticated:
+          Fn::GetAtt: [CognitoAuthRole, Arn]
+    # IAM role used for authenticated users
+  CognitoAuthRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: 'Allow'
+            Principal:
+              Federated: 'cognito-identity.amazonaws.com'
+            Action:
+              - 'sts:AssumeRoleWithWebIdentity'
+            Condition:
+              StringEquals:
+                'cognito-identity.amazonaws.com:aud':
+                  Ref: CognitoIdentityPool
+              'ForAnyValue:StringLike':
+                'cognito-identity.amazonaws.com:amr': authenticated
+      Policies:
+        - PolicyName: 'CognitoAuthorizedPolicy'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: 'Allow'
+                Action:
+                  - 'cognito-identity:*'
+                Resource: '*'
+              # Allow users to upload attachments to their
+              # folder inside our S3 bucket
+              - Effect: 'Allow'
+                Action:
+                  - 's3:*'
+                Resource:
+                  - Fn::Join:
+                    - ''
+                    -
+                      - Fn::GetAtt: [PicturesBucket, Arn]
+                      - '{cognito-identity.amazonaws.com:sub}/*'
+              - Effect: 'Allow'
+                Action:
+                  - 'dynamodb:*'
+                Resource:
+                  - Fn::GetAtt: [PicturesTable, Arn]
+
+  # ServiceRole:
+  #       Type: "AWS::IAM::Role"
+  #       Properties:
+  #         RoleName: "DynamoRole"
+  #         AssumeRolePolicyDocument:
+  #           Version: "2012-10-17"
+  #           Statement:
+  #             - Effect: "Allow"
+  #               Principal:
+  #                 Service:
+  #                   - "lambda.amazonaws.com"
+  #               Action:
+  #                 - "sts:AssumeRole"
+  #         Policies:
+  #           - PolicyName: "Dynamo-ServiceRole-Policy"
+  #             PolicyDocument:
+  #               Version: "2012-10-17"
+  #               Statement:
+  #                 - Effect: "Allow"
+  #                   Action:
+  #                     - "dynamodb:Query"
+  #                     - "dynamodb:BatchWriteItem"
+  #                     - "dynamodb:GetItem"
+  #                     - "dynamodb:DeleteItem"
+  #                     - "dynamodb:PutItem"
+  #                     - "dynamodb:Scan"
+  #                     - "dynamodb:UpdateItem"
+  #                   Resource:
+  #                     - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.stage}-pictures-table"
 Outputs:
   IdentityPoolId:
     Value:

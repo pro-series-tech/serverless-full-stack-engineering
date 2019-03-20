@@ -58,7 +58,7 @@ environment:
 functions:
   graphql:
     handler: src/handler.graphqlHandler
-    role: ServiceRole
+    # role: ServiceRole
     events:
       - http:
           path: graphql
