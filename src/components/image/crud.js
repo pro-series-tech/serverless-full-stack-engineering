@@ -1,17 +1,21 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Modal, Upload, Icon, Button, Input, Rate } from 'antd';
+import { Modal, Upload, Icon, Button, Input, Rate, Progress } from 'antd';
 import ReactQuill from 'react-quill';
+import nanoid from 'nanoid';
 import { 
     switchModalVisibility
 } from 'actions/crud';
 import DataStorage from 'lib/data-storage';
+import ObjectStorage from 'lib/object-storage';
 
 import 'react-quill/dist/quill.snow.css';
 
 const initialState = {
+    uploadPercentage: 0,
     dataStorageClient: null,
+    objectStorageClient: null,
     confirmLoading: false,
     image: null,
     rating: 1,
@@ -22,7 +26,8 @@ class ImageCRUD extends Component {
     state = initialState;
     componentDidMount = () => {
         this.setState({
-            dataStorageClient: new DataStorage(this.props.credentials)
+            dataStorageClient: new DataStorage(this.props.credentials),
+            objectStorageClient: new ObjectStorage(this.props.credentials)
         });
     }
     handleOk = async () => {
@@ -30,8 +35,20 @@ class ImageCRUD extends Component {
             confirmLoading: true
         });
         try{
-            let result = await this.state.dataStorageClient.putPictureRecord(this.state);
-            console.log("result for insert", result);
+            let id = nanoid();
+            /* first we insert the picture */
+            let pResult = await this.state.objectStorageClient.putPictureFile(
+                this.state.image,
+                `${id}.png`,
+                (prg)=>{
+                    this.setState({
+                        uploadPercentage: parseInt((prg.loaded / prg.total) * 100)
+                    });
+                }
+            ); 
+            console.log("result for file insert", pResult);
+            let dResult = await this.state.dataStorageClient.putPictureRecord({...this.state, id});
+            console.log("result for insert", dResult);
             this.setState(initialState);
             this.props.switchModalVisibility(false);
         }catch(e){
@@ -47,14 +64,19 @@ class ImageCRUD extends Component {
         this.props.switchModalVisibility(false);
     }
     handleImageRead = (file) =>{
-        /* the file reader to parse the image file */
-        const reader = new FileReader();
-        /* parse the image */
-        reader.addEventListener('load', () => {
-            this.setState({ image: reader.result });
+        this.setState({
+            image: file,
         });
-        /* parse as URL data */
-        reader.readAsDataURL(file);
+        // /* the file reader to parse the image file */
+        // const reader = new FileReader();
+        // /* parse the image */
+        // reader.addEventListener('load', () => {
+        //     this.setState({ 
+        //         image: reader.result,
+        //     });
+        // });
+        // /* parse as URL data */
+        // reader.readAsDataURL(file);
         /* we want to upload manually */
         return false;
     }
@@ -112,7 +134,7 @@ class ImageCRUD extends Component {
                 <div style={styles.uploadDiv}>
                     <Upload
                         name="image"
-                        accept=".png,.jpg,.jpeg"
+                        accept=".png"
                         listType="picture"
                         className="image-uploader"
                         multiple={false}
@@ -143,7 +165,9 @@ class ImageCRUD extends Component {
                     value={this.state.description}
                     onChange={this.handleDescriptionChange} 
                     placeholder="Picture Description"
-                />    
+                /> 
+                <br/>
+                <Progress percent={this.state.uploadPercentage} />   
             </Modal>
         )
     }

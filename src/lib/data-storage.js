@@ -1,5 +1,4 @@
 import AWS from 'aws-sdk';
-import nanoid from 'nanoid';
 import { DATA_TABLE_NAME } from 'lib/types';
 import { AWS_REGION } from "lib/environment";
 
@@ -24,13 +23,13 @@ export default class DataStorage{
         /* return data items */
         return data.Items;
     }
-    putPictureRecord = ({name, description, rating})=>{
+    putPictureRecord = ({name, description, rating, id})=>{
+        console.log("id is", this.identityId);
         let params = {
             TableName: DATA_TABLE_NAME,
-
             Item: {
                 userId: this.identityId, 
-                pictureId: nanoid(),
+                pictureId: id,
                 name,
                 description,
                 rating
