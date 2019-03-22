@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Layout, Menu, Icon, Button, Input } from 'antd';
 import AvatarSection from "components/sider/avatar";
 import ImageCRUD from "components/image/crud"
+import Gallery from "components/image/gallery"
 import {
     switchModalVisibility
 } from 'actions/crud';
@@ -62,8 +63,8 @@ class Home extends Component {
                             onChange={this.handleSearch}
                         />
                     </Header>
-                    <Content style={{ margin: '0 16px' }}>
-
+                    <Content style={{ margin: '16px' }}>
+                        <Gallery/>
                     </Content>
                     <Footer style={styles.footer}>
                         some footer goes here

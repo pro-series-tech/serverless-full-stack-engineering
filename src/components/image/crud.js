@@ -4,9 +4,8 @@ import { connect } from "react-redux";
 import { Modal, Upload, Icon, Button, Input, Rate, Progress } from 'antd';
 import ReactQuill from 'react-quill';
 import nanoid from 'nanoid';
-import { 
-    switchModalVisibility
-} from 'actions/crud';
+import { switchModalVisibility} from 'actions/crud';
+import { fetchGalleryImageRecords } from 'actions/gallery';
 import DataStorage from 'lib/data-storage';
 import ObjectStorage from 'lib/object-storage';
 
@@ -14,8 +13,6 @@ import 'react-quill/dist/quill.snow.css';
 
 const initialState = {
     uploadPercentage: 0,
-    dataStorageClient: null,
-    objectStorageClient: null,
     confirmLoading: false,
     image: null,
     rating: 1,
@@ -24,20 +21,23 @@ const initialState = {
 }
 class ImageCRUD extends Component {
     state = initialState;
-    componentDidMount = () => {
-        this.setState({
+    getStorageClients = ()=>{
+        return{
             dataStorageClient: new DataStorage(this.props.credentials),
             objectStorageClient: new ObjectStorage(this.props.credentials)
-        });
-    }
+        }
+    } 
     handleOk = async () => {
         this.setState({
             confirmLoading: true
         });
         try{
+            /* get the clients with fresh credentials */
+            let { objectStorageClient, dataStorageClient}  = this.getStorageClients();
+            /* get the id */
             let id = nanoid();
             /* first we insert the picture */
-            let pResult = await this.state.objectStorageClient.putPictureFile(
+            let pResult = await objectStorageClient.putPictureFile(
                 this.state.image,
                 `${id}.png`,
                 (prg)=>{
@@ -46,9 +46,10 @@ class ImageCRUD extends Component {
                     });
                 }
             ); 
-            console.log("result for file insert", pResult);
-            let dResult = await this.state.dataStorageClient.putPictureRecord({...this.state, id});
-            console.log("result for insert", dResult);
+            let dResult = await dataStorageClient.putPictureRecord({...this.state, id});
+            /* fetch new records */
+            this.props.fetchGalleryImageRecords();
+            /* reinit the state and  switch modal visibility */
             this.setState(initialState);
             this.props.switchModalVisibility(false);
         }catch(e){
@@ -127,6 +128,9 @@ class ImageCRUD extends Component {
                 confirmLoading={this.state.confirmLoading}
                 onOk={this.handleOk}
                 onCancel={this.handleCancel}
+                cancelButtonProps={{
+                    disabled: this.state.confirmLoading
+                }}
                 okButtonProps={{
                     disabled: !this.dataIsValid()
                 }}
@@ -195,7 +199,8 @@ const mapStateToProps = (state, ownProps) => {
     };
 };
 const mapDispatchToProps = {
-    switchModalVisibility
+    switchModalVisibility,
+    fetchGalleryImageRecords
 };
 export default connect(
     mapStateToProps,

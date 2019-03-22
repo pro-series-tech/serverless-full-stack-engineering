@@ -13,9 +13,6 @@ export default class ObjectStorage {
         });
         this.identityId = credentials.identityId;
     }
-    getPictureFile = async () => {
-
-    }
     putPictureFile = (file, key, progressFunc) => {
         let upload = this.s3.upload({
             Key: `${this.identityId}/${key}`,
