@@ -1,14 +1,16 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Skeleton, Card, Icon, Button, Input, Rate } from 'antd';
+import { Card, Icon, Rate } from 'antd';
 import { PICTURE_BUCKET } from "lib/environment";
 import { fetchGalleryImageRecords} from 'actions/gallery';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const { Meta } = Card;
 
 const initialState = {
-    isLoading: true
+    loadArray: []
 }
 class Gallery extends Component {
     state = initialState;
@@ -16,6 +18,7 @@ class Gallery extends Component {
         this.props.fetchGalleryImageRecords();
     }
     renderImages = ()=>{
+        
         return this.props.records.map((record, i)=>{
             const url = `https://s3.amazonaws.com/${PICTURE_BUCKET}/${record.userId}/${record.pictureId}.png`;
             return (<Card
@@ -23,20 +26,18 @@ class Gallery extends Component {
                 hoverable
                 style={styles.card}
                 actions={[<Icon type="edit" />, <Icon type="delete" />]}
-                cover={<img alt="image" style={styles.image} src={url} />}
+                cover={<LazyLoadImage alt="image" width={'100%'} src={url} effect="blur"/>}
                 >
-                    <Skeleton loading={false} active>
-                        <Meta
-                        title={record.name}
-                        description={<div dangerouslySetInnerHTML={{ __html: record.description }} />}
-                        />
-                        <Rate
-                            style={styles.rating}
-                            character={<Icon type="heart" />}
-                            value={record.rating}
-                            disabled
-                        />
-                    </Skeleton>
+                    <Meta
+                    title={record.name}
+                    description={<div dangerouslySetInnerHTML={{ __html: record.description }} />}
+                    />
+                    <Rate
+                        style={styles.rating}
+                        character={<Icon type="heart" />}
+                        value={record.rating}
+                        disabled
+                    />
                 </Card>)
         });
     }
@@ -62,7 +63,7 @@ const styles = {
   },
     rating: {
         color: 'red'
-    },
+    }
 };
 const mapStateToProps = (state, ownProps) => {
     return {
