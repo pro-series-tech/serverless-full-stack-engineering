@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Layout, Menu, Icon, Button, Input } from 'antd';
+import { Layout, Menu, Icon, Button, Input, Affix} from 'antd';
 import AvatarSection from "components/sider/avatar";
 import ImageCRUD from "components/image/crud"
 import Gallery from "components/image/gallery"
@@ -29,13 +29,13 @@ class Home extends Component {
     }
     render() {
         return (
-            <Layout style={{ minHeight: '100vh' }}>
-                
+            <Layout style={styles.layoutContainer}>
                 <Sider
                     collapsible
                     collapsed={this.state.collapsed}
                     onCollapse={this.handleCollapse}
                 >
+                    
                     <AvatarSection/>
                     <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
                         <Menu.Item key="1">
@@ -63,12 +63,9 @@ class Home extends Component {
                             onChange={this.handleSearch}
                         />
                     </Header>
-                    <Content style={{ margin: '16px' }}>
+                    <Content style={styles.content}>
                         <Gallery/>
                     </Content>
-                    <Footer style={styles.footer}>
-                        some footer goes here
-                    </Footer>
                 </Layout>
                 <ImageCRUD />
             </Layout>
@@ -76,10 +73,18 @@ class Home extends Component {
     }
 }
 const styles = {
+    layoutContainer:{
+        minHeight: '100vh'
+    },
     header: { 
         background: 'white', 
         padding: 5,
         paddingLeft: 10
+    },
+    content:{
+        overflow: 'auto',
+        margin: '16px',
+        height: '80vh'
     },
     footer: { 
         textAlign: 'center' 
