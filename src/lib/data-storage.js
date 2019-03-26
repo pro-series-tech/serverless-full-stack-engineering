@@ -23,26 +23,27 @@ export default class DataStorage{
         /* return data items */
         return data.Items;
     }
-    putPictureRecord = ({name, description, rating, id})=>{
-        console.log("id is", this.identityId);
+    putPictureRecord = ({ name, description, rating, pictureId})=>{
         let params = {
             TableName: DATA_TABLE_NAME,
             Item: {
                 userId: this.identityId, 
-                pictureId: id,
+                pictureId,
                 name,
                 description,
                 rating
             }
         };  
-        return this.docClient.put(params).promise()
+        return this.docClient.put(params).promise().then(()=>{
+            return params.Item;
+        });
     }
-    deletePictureRecord = ({id}) =>{
+    deletePictureRecord = (pictureId) =>{
         let params = {
             TableName: DATA_TABLE_NAME,
             Key: {
                 userId: this.identityId,
-                pictureId: id
+                pictureId
             }
         };
         return this.docClient.delete(params).promise();

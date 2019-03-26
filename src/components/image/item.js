@@ -1,9 +1,10 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Card, Icon, Rate } from 'antd';
+import { Card, Icon, Rate, Popconfirm } from 'antd';
 import { PICTURE_BUCKET } from "lib/environment";
-import {  } from 'actions/gallery';
+import { deleteGalleryImageRecord } from 'actions/gallery';
+import { setImageRecord } from 'actions/crud';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 
@@ -11,10 +12,10 @@ const { Meta } = Card;
 
 class Item extends Component {
     handleEdit = ()=>{
-        alert("editing " + this.props.record.pictureId)
+        this.props.setImageRecord(this.props.record);
     }
     handleDelete = ()=>{
-        alert("deleting " + this.props.record.pictureId)
+        this.props.deleteGalleryImageRecord(this.props.record.pictureId);
     }
     render() {
         const { record, index} = this.props;
@@ -26,7 +27,15 @@ class Item extends Component {
             style={styles.card}
             actions={[
                 <Icon type="edit" onClick={this.handleEdit}/>, 
-                <Icon type="delete" onClick={this.handleDelete}/>
+                <Popconfirm
+                    placement="bottomLeft"
+                    title={`Are you sure you want to delete '${this.props.record.name}'?`}
+                    onConfirm={this.handleDelete}
+                    okText="Yes"
+                    cancelText="No"
+                >
+                    <Icon type="delete"/>
+                </Popconfirm>
             ]}
             cover={<LazyLoadImage alt="image" width={'100%'} src={url} effect="blur" />}
         >
@@ -60,7 +69,8 @@ const mapStateToProps = (state, ownProps) => {
     };
 };
 const mapDispatchToProps = {
-    
+    deleteGalleryImageRecord,
+    setImageRecord
 };
 export default connect(
     mapStateToProps,

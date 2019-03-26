@@ -5,13 +5,14 @@ import { Modal, Upload, Icon, Button, Input, Rate, Progress } from 'antd';
 import ReactQuill from 'react-quill';
 import nanoid from 'nanoid';
 import { switchModalVisibility} from 'actions/crud';
-import { fetchGalleryImageRecords } from 'actions/gallery';
+import { putImageRecord } from 'actions/gallery';
 import DataStorage from 'lib/data-storage';
 import ObjectStorage from 'lib/object-storage';
 
 import 'react-quill/dist/quill.snow.css';
 
 const initialState = {
+    userId: null,
     uploadPercentage: 0,
     confirmLoading: false,
     image: null,
@@ -21,34 +22,41 @@ const initialState = {
 }
 class ImageCRUD extends Component {
     state = initialState;
-    getStorageClients = ()=>{
-        return{
-            dataStorageClient: new DataStorage(this.props.credentials),
-            objectStorageClient: new ObjectStorage(this.props.credentials)
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.record){
+            this.setState({
+                ...nextProps.record
+            });
         }
-    } 
-    handleOk = async () => {
+    }
+    handleCreateEdit = async () => {
         this.setState({
             confirmLoading: true
         });
         try{
-            /* get the clients with fresh credentials */
-            let { objectStorageClient, dataStorageClient}  = this.getStorageClients();
-            /* get the id */
-            let id = nanoid();
-            /* first we insert the picture */
-            let pResult = await objectStorageClient.putPictureFile(
-                this.state.image,
-                `${id}.png`,
-                (prg)=>{
-                    this.setState({
-                        uploadPercentage: parseInt((prg.loaded / prg.total) * 100)
-                    });
-                }
-            ); 
-            let dResult = await dataStorageClient.putPictureRecord({...this.state, id});
-            /* fetch new records */
-            this.props.fetchGalleryImageRecords();
+            if (this.state.userId){
+                /* pass updated record */
+                this.props.putImageRecord({ 
+                    ...this.state 
+                });
+            }else{
+                /* get the id */
+                let pictureId = nanoid();
+                /* get the clients with fresh credentials */
+                let objectStorageClient = new ObjectStorage(this.props.credentials);
+                /* first we insert the picture */
+                let pResult = await objectStorageClient.putPictureFile(
+                    this.state.image,
+                    `${pictureId}.png`,
+                    (prg) => {
+                        this.setState({
+                            uploadPercentage: parseInt((prg.loaded / prg.total) * 100)
+                        });
+                    }
+                );
+                /* fetch new records */
+                this.props.putImageRecord({ ...this.state, pictureId });
+            }
             /* reinit the state and  switch modal visibility */
             this.setState(initialState);
             this.props.switchModalVisibility(false);
@@ -68,17 +76,6 @@ class ImageCRUD extends Component {
         this.setState({
             image: file,
         });
-        // /* the file reader to parse the image file */
-        // const reader = new FileReader();
-        // /* parse the image */
-        // reader.addEventListener('load', () => {
-        //     this.setState({ 
-        //         image: reader.result,
-        //     });
-        // });
-        // /* parse as URL data */
-        // reader.readAsDataURL(file);
-        /* we want to upload manually */
         return false;
     }
     handleImageRemove = () =>{
@@ -109,9 +106,11 @@ class ImageCRUD extends Component {
         return nameIsValid && descriptionIsValid && imageIsValid;
     }
     render() {
+        
+        let {image, userId, name, description, rating} = this.state
 
         let uploadButton; 
-        if(!this.state.image){
+        if (!this.state.image && !userId){
             uploadButton = (
                 <div style={styles.uploadDiv}>
                     <Button type="primary" shape="round" icon="upload" size='large'>Browser Picture</Button>
@@ -121,18 +120,18 @@ class ImageCRUD extends Component {
         return (
             <Modal
                 centered={true}
-                okText="Create"
+                okText={userId?'Edit':'Create'}
                 cancelText="Cancel"
-                visible={this.props.visible}
+                visible={this.props.visible || userId != null}
                 destroyOnClose={true}
                 confirmLoading={this.state.confirmLoading}
-                onOk={this.handleOk}
+                onOk={this.handleCreateEdit}
                 onCancel={this.handleCancel}
                 cancelButtonProps={{
                     disabled: this.state.confirmLoading
                 }}
                 okButtonProps={{
-                    disabled: !this.dataIsValid()
+                    disabled: !this.dataIsValid() && !userId
                 }}
             >
                 <div style={styles.uploadDiv}>
@@ -144,7 +143,7 @@ class ImageCRUD extends Component {
                         multiple={false}
                         beforeUpload={this.handleImageRead}
                         onRemove={this.handleImageRemove}
-                        disabled={this.state.image != null}
+                        disabled={image !== null && image !== undefined}
                     >
                         {uploadButton}
                     </Upload>
@@ -154,19 +153,19 @@ class ImageCRUD extends Component {
                     tooltips={['bad', 'ok', 'good', 'excellent', 'outstanding']}
                     onChange={this.handleRateChange}
                     character={<Icon type="heart" />}
-                    value={this.state.rating}
+                    value={rating}
                 />
                  <br/>
                 <Input
                     style={styles.name}
-                    value={this.state.name}
+                    value={name}
                     prefix={<Icon type="picture" />}
                     onChange={this.handleNameChange}
                     placeholder="Picture Name"
                 />
                 <br/>
                 <ReactQuill
-                    value={this.state.description}
+                    value={description}
                     onChange={this.handleDescriptionChange} 
                     placeholder="Picture Description"
                 /> 
@@ -199,8 +198,8 @@ const mapStateToProps = (state, ownProps) => {
     };
 };
 const mapDispatchToProps = {
-    switchModalVisibility,
-    fetchGalleryImageRecords
+    putImageRecord,
+    switchModalVisibility
 };
 export default connect(
     mapStateToProps,

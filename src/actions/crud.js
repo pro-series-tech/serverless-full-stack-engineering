@@ -8,6 +8,10 @@ export const switchModalVisibility = (show) => dispatch => {
         type: CRUD_SWITCH_MODAL_VISIBILITY,
         payload: show
     });
+    dispatch({
+        type: CRUD_SET_IMAGE_RECORD,
+        payload: null
+    });
 };
 export const setImageRecord = (record) => dispatch => {
     dispatch({

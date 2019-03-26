@@ -16,7 +16,7 @@ class Gallery extends Component {
     }
     render() {
         const items = this.props.records.map((record, i) => {
-            return <Item index={i} record={record} />
+            return <Item key={i} record={record} />
         });
         return (
             <div style={styles.container}>
