@@ -13,7 +13,7 @@ const {
 } = Layout;
 class Home extends Component {
     state = {
-        collapsed: false,
+        collapsed: true,
         searchText: ""
     };
     handleCollapse = (collapsed) => {
@@ -37,16 +37,6 @@ class Home extends Component {
                 >
                     
                     <AvatarSection/>
-                    <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-                        <Menu.Item key="1">
-                            <Icon type="picture" />
-                            <span>Gallery</span>
-                        </Menu.Item>
-                        <Menu.Item key="2">
-                            <Icon type="profile" />
-                            <span>Profile</span>
-                        </Menu.Item>
-                    </Menu>
                 </Sider>
                 <Layout>
                     <Header style={styles.header}>
@@ -64,7 +54,7 @@ class Home extends Component {
                         />
                     </Header>
                     <Content style={styles.content}>
-                        <Gallery/>
+                        <Gallery searchText={this.state.searchText}/>
                     </Content>
                 </Layout>
                 <ImageCRUD />

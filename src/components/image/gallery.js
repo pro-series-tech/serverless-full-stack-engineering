@@ -11,11 +11,22 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 const { Meta } = Card;
 
 class Gallery extends Component {
-    componentWillMount = async()=>{
+    componentDidMount = async()=>{
         this.props.fetchGalleryImageRecords();
     }
     render() {
-        const items = this.props.records.map((record, i) => {
+
+        let { records, index, searchText } = this.props;
+        /* if there is something to search */
+        if (searchText){
+            /* build the wildcard filter */
+            let filter = `*${searchText}*`;
+            let matches = index.search(filter).map((m) =>m.ref);
+            let set = new Set(matches);
+            records = records.filter((r) => set.has(r.pictureId));
+        }
+
+        const items = records.map((record, i) => {
             return <Item key={i} record={record} />
         });
         return (
@@ -35,8 +46,10 @@ const styles = {
 };
 const mapStateToProps = (state, ownProps) => {
     return {
+        searchText: ownProps.searchText,
         credentials: state.authentication.credentials,
-        records: state.gallery.records
+        records: state.gallery.records,
+        index: state.gallery.index
     };
 };
 const mapDispatchToProps = {

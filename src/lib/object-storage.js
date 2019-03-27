@@ -24,7 +24,7 @@ export default class ObjectStorage {
         }
         return upload.promise();
     }
-    deletePictureFile = ({ id }) => {
-
+    putAvatarPictureFile = (file) => {
+        return this.putPictureFile(file, 'avatar.png');
     }
 }
