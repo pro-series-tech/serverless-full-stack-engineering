@@ -48,7 +48,9 @@ class Landing extends Component {
 const styles = {
     logo:{
         width: 150,
-        marginBottom: 15
+        marginBottom: 15,
+        pointerEvents: 'none',
+        userSelect: 'none'
     },
     row:{
         height: "100%"
