@@ -7,7 +7,8 @@ module.exports = (config, env) => {
             actions: path.resolve(__dirname, 'src/actions/'),
             components: path.resolve(__dirname, 'src/components/'),
             lib: path.resolve(__dirname, 'src/lib/'),
-            reducers: path.resolve(__dirname, 'src/reducers/')
+            reducers: path.resolve(__dirname, 'src/reducers/'),
+            media: path.resolve(__dirname, 'src/media/')
         }
     };
     return config;

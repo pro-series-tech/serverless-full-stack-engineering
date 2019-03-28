@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { SignIn, SignUp, ForgotPwd, ConfirmAccount } from "components/authentication";
 import { Row, Col, Spin } from 'antd';
+import logoSrc from 'media/logo.svg';
 import {
     NAVIGATION_AUTHENTICATION_SIGN_IN,
     NAVIGATION_AUTHENTICATION_SIGN_UP,
@@ -34,6 +35,7 @@ class Landing extends Component {
                 <Col xs={2} sm={4} md={6} lg={9} xl={9}></Col>
                 <Col xs={20} sm={16} md={12} lg={6} xl={6} style={styles.col}>
                     <Spin spinning={this.state.loading}>
+                        <img style={styles.logo} src={logoSrc} alt="logo"/>
                         {this.determineAuthForm()}
                     </Spin>
                 </Col>
@@ -44,6 +46,10 @@ class Landing extends Component {
 }
 
 const styles = {
+    logo:{
+        width: 150,
+        marginBottom: 15
+    },
     row:{
         height: "100%"
     },

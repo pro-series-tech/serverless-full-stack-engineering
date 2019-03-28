@@ -11,12 +11,12 @@ import {
 
 class ConfirmAccount extends Component {
 	resendConfirmationCode = async () =>{
-		let result = await this.props.resendConfirmation(this.props.username);
-		let msg = `Confirmation code send to ${result.CodeDeliveryDetails.Destination}`;
-		console.log(result)
+		let error = await this.props.resendConfirmation(this.props.username);
+		let msg = `Confirmation code send! please check your email.`;
+
 		this.props.form.setFields({
 			code: {
-				errors: [new Error(msg)]
+				errors: [new Error(error || msg)]
 			}
 		});
 	}
@@ -25,7 +25,16 @@ class ConfirmAccount extends Component {
 		form.validateFields(async (err, values) => {
 			if (!err) {
 				let error = await this.props.confirmRegistration(this.props.username, values.code);
-				console.log("Errro is", error);
+				if(error){
+					this.props.form.setFields({
+						code: {
+							value: values.code,
+							errors: [new Error(error)]
+						}
+					});
+				}else{
+					this.props.switchAuthenticationForm(NAVIGATION_AUTHENTICATION_SIGN_IN);
+				}
 			}
 		});
 	}

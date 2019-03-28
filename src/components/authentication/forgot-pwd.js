@@ -26,7 +26,7 @@ class ForgotPwd extends Component {
 		this.setState({ confirmDirty: this.state.confirmDirty || !!value });
 	}
 	validateToNextPassword = (rule, value, callback) => {
-		const form = this.props.form;
+		const {form} = this.props;
 		if (value && this.state.confirmDirty) {
 			form.validateFields(['confirm'], { force: true });
 		}
@@ -37,7 +37,7 @@ class ForgotPwd extends Component {
 		}
 	}
 	compareToFirstPassword = (rule, value, callback) => {
-		const form = this.props.form;
+		const { form } = this.props;
 		if (value && value !== form.getFieldValue('password')) {
 			callback('Two passwords that you enter is inconsistent!');
 		} else {
@@ -47,19 +47,53 @@ class ForgotPwd extends Component {
 	sendCodeRequest = async () =>{
 		/* switch on loading spin on parent component */
 		this.props.switchLoading(true);
-		const form = this.props.form;
+		const { form } = this.props;
 		form.validateFields(async (err, values) => {
 			if (!err) {
-				let username = form.getFieldValue('username');
-				let result = await this.props.forgotPassword(username);
-				console.log("result is", result);
+				let username = form.getFieldValue('userName');
+				let error = await this.props.forgotPassword(username);
+				if(error){
+					this.props.form.setFields({
+						userName: {
+							value: values.userName,
+							errors: [new Error(error)]
+						}
+					});
+				} else {
+					this.setState({
+						currentUsername: username,
+						workflowStep: CODE_REQUEST_SEND
+					});
+				}
 			}
 			/* dissable loading */
 			this.props.switchLoading(false);
 		});
 	}
 	confirmPassword = () =>{
-		/* TODO: implement confirm password body */
+		/* switch on loading spin on parent component */
+		this.props.switchLoading(true);
+		const { form } = this.props;
+		form.validateFields(async (err, values) => {
+			if (!err) {
+				let username = this.state.currentUsername;
+				let password = form.getFieldValue('password');
+				let code = form.getFieldValue('codeNumber');
+				let error = await this.props.confirmPassword(username, code, password);
+				if (error) {
+					this.props.form.setFields({
+						codeNumber: {
+							value: values.codeNumber,
+							errors: [new Error(error)]
+						}
+					});
+				} else {
+					this.props.switchAuthenticationForm(NAVIGATION_AUTHENTICATION_SIGN_IN);
+				}
+			}
+			/* dissable loading */
+			this.props.switchLoading(false);
+		});
 	}
 	renderGoToSignInLink = () =>{
 		return (<Form.Item>
@@ -74,7 +108,7 @@ class ForgotPwd extends Component {
 		return (
 			<Form >
 				<Form.Item>
-					{getFieldDecorator('username', {
+					{getFieldDecorator('userName', {
 						rules: [{ required: true, message: 'Please input your username!' }],
 					})(
 						<Input prefix={<Icon type="user" style={styles.field} />} placeholder="Username" />
@@ -89,14 +123,12 @@ class ForgotPwd extends Component {
 			</Form>
 		)
 	}
-	renderCodeRequestSend = () => {
+	renderChangePassword = () => {
 		const { getFieldDecorator } = this.props.form;
 		return (
 			<Form >
 				<Form.Item>
-					{getFieldDecorator('userName', {})(
-						<Input enable prefix={<Icon type="user" style={styles.field} />} disabled={true} defaultValue={this.state.currentUsername}/>
-					)}
+					<Input prefix={<Icon type="user" style={styles.field} />} disabled value={this.state.currentUsername}/>
 				</Form.Item>
 				<Form.Item>
 					{getFieldDecorator('password', {
@@ -122,8 +154,15 @@ class ForgotPwd extends Component {
 					)}
 				</Form.Item>
 				<Form.Item>
+					{getFieldDecorator('codeNumber', {
+						rules: [{ required: true, message: 'Please enter code number send to your email!' }],
+					})(
+						<Input prefix={<Icon type="number" style={styles.field} />} placeholder="Code" />
+					)}
+				</Form.Item>
+				<Form.Item>
 					<Button type="primary" onClick={this.confirmPassword} className="login-form-button">
-						Change Password
+						Confirm Password
 					</Button>
 				</Form.Item>
 				{this.renderGoToSignInLink()}
@@ -135,7 +174,7 @@ class ForgotPwd extends Component {
 			case CODE_REQUEST_NOT_YET_SEND:
 				return this.renderCodeRequestNotYetSendForm();
 			case CODE_REQUEST_SEND:
-				return this.renderCodeRequestSend();
+				return this.renderChangePassword();
 		}
 	}
 }

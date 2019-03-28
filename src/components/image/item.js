@@ -55,7 +55,7 @@ class Item extends Component {
 const styles = {
     card: {
         margin: 3,
-        width: 200,
+        width: 250,
         heigth: 100
     },
     rating: {

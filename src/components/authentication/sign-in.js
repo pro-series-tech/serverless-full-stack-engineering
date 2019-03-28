@@ -23,10 +23,10 @@ class SignIn extends Component {
 				/* if there was an error, and is type is not confirmed */
 				if (error){
 					this.evaluateSignInResult(error, values);
-					/* dissable loading */
-					this.props.switchLoading(false);
 				}
 			}
+			/* dissable loading */
+			this.props.switchLoading(false);
 		});
 	}
 	evaluateSignInResult = (error, values) =>{
@@ -37,16 +37,16 @@ class SignIn extends Component {
 				break;
 			default:
 				this.props.form.setFields({
-					userName: {
-						value: values.userName,
+					password: {
+						value: values.password,
 						errors: [new Error(error)]
 					}
 				});
 		}
 	}
 	render(){
-
 		const { getFieldDecorator } = this.props.form;
+
 		return (
 			<Form onSubmit={this.handleSubmit} >
 				<Form.Item>
@@ -62,6 +62,8 @@ class SignIn extends Component {
 					})(
 						<Input prefix={<Icon type="lock" style={styles.field} />} type="password" placeholder="Password" />
 					)}
+				</Form.Item>
+				<Form.Item>
 					<a onClick={() => {
 						this.props.switchAuthenticationForm(NAVIGATION_AUTHENTICATION_FORGOT_PASSWORD);
 					}}>Forgot Password</a>
@@ -71,13 +73,6 @@ class SignIn extends Component {
 					<Button type="primary" htmlType="submit" className="login-form-button">
 						Sign In
          			 </Button>
-					<br />
-					{getFieldDecorator('remember', {
-						valuePropName: 'checked',
-						initialValue: true,
-					})(
-						<Checkbox>Remember Me</Checkbox>
-					)}
 					<hr/>
 					<a onClick={()=>{
 						this.props.switchAuthenticationForm(NAVIGATION_AUTHENTICATION_SIGN_UP);

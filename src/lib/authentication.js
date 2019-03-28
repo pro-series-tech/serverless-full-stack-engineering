@@ -35,6 +35,8 @@ export default class Authentication {
 				[loginUrl]: token
 			}
 		});
+		/* clear cached credentials first */
+		credentials.clearCachedId();
 		/* get all user credentials */
 		await credentials.getPromise();
 		/* return async credentials */
@@ -124,9 +126,8 @@ export default class Authentication {
 	/**
 	 * Sign out user and clears all tokens
 	 */
-	signOut = () => {
+	signOut = (credentials) => {
 		return new Promise((resolve, reject) => {
-			console.log(" here");
 			/* get cached user */
 			let cognitoUser = userPool.getCurrentUser();
 			if (cognitoUser != null) {

@@ -1,4 +1,5 @@
 import {
+    AUTHENTICATION_SIGN_OUT,
     GALLERY_SET_IMAGE_RECORDS
 } from "lib/types";
 
@@ -28,6 +29,8 @@ export default (state = initialState, action) => {
                 records: action.payload,
                 index: buildIndex(action.payload)
             }
+        case AUTHENTICATION_SIGN_OUT:
+            return initialState;
         default:
             return state
     }

@@ -1,21 +1,22 @@
-import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Layout, Menu, Icon, Button, Input, Affix} from 'antd';
-import AvatarSection from "components/sider/avatar";
-import ImageCRUD from "components/image/crud"
+import React, { Component } from "react";
+import { Button, Layout, Input, Menu, Icon, Affix} from 'antd';
 import Gallery from "components/image/gallery"
-import {
-    switchModalVisibility
-} from 'actions/crud';
+import ImageCRUD from "components/image/crud"
+import AvatarSection from "components/sider/avatar";
+import { switchModalVisibility } from 'actions/crud';
 
 const {
     Header, Content, Footer, Sider,
 } = Layout;
+
+const initialState = {
+    collapsed: true,
+    searchText: ""
+};
+
 class Home extends Component {
-    state = {
-        collapsed: true,
-        searchText: ""
-    };
+    state = initialState;
     handleCollapse = (collapsed) => {
         this.setState({ collapsed });
     }
@@ -35,17 +36,17 @@ class Home extends Component {
                     collapsed={this.state.collapsed}
                     onCollapse={this.handleCollapse}
                 >
-                    
                     <AvatarSection/>
                 </Sider>
                 <Layout>
                     <Header style={styles.header}>
-                        <Button 
-                            type="primary" 
-                            shape="circle" 
-                            size="large" 
-                            icon="plus" 
+                        <Button
+                            type="primary"
+                            shape="circle"
+                            size="large"
+                            icon="plus"
                             onClick={this.handleAdd}
+                            style={styles.addButton}
                         />
                         <Input.Search
                             style={styles.search}
@@ -67,24 +68,23 @@ const styles = {
         minHeight: '100vh'
     },
     header: { 
+        display: 'flex',
         background: 'white', 
-        padding: 5,
-        paddingLeft: 10
+        paddingLeft: 10,
+        height: 50,
+        padding: 5
     },
     content:{
         overflow: 'auto',
         margin: '16px',
         height: '80vh'
     },
-    footer: { 
-        textAlign: 'center' 
+    addButton:{
+        minWidth: 40
     },
     search: {
         paddingLeft: 20,
         width: 300 
-    },
-    col: {
-        textAlign: "center"
     }
 };
 
