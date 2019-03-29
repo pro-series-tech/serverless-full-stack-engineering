@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { signOut } from "actions/authentication";
-import { Popconfirm, Icon, Avatar, Upload } from 'antd';
+import { Popconfirm, Icon, Avatar, Upload, notification } from 'antd';
 import { PICTURE_BUCKET } from "lib/environment";
 import ObjectStorage from 'lib/object-storage'
 
@@ -26,6 +26,11 @@ class AvatarSection extends Component {
     }
     confirmSignOut = (e) => {
         this.props.signOut();
+        /* show removal notification */
+        notification.info({
+            message: 'Signed out Successfully',
+            description: `You have been successfully signed out.`
+        });
     }
     render() {
         const { identityId } = this.props.credentials;

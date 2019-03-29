@@ -8,7 +8,7 @@ import {
 	NAVIGATION_AUTHENTICATION_CONFIRM_ACCOUNT
 } from "lib/types";
 import {
-	Form, Icon, Input, Button, Checkbox,
+	Form, Icon, Input, Button, Checkbox
 } from 'antd';
 
 class SignIn extends Component {

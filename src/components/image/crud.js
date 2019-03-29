@@ -1,7 +1,7 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Modal, Upload, Icon, Button, Input, Rate, Progress } from 'antd';
+import { Modal, Upload, Icon, Button, Input, Rate, Progress, notification } from 'antd';
 import ReactQuill from 'react-quill';
 import nanoid from 'nanoid';
 import { switchModalVisibility} from 'actions/crud';
@@ -12,13 +12,13 @@ import ObjectStorage from 'lib/object-storage';
 import 'react-quill/dist/quill.snow.css';
 
 const initialState = {
-    userId: null,
-    uploadPercentage: 0,
-    confirmLoading: false,
+    name: '',
     image: null,
     rating: 1,
-    name: '',
-    description: ''
+    userId: null,
+    description: '',
+    confirmLoading: false,
+    uploadPercentage: 0
 }
 class ImageCRUD extends Component {
     state = initialState;
@@ -59,13 +59,22 @@ class ImageCRUD extends Component {
             }
             /* reinit the state and  switch modal visibility */
             this.setState(initialState);
+            /* show success notification */
+            notification.success({
+                message: 'Picture Saved Successfully',
+                description: `Picture '${this.state.name}' was successfully saved.`
+            });
+            /* switch modal visibility off */
             this.props.switchModalVisibility(false);
         }catch(e){
             this.setState({
                 confirmLoading: false
             });
-            /*TODO: set failure alert here */
-            console.log("ERROR occured while persisting",e);
+            /* show notification for error */
+            notification.error({
+                message: 'Error Saving Picture',
+                description: e.message
+            });
         }
     }
     handleCancel = () => {

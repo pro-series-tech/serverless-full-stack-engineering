@@ -1,7 +1,7 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Card, Icon, Rate, Popconfirm } from 'antd';
+import { Card, Icon, Rate, Popconfirm, notification } from 'antd';
 import { PICTURE_BUCKET } from "lib/environment";
 import { deleteGalleryImageRecord } from 'actions/gallery';
 import { setImageRecord } from 'actions/crud';
@@ -15,7 +15,20 @@ class Item extends Component {
         this.props.setImageRecord(this.props.record);
     }
     handleDelete = ()=>{
-        this.props.deleteGalleryImageRecord(this.props.record.pictureId);
+        try{
+            this.props.deleteGalleryImageRecord(this.props.record.pictureId);
+            /* show removal notification */
+            notification.info({
+                message: 'Picture Successfully Removed',
+                description: `Picture '${this.props.record.name}' was successfully removed.`
+            });
+        }catch(e){
+            /* show notification for error */
+            notification.error({
+                message: 'Error Removing Picture',
+                description: e.message
+            });
+        }
     }
     render() {
         const { record, index} = this.props;

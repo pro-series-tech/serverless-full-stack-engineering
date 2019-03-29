@@ -28,7 +28,7 @@ export const putImageRecord = (newRecord) => async (dispatch, getState) => {
 
     dispatch({
         type: GALLERY_SET_IMAGE_RECORDS,
-        payload: [...records, result]
+        payload: [result, ...records]
     });
     dispatch({
         type: CRUD_SET_IMAGE_RECORD,
