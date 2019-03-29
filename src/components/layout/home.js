@@ -11,7 +11,7 @@ const {
 } = Layout;
 
 const initialState = {
-    collapsed: true,
+    collapsed: false,
     searchText: ""
 };
 
@@ -69,7 +69,6 @@ const styles = {
     },
     header: { 
         display: 'flex',
-        background: 'white', 
         paddingLeft: 10,
         height: 50,
         padding: 5
