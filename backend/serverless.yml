@@ -25,16 +25,14 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - s3:*
-        - dynamodb:*
+        - s3:DeleteObject
       Resource:
-        - Fn::GetAtt:
-            - PicturesTable
-            - Arn
-        - Fn::GetAtt:
-            - PicturesBucket
-            - Arn
-
+         - Fn::Join:
+           - ""
+           - 
+            - "arn:aws:s3:::"
+            - Ref: PicturesBucket
+            - "/*"
 plugins:
   - serverless-stack-output
   - serverless-webpack

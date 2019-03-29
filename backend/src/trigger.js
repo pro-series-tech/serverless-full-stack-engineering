@@ -10,7 +10,7 @@ exports.handler = (event, context, callback) => {
         // TODO: remove picture here
         const { pictureId, userId } = dynamodb.Keys;
         const { PICTURE_BUCKET } = process.env;
-        const key = `${userId}/${pictureId}.png`; 
+        const key = `${userId.S}/${pictureId.S}.png`; 
         /* create the  S3 object */
         const s3 = new AWS.S3({
             apiVersion: '2006-03-01'
@@ -19,6 +19,7 @@ exports.handler = (event, context, callback) => {
             Bucket: PICTURE_BUCKET,
             Key: key
         };
+        console.log("deleting object", key);
         /* delete the image */
         s3.deleteObject(params, (err, data) => {
             if(err){
