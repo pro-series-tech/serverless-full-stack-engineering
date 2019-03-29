@@ -69,8 +69,10 @@ const styles = {
     },
     header: { 
         display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'left',
         paddingLeft: 10,
-        height: 50,
+        height: 70,
         padding: 5
     },
     content:{
