@@ -22,6 +22,18 @@ provider:
   stage: ${opt:stage, 'dev'}
   runtime: nodejs8.10
   region: us-east-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:*
+        - dynamodb:*
+      Resource:
+        - Fn::GetAtt:
+            - PicturesTable
+            - Arn
+        - Fn::GetAtt:
+            - PicturesBucket
+            - Arn
 
 plugins:
   - serverless-stack-output
@@ -30,7 +42,7 @@ plugins:
 
 custom:
   output:
-    handler: ./scripts/config.handler # Same syntax as you already know
+    handler: scripts/config.handler # Same syntax as you already know
   capacities:
     - table: PicturesTable  # DynamoDB Resource
       read:
@@ -41,10 +53,6 @@ custom:
         minimum: 1       # Minimum write capacity
         maximum: 10      # Maximum write capacity
         usage: 0.5        # Targeted usage percentage
-# you can define service wide environment variables here
-environment:
-  PICTURE_TABLE:
-    Fn::GetAtt: [ "PicturesTable", "Properties", "TableName"]
 
 # you can add packaging information here
 #package:
@@ -55,15 +63,20 @@ environment:
 #    - exclude-me.js
 #    - exclude-me-dir/**
 
-functions:
-  graphql:
-    handler: src/handler.graphqlHandler
-    # role: ServiceRole
-    events:
-      - http:
-          path: graphql
-          method: post
-          cors: true
+functions: 
+    dynamodb-trigger:
+      handler: src/trigger.handler 
+      events:
+        - stream:
+            type: dynamodb
+            batchSize: 1
+            startingPosition: LATEST
+            arn:
+              Fn::GetAtt:
+                - PicturesTable
+                - StreamArn
+      environment: 
+        PICTURE_BUCKET: ${self:provider.stage}-pictures
             
 
 # you can add CloudFormation resource templates here
