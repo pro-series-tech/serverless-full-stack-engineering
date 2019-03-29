@@ -28,7 +28,7 @@ class AvatarSection extends Component {
         this.props.signOut();
         /* show removal notification */
         notification.info({
-            message: 'Signed out Successfully',
+            message: 'Signed Out Successfully',
             description: `You have been successfully signed out.`
         });
     }

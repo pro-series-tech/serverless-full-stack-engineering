@@ -1,13 +1,13 @@
 import {
-    AUTHENTICATION_SET_USERNAME,
     AUTHENTICATION_SIGN_IN,
     AUTHENTICATION_SIGN_UP,
     AUTHENTICATION_SIGN_OUT,
     AUTHENTICATION_RESEND_CODE,
+    AUTHENTICATION_SET_USERNAME,
     AUTHENTICATION_CHANGE_PASSWORD,
-    AUTHENTICATION_CONFIRM_REGISTRATION,
     AUTHENTICATION_FORGOT_PASSWORD,
     AUTHENTICATION_CONFIRM_PASSWORD,
+    AUTHENTICATION_CONFIRM_REGISTRATION,
     NAVIGATION_AUTHENTICATION_SWITCH_FORM,
     NAVIGATION_AUTHENTICATION_CONFIRM_ACCOUNT
 } from "lib/types";
@@ -15,9 +15,6 @@ import {
 import Authentication from "lib/authentication";
 /* instantiate authentication object */
 const auth = new Authentication();
-auth.getCachedUser();
-
-/** */
 const authHelper = async (dispatch, actionType, authFunc, authParams)=>{
     try{
         let result = await authFunc(...authParams);
