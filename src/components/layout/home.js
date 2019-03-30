@@ -71,8 +71,6 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'left',
-        paddingLeft: 10,
-        height: 70,
         padding: 5
     },
     content:{

@@ -10,6 +10,10 @@ const buildIndex = (records = [])=>{
         this.ref('pictureId');
         this.field('name');
         this.field('description');
+        /* remove the stemmer and stop words filter */
+        this.pipeline.remove(lunr.stemmer);
+        this.pipeline.remove(lunr.stopWordFilter);
+        /* add records to the index */
         records.forEach((r) => {
             this.add(r);
         });

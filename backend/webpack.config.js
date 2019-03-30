@@ -11,6 +11,7 @@ module.exports = {
   externals: [
     nodeExternals(),
     {
+      "imagemagick": "imagemagick",
       "aws-sdk": "aws-sdk"
     }
   ],

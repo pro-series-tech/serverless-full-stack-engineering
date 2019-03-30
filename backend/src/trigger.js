@@ -12,9 +12,7 @@ exports.handler = (event, context, callback) => {
         const { PICTURE_BUCKET } = process.env;
         const key = `${userId.S}/${pictureId.S}.png`; 
         /* create the  S3 object */
-        const s3 = new AWS.S3({
-            apiVersion: '2006-03-01'
-        });
+        const s3 = new AWS.S3({apiVersion: '2006-03-01'});
         const params = {
             Bucket: PICTURE_BUCKET,
             Key: key

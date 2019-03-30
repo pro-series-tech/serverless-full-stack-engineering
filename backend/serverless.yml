@@ -15,7 +15,7 @@ service: pro-series-serverless # NOTE: update this with your service name
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
-# frameworkVersion: "=X.X.X"
+frameworkVersion: "=1.38.0"
 
 provider:
   name: aws
@@ -26,6 +26,7 @@ provider:
     - Effect: Allow
       Action:
         - s3:DeleteObject
+        - s3:GetObject
       Resource:
          - Fn::Join:
            - ""
@@ -35,7 +36,7 @@ provider:
             - "/*"
 plugins:
   - serverless-stack-output
-  - serverless-webpack
+  #- serverless-webpack
   - serverless-dynamodb-autoscaling
 
 custom:
@@ -53,16 +54,16 @@ custom:
         usage: 0.5        # Targeted usage percentage
 
 # you can add packaging information here
-#package:
-#  include:
-#    - include-me.js
-#    - include-me-dir/**
+# package:
+#   include:
+#      - src/test.jpg
 #  exclude:
 #    - exclude-me.js
 #    - exclude-me-dir/**
 
 functions: 
     dynamodb-trigger:
+      name: trigger
       handler: src/trigger.handler 
       events:
         - stream:
@@ -75,8 +76,17 @@ functions:
                 - StreamArn
       environment: 
         PICTURE_BUCKET: ${self:provider.stage}-pictures
-            
-
+    image-analysis:
+      name: analysis
+      handler: src/image.handler
+      events:
+        - http:
+            path: image/analysis
+            method: post     
+            cors: true       
+      environment: 
+        PICTURE_BUCKET: ${self:provider.stage}-pictures
+        
 # you can add CloudFormation resource templates here
 resources:
     - ${file(resources/security.yml)}

@@ -21,6 +21,7 @@ class Gallery extends Component {
         if (searchText){
             /* build the wildcard filter */
             let filter = `*${searchText}*`;
+            console.log(filter);
             let matches = index.search(filter).map((m) =>m.ref);
             let set = new Set(matches);
             records = records.filter((r) => set.has(r.pictureId));
