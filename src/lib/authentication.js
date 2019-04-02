@@ -186,9 +186,9 @@ export default class Authentication {
 				onSuccess: (result) => {
 					/* resolve authentication credentials */
 					resolve(result);
-				},
+				}, 
 				onFailure: (err) => {
-					reject(err);
+					reject(err); 
 				}
 			});
 		});
