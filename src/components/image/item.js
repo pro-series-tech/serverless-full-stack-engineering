@@ -1,8 +1,8 @@
 
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Card, Icon, Rate, Popconfirm, notification, Popover } from 'antd';
-import { PICTURE_BUCKET, API_ENDPOINT } from "lib/environment";
+import { PICTURE_BUCKET, API_ENDPOINT } from 'lib/environment';
 import { deleteGalleryImageRecord } from 'actions/gallery';
 import { setImageRecord } from 'actions/crud';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
@@ -11,7 +11,7 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 const { Meta } = Card;
 
 const initialState = {
-    info: ""
+    info: ''
 };
 
 class Item extends Component {
@@ -26,7 +26,7 @@ class Item extends Component {
         const key = `${record.userId}/${record.pictureId}.png`
         /* request the information to AWS lambda */
         const response = await fetch(url, {
-            method: "POST",
+            method: 'POST',
             body: JSON.stringify({ key })
         });
         /* parse the response */
@@ -69,21 +69,21 @@ class Item extends Component {
             hoverable
             style={styles.card}
             actions={[
-                <Icon type="edit" onClick={this.handleEdit}/>, 
-                <Popover content={this.state.info} title="Info" onMouseEnter={this.handleInfo} trigger="hover">
-                    <Icon type="info-circle" />
+                <Icon type='edit' onClick={this.handleEdit}/>, 
+                <Popover content={this.state.info} title='Info' onMouseEnter={this.handleInfo} trigger='hover'>
+                    <Icon type='info-circle' />
                 </Popover>, 
                 <Popconfirm
-                    placement="bottomLeft"
+                    placement='bottomLeft'
                     title={`Are you sure you want to delete '${this.props.record.name}'?`}
                     onConfirm={this.handleDelete}
-                    okText="Yes"
-                    cancelText="No"
+                    okText='Yes'
+                    cancelText='No'
                 >
-                    <Icon type="delete"/>
+                    <Icon type='delete'/>
                 </Popconfirm>
             ]}
-            cover={<LazyLoadImage alt="image" width={'100%'} src={url} effect="blur" />}
+            cover={<LazyLoadImage alt='image' width={'100%'} src={url} effect='blur' />}
         >
             <Meta
                 title={record.name}
@@ -91,7 +91,7 @@ class Item extends Component {
             />
             <Rate
                 style={styles.rating}
-                character={<Icon type="heart" />}
+                character={<Icon type='heart' />}
                 value={record.rating}
                 disabled
             />

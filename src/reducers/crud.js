@@ -1,7 +1,7 @@
 import { 
     CRUD_SWITCH_MODAL_VISIBILITY,
     CRUD_SET_IMAGE_RECORD
-} from "lib/types";
+} from 'lib/types';
 
 const initialState = {
     imageRecord: null,

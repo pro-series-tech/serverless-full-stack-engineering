@@ -1,9 +1,9 @@
 
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Card, Icon, Rate } from 'antd';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { PICTURE_BUCKET } from "lib/environment";
+import { PICTURE_BUCKET } from 'lib/environment';
 import { fetchGalleryImageRecords} from 'actions/gallery';
 import Item from 'components/image/item';
 import 'react-lazy-load-image-component/src/effects/blur.css';

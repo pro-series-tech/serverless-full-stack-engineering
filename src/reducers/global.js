@@ -2,7 +2,7 @@ import {
     NAVIGATION_AUTHENTICATION_SIGN_IN,
     NAVIGATION_AUTHENTICATION_FORGOT_PASSWORD,
     NAVIGATION_AUTHENTICATION_SWITCH_FORM
-} from "lib/types";
+} from 'lib/types';
 
 const initialState = {
     authenticationForm: NAVIGATION_AUTHENTICATION_SIGN_IN,

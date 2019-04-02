@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { signUp} from "actions/authentication";
-import { switchAuthenticationForm } from "actions/global";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { signUp} from 'actions/authentication';
+import { switchAuthenticationForm } from 'actions/global';
 import {
 	Form, Icon, Input, Button, Checkbox,
 } from 'antd';
@@ -69,7 +69,7 @@ class SignUp extends Component {
 					{getFieldDecorator('userName', {
 						rules: [{ required: true, message: 'Please input your username!' }],
 					})(
-						<Input prefix={<Icon type="user" style={styles.field} />} placeholder="Username" />
+						<Input prefix={<Icon type='user' style={styles.field} />} placeholder='Username' />
 					)}
 				</Form.Item>
 				<Form.Item>
@@ -80,7 +80,7 @@ class SignUp extends Component {
 							required: true, message: 'Please input your E-mail!',
 						}],
 					})(
-						<Input prefix={<Icon type="mail" style={styles.field} />} placeholder="Email" />
+						<Input prefix={<Icon type='mail' style={styles.field} />} placeholder='Email' />
 					)}
 				</Form.Item>
 				<Form.Item>
@@ -90,7 +90,7 @@ class SignUp extends Component {
 								validator: this.validateToNextPassword,
 						}
 					]})(
-						<Input prefix={<Icon type="lock" style={styles.field} />} type="password" placeholder="Password" />
+						<Input prefix={<Icon type='lock' style={styles.field} />} type='password' placeholder='Password' />
 					)}
 				</Form.Item>
 				<Form.Item>
@@ -101,11 +101,11 @@ class SignUp extends Component {
 							validator: this.compareToFirstPassword,
 						}],
 					})(
-						<Input prefix={<Icon type="lock" style={styles.field} />} type="password" placeholder="Confirm Password" onBlur={this.handleConfirmBlur} />
+						<Input prefix={<Icon type='lock' style={styles.field} />} type='password' placeholder='Confirm Password' onBlur={this.handleConfirmBlur} />
 					)}
 				</Form.Item>
 				<Form.Item>
-					<Button type="primary" htmlType="submit" className="login-form-button">
+					<Button type='primary' htmlType='submit' className='login-form-button'>
 						Sign Up
          			 </Button>
 					<hr/>

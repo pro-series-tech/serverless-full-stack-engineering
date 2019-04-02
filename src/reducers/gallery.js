@@ -1,7 +1,7 @@
 import {
     AUTHENTICATION_SIGN_OUT,
     GALLERY_SET_IMAGE_RECORDS
-} from "lib/types";
+} from 'lib/types';
 
 import lunr from 'lunr';
 

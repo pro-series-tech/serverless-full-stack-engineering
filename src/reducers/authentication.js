@@ -9,7 +9,7 @@ import {
     AUTHENTICATION_SIGN_OUT,
     AUTHENTICATION_SIGN_UP,
     AUTHENTICATION_SET_USERNAME,
-} from "lib/types";
+} from 'lib/types';
 
 const initialState = {
     username: null,

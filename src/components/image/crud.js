@@ -1,21 +1,21 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Modal, Upload, Icon, Button, Input, Rate, Progress, notification } from "antd";
-import ReactQuill from "react-quill";
-import nanoid from "nanoid";
-import { switchModalVisibility } from "actions/crud";
-import { putImageRecord } from "actions/gallery";
-import DataStorage from "lib/data-storage";
-import ObjectStorage from "lib/object-storage";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Modal, Upload, Icon, Button, Input, Rate, Progress, notification } from 'antd';
+import ReactQuill from 'react-quill';
+import nanoid from 'nanoid';
+import { switchModalVisibility } from 'actions/crud';
+import { putImageRecord } from 'actions/gallery';
+import DataStorage from 'lib/data-storage';
+import ObjectStorage from 'lib/object-storage';
 
-import "react-quill/dist/quill.snow.css";
+import 'react-quill/dist/quill.snow.css';
 
 const initialState = {
-	name: "",
+	name: '',
 	image: null,
 	rating: 1,
 	userId: null,
-	description: "",
+	description: '',
 	confirmLoading: false,
 	uploadPercentage: 0
 };
@@ -56,7 +56,7 @@ class ImageCRUD extends Component {
 			this.setState(initialState);
 			/* show success notification */
 			notification.success({
-				message: "Picture Saved Successfully",
+				message: 'Picture Saved Successfully',
 				description: `Picture '${this.state.name}' was successfully saved.`
 			});
 			/* switch modal visibility off */
@@ -67,7 +67,7 @@ class ImageCRUD extends Component {
 			});
 			/* show notification for error */
 			notification.error({
-				message: "Error Saving Picture",
+				message: 'Error Saving Picture',
 				description: e.message
 			});
 		}
@@ -103,8 +103,8 @@ class ImageCRUD extends Component {
 		});
 	};
 	dataIsValid = () => {
-		let nameIsValid = this.state.name.trim() !== "";
-		let descriptionIsValid = this.state.description.trim() !== "";
+		let nameIsValid = this.state.name.trim() !== '';
+		let descriptionIsValid = this.state.description.trim() !== '';
 		let imageIsValid = this.state.image != null;
 
 		return nameIsValid && descriptionIsValid && imageIsValid;
@@ -116,7 +116,7 @@ class ImageCRUD extends Component {
 		if (!this.state.image && !userId) {
 			uploadButton = (
 				<div style={styles.uploadDiv}>
-					<Button type="primary" shape="round" icon="upload" size="large">
+					<Button type='primary' shape='round' icon='upload' size='large'>
 						Browser Picture
 					</Button>
 				</div>
@@ -125,8 +125,8 @@ class ImageCRUD extends Component {
 		return (
 			<Modal
 				centered={true}
-				okText={userId ? "Edit" : "Create"}
-				cancelText="Cancel"
+				okText={userId ? 'Edit' : 'Create'}
+				cancelText='Cancel'
 				visible={this.props.visible || userId != null}
 				destroyOnClose={true}
 				confirmLoading={this.state.confirmLoading}
@@ -140,15 +140,15 @@ class ImageCRUD extends Component {
 				}}
 			>
 				<div style={styles.uploadDiv}>
-					<Upload name="image" accept=".png" listType="picture" className="image-uploader" multiple={false} beforeUpload={this.handleImageRead} onRemove={this.handleImageRemove} disabled={image !== null && image !== undefined}>
+					<Upload name='image' accept='.png' listType='picture' className='image-uploader' multiple={false} beforeUpload={this.handleImageRead} onRemove={this.handleImageRemove} disabled={image !== null && image !== undefined}>
 						{uploadButton}
 					</Upload>
 				</div>
-				<Rate style={styles.rating} tooltips={["bad", "ok", "good", "excellent", "outstanding"]} onChange={this.handleRateChange} character={<Icon type="heart" />} value={rating} />
+				<Rate style={styles.rating} tooltips={['bad', 'ok', 'good', 'excellent', 'outstanding']} onChange={this.handleRateChange} character={<Icon type='heart' />} value={rating} />
 				<br />
-				<Input style={styles.name} value={name} prefix={<Icon type="picture" />} onChange={this.handleNameChange} placeholder="Picture Name" />
+				<Input style={styles.name} value={name} prefix={<Icon type='picture' />} onChange={this.handleNameChange} placeholder='Picture Name' />
 				<br />
-				<ReactQuill value={description} onChange={this.handleDescriptionChange} placeholder="Picture Description" />
+				<ReactQuill value={description} onChange={this.handleDescriptionChange} placeholder='Picture Description' />
 				<br />
 				<Progress percent={this.state.uploadPercentage} />
 			</Modal>
@@ -158,13 +158,13 @@ class ImageCRUD extends Component {
 const styles = {
 	uploadDiv: {
 		paddingTop: 20,
-		width: "100%",
-		textAlign: "center"
+		width: '100%',
+		textAlign: 'center'
 	},
 	rating: {
 		marginTop: 15,
 		marginBottom: 15,
-		color: "red"
+		color: 'red'
 	},
 	name: {
 		marginBottom: 15

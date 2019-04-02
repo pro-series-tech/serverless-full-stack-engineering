@@ -1,7 +1,7 @@
 import {
     GALLERY_SET_IMAGE_RECORDS,
     CRUD_SET_IMAGE_RECORD
-} from "lib/types";
+} from 'lib/types';
 import DataStorage from 'lib/data-storage';
 
 export const fetchGalleryImageRecords = () => async (dispatch, getState) => {

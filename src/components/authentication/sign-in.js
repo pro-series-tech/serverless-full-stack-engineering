@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { signIn, setUsername} from "actions/authentication";
-import { switchAuthenticationForm} from "actions/global";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { signIn, setUsername} from 'actions/authentication';
+import { switchAuthenticationForm} from 'actions/global';
 import {
 	NAVIGATION_AUTHENTICATION_SIGN_UP,
 	NAVIGATION_AUTHENTICATION_FORGOT_PASSWORD,
 	NAVIGATION_AUTHENTICATION_CONFIRM_ACCOUNT
-} from "lib/types";
+} from 'lib/types';
 import {
 	Form, Icon, Input, Button, Checkbox
 } from 'antd';
@@ -31,7 +31,7 @@ class SignIn extends Component {
 	}
 	evaluateSignInResult = (error, values) =>{
 		switch (true) {
-			case error.includes("not confirmed"):
+			case error.includes('not confirmed'):
 				this.props.setUsername(values.userName);
 				this.props.switchAuthenticationForm(NAVIGATION_AUTHENTICATION_CONFIRM_ACCOUNT);
 				break;
@@ -53,14 +53,14 @@ class SignIn extends Component {
 					{getFieldDecorator('userName', {
 						rules: [{ required: true, message: 'Please input your username!' }],
 					})(
-						<Input prefix={<Icon type="user" style={styles.field} />} placeholder="Username" />
+						<Input prefix={<Icon type='user' style={styles.field} />} placeholder='Username' />
 					)}
 				</Form.Item>
 				<Form.Item>
 					{getFieldDecorator('password', {
 						rules: [{ required: true, message: 'Please input your Password!' }],
 					})(
-						<Input prefix={<Icon type="lock" style={styles.field} />} type="password" placeholder="Password" />
+						<Input prefix={<Icon type='lock' style={styles.field} />} type='password' placeholder='Password' />
 					)}
 				</Form.Item>
 				<Form.Item>
@@ -70,7 +70,7 @@ class SignIn extends Component {
 				</Form.Item>
 				<Form.Item>
 
-					<Button type="primary" htmlType="submit" className="login-form-button">
+					<Button type='primary' htmlType='submit' className='login-form-button'>
 						Sign In
          			 </Button>
 					<hr/>

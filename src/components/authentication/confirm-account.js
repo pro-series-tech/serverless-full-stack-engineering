@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { confirmRegistration, resendConfirmation} from "actions/authentication";
-import { switchAuthenticationForm } from "actions/global";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { confirmRegistration, resendConfirmation} from 'actions/authentication';
+import { switchAuthenticationForm } from 'actions/global';
 import {
 	Form, Icon, Input, Button, Checkbox,
 } from 'antd';
@@ -45,17 +45,17 @@ class ConfirmAccount extends Component {
 				{getFieldDecorator('code', {
 					rules: [{ required: true, message: 'Please input your confirmation code!' }],
 				})(
-					<Input prefix={<Icon type="check-square" style={styles.field} />} placeholder="Confirmation Code" />
+					<Input prefix={<Icon type='check-square' style={styles.field} />} placeholder='Confirmation Code' />
 				)}
 			</Form.Item>
 			<Form.Item>
-				<Button type="primary" onClick={this.confirmRegistrationCode} className="login-form-button">
+				<Button type='primary' onClick={this.confirmRegistrationCode} className='login-form-button'>
 					Confirm Code for '{this.props.username}'
 					</Button>
 			</Form.Item>
 			<Form.Item>
-				<Button type="default" onClick={this.resendConfirmationCode} className="login-form-button">
-					<Icon type="clock-circle" style={styles.field} />Resend Confirmation
+				<Button type='default' onClick={this.resendConfirmationCode} className='login-form-button'>
+					<Icon type='clock-circle' style={styles.field} />Resend Confirmation
 					</Button>
 			</Form.Item>
 			<Form.Item>

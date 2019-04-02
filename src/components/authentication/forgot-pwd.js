@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { forgotPassword, confirmPassword} from "actions/authentication";
-import { switchAuthenticationForm } from "actions/global";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { forgotPassword, confirmPassword} from 'actions/authentication';
+import { switchAuthenticationForm } from 'actions/global';
 import {
 	Form, Icon, Input, Button, Checkbox,
 } from 'antd';
@@ -12,8 +12,8 @@ import {
 } from 'lib/types';
 
 /* local enumerators for forgot password workflow */
-const CODE_REQUEST_NOT_YET_SEND = "CODE_REQUEST_NOT_YET_SEND";
-const CODE_REQUEST_SEND = "CODE_REQUEST_SEND";
+const CODE_REQUEST_NOT_YET_SEND = 'CODE_REQUEST_NOT_YET_SEND';
+const CODE_REQUEST_SEND = 'CODE_REQUEST_SEND';
 
 class ForgotPwd extends Component {
 	state = {
@@ -111,11 +111,11 @@ class ForgotPwd extends Component {
 					{getFieldDecorator('userName', {
 						rules: [{ required: true, message: 'Please input your username!' }],
 					})(
-						<Input prefix={<Icon type="user" style={styles.field} />} placeholder="Username" />
+						<Input prefix={<Icon type='user' style={styles.field} />} placeholder='Username' />
 					)}
 				</Form.Item>
 				<Form.Item>
-					<Button type="primary" onClick={this.sendCodeRequest} className="login-form-button">
+					<Button type='primary' onClick={this.sendCodeRequest} className='login-form-button'>
 						Send Forgot Request Email
 					</Button>
 				</Form.Item>
@@ -128,7 +128,7 @@ class ForgotPwd extends Component {
 		return (
 			<Form >
 				<Form.Item>
-					<Input prefix={<Icon type="user" style={styles.field} />} disabled value={this.state.currentUsername}/>
+					<Input prefix={<Icon type='user' style={styles.field} />} disabled value={this.state.currentUsername}/>
 				</Form.Item>
 				<Form.Item>
 					{getFieldDecorator('password', {
@@ -139,7 +139,7 @@ class ForgotPwd extends Component {
 						}
 						]
 					})(
-						<Input prefix={<Icon type="lock" style={styles.field} />} type="password" placeholder="Password" />
+						<Input prefix={<Icon type='lock' style={styles.field} />} type='password' placeholder='Password' />
 					)}
 				</Form.Item>
 				<Form.Item>
@@ -150,18 +150,18 @@ class ForgotPwd extends Component {
 							validator: this.compareToFirstPassword,
 						}],
 					})(
-						<Input prefix={<Icon type="lock" style={styles.field} />} type="password" placeholder="Confirm Password" onBlur={this.handleConfirmBlur} />
+						<Input prefix={<Icon type='lock' style={styles.field} />} type='password' placeholder='Confirm Password' onBlur={this.handleConfirmBlur} />
 					)}
 				</Form.Item>
 				<Form.Item>
 					{getFieldDecorator('codeNumber', {
 						rules: [{ required: true, message: 'Please enter code number send to your email!' }],
 					})(
-						<Input prefix={<Icon type="number" style={styles.field} />} placeholder="Code" />
+						<Input prefix={<Icon type='number' style={styles.field} />} placeholder='Code' />
 					)}
 				</Form.Item>
 				<Form.Item>
-					<Button type="primary" onClick={this.confirmPassword} className="login-form-button">
+					<Button type='primary' onClick={this.confirmPassword} className='login-form-button'>
 						Confirm Password
 					</Button>
 				</Form.Item>

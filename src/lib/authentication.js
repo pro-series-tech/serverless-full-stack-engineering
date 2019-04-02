@@ -1,11 +1,11 @@
 import AWS from 'aws-sdk';
-import * as AmazonCognitoIdentity from "amazon-cognito-identity-js";
+import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
 import { 
 	USER_POOL_ID, 
 	USER_POOL_CLIENT_ID, 
 	IDENTITY_POOL_ID,
 	AWS_REGION
-} from "lib/environment";
+} from 'lib/environment';
 /* the user pool for registration and login operations */
 const userPool = new AmazonCognitoIdentity.CognitoUserPool({
 	UserPoolId: USER_POOL_ID,
@@ -99,7 +99,7 @@ export default class Authentication {
 				resolve(credentials);
 				return;
 			}else if(!username || !password){
-				reject("No user cached and no credentials provided");
+				reject('No user cached and no credentials provided');
 				return;
 			}
 

@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {
     NAVIGATION_AUTHENTICATION_SIGN_IN
-} from "lib/types";
-import { switchAuthenticationForm } from "actions/global";
+} from 'lib/types';
+import { switchAuthenticationForm } from 'actions/global';
 
 class formFields extends Component{
     LoginInstead = () =>{

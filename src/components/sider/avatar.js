@@ -1,9 +1,9 @@
 
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { signOut } from "actions/authentication";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { signOut } from 'actions/authentication';
 import { Popconfirm, Icon, Avatar, Upload, notification } from 'antd';
-import { PICTURE_BUCKET } from "lib/environment";
+import { PICTURE_BUCKET } from 'lib/environment';
 import ObjectStorage from 'lib/object-storage'
 
 const initialState = {
@@ -12,7 +12,7 @@ const initialState = {
 class AvatarSection extends Component {
     state = initialState;
     handleAvatarUpload = async(file) => {
-        console.log("file read",)
+        console.log('file read',)
         /* get the clients with fresh credentials */
         let objectStorageClient = new ObjectStorage(this.props.credentials);
         /* first we insert the picture */
@@ -40,15 +40,15 @@ class AvatarSection extends Component {
                 <Avatar 
                     style={styles.avatarPicture}
                     size={64} 
-                    icon="user" 
+                    icon='user' 
                     src={`http`}
                     src={avatarSrc}
                     onClick={()=>{this.fileUpload.click()}}
                 />
                 <input 
                     style={styles.fileUpload}
-                    type="file" 
-                    accept=".png"
+                    type='file' 
+                    accept='.png'
                     ref={(r) => {
                         this.fileUpload = r;
                     }}
@@ -57,11 +57,11 @@ class AvatarSection extends Component {
                 <br />
                 <br />
                 <Popconfirm 
-                    placement="bottomLeft"
-                    title="Are you sure you want to sign out?" 
+                    placement='bottomLeft'
+                    title='Are you sure you want to sign out?' 
                     onConfirm={this.confirmSignOut} 
-                    okText="Yes" 
-                    cancelText="No"
+                    okText='Yes' 
+                    cancelText='No'
                 >
                     <a>Sign Out</a>
                 </Popconfirm>

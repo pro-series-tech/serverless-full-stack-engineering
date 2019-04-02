@@ -1,6 +1,6 @@
 import AWS from 'aws-sdk';
 import { DATA_TABLE_NAME } from 'lib/types';
-import { AWS_REGION } from "lib/environment";
+import { AWS_REGION } from 'lib/environment';
 
 export default class DataStorage{
     constructor(credentials){

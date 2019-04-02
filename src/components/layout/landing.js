@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { SignIn, SignUp, ForgotPwd, ConfirmAccount } from "components/authentication";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { SignIn, SignUp, ForgotPwd, ConfirmAccount } from 'components/authentication';
 import { Row, Col, Spin } from 'antd';
 import logoSrc from 'media/logo.svg';
 import {
@@ -31,11 +31,11 @@ class Landing extends Component {
     }
     render() {
         return (
-            <Row type="flex" align="middle" style={styles.row}>
+            <Row type='flex' align='middle' style={styles.row}>
                 <Col xs={2} sm={4} md={6} lg={9} xl={9}></Col>
                 <Col xs={20} sm={16} md={12} lg={6} xl={6} style={styles.col}>
                     <Spin spinning={this.state.loading}>
-                        <img style={styles.logo} src={logoSrc} alt="logo"/>
+                        <img style={styles.logo} src={logoSrc} alt='logo'/>
                         {this.determineAuthForm()}
                     </Spin>
                 </Col>
@@ -53,10 +53,10 @@ const styles = {
         userSelect: 'none'
     },
     row:{
-        height: "100%"
+        height: '100%'
     },
     col: {
-        textAlign: "center"
+        textAlign: 'center'
     }
 };
 

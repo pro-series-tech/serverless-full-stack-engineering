@@ -10,9 +10,9 @@ import {
     AUTHENTICATION_CONFIRM_REGISTRATION,
     NAVIGATION_AUTHENTICATION_SWITCH_FORM,
     NAVIGATION_AUTHENTICATION_CONFIRM_ACCOUNT
-} from "lib/types";
+} from 'lib/types';
 
-import Authentication from "lib/authentication";
+import Authentication from 'lib/authentication';
 /* instantiate authentication object */
 const auth = new Authentication();
 const authHelper = async (dispatch, actionType, authFunc, authParams)=>{

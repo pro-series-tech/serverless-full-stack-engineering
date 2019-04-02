@@ -1,6 +1,6 @@
 import {
     NAVIGATION_AUTHENTICATION_SWITCH_FORM
-} from "lib/types";
+} from 'lib/types';
 
 export const switchAuthenticationForm = (formType, data) => dispatch => {
     dispatch({
