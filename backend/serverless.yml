@@ -79,7 +79,7 @@ functions:
                 - PicturesTable
                 - StreamArn
       environment: 
-        PICTURE_BUCKET: ${self:custom.resourceNames.frontEndBucket}
+        PICTURE_BUCKET: ${self:custom.resourceNames.pictureBucket}
     image-analysis:
       name: analysis
       handler: src/image.handler
@@ -89,7 +89,7 @@ functions:
             method: post     
             cors: true       
       environment: 
-        PICTURE_BUCKET: ${self:custom.resourceNames.frontEndBucket}
+        PICTURE_BUCKET: ${self:custom.resourceNames.pictureBucket}
 resources:
     - ${file(resources/security.yml)}
     - ${file(resources/data-storage.yml)}
