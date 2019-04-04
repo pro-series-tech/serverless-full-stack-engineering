@@ -2,7 +2,7 @@ Resources:
   PicturesTable:
     Type: "AWS::DynamoDB::Table"
     Properties:
-      TableName: ${self:provider.stage}-pictures-table
+      TableName: ${self:custom.resourceNames.pictureTable}
       AttributeDefinitions:
         - 
           AttributeName: userId
@@ -22,3 +22,7 @@ Resources:
         WriteCapacityUnits: 1
       StreamSpecification:
         StreamViewType: NEW_AND_OLD_IMAGES
+Outputs:
+  PicturesTableName:
+    Value:
+      Ref: PicturesTable

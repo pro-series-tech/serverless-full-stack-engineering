@@ -1,6 +1,5 @@
 import AWS from 'aws-sdk';
-import { DATA_TABLE_NAME } from 'lib/types';
-import { AWS_REGION } from 'lib/environment';
+import { AWS_REGION, PICTURE_TABLE } from 'lib/environment';
 
 export default class DataStorage{
     constructor(credentials){
@@ -13,7 +12,7 @@ export default class DataStorage{
     }
     getPictureRecords = async ()=>{
         let params = {
-            TableName: DATA_TABLE_NAME,
+            TableName: PICTURE_TABLE,
             ExpressionAttributeValues: {
                 ':userId': this.identityId
             },
@@ -25,7 +24,7 @@ export default class DataStorage{
     }
     putPictureRecord = ({ name, description, rating, pictureId})=>{
         let params = {
-            TableName: DATA_TABLE_NAME,
+            TableName: PICTURE_TABLE,
             Item: {
                 userId: this.identityId, 
                 pictureId,
@@ -40,7 +39,7 @@ export default class DataStorage{
     }
     deletePictureRecord = (pictureId) =>{
         let params = {
-            TableName: DATA_TABLE_NAME,
+            TableName: PICTURE_TABLE,
             Key: {
                 userId: this.identityId,
                 pictureId

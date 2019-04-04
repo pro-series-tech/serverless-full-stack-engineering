@@ -13,6 +13,7 @@ function handler (data, serverless, options) {
     `REACT_APP_USER_POOL_CLIENT_ID=${data.UserPoolClientId}`,
     `REACT_APP_USER_POOL_ID=${data.UserPoolId}`,
     `REACT_APP_IDENTITY_POOL_ID=${data.IdentityPoolId}`,
+    `REACT_APP_PICTURES_TABLE=${data.PicturesTableName}`,
     `REACT_APP_PICTURES_BUCKET=${data.PicturesBucketName}`,
     `REACT_APP_FRONT_END_BUCKET=${data.FrontEndBucketName}`,
     `REACT_APP_AWS_REGION=${options.region}`

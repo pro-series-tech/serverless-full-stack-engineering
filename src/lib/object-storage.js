@@ -1,5 +1,5 @@
 import AWS from 'aws-sdk';
-import { DATA_TABLE_NAME } from 'lib/types';
+import { PICTURE_TABLE } from 'lib/types';
 import { AWS_REGION, PICTURE_BUCKET } from 'lib/environment';
 
 export default class ObjectStorage {

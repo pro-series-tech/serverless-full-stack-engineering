@@ -1,22 +1,5 @@
-# Welcome to Serverless!
-#
-# This file is the main config file for your service.
-# It's very minimal at this point and uses default values.
-# You can always add more config options for more control.
-# We've included some commented out config examples here.
-# Just uncomment any of them to get that config option.
-#
-# For full config options, check the docs:
-#    docs.serverless.com
-#
-# Happy Coding!
-
 service: pro-series-serverless # NOTE: update this with your service name
-
-# You can pin your service to only deploy with a specific Serverless version
-# Check out our docs for more details
 frameworkVersion: "=1.38.0"
-
 provider:
   name: aws
   stage: ${opt:stage, 'dev'}
@@ -40,8 +23,20 @@ plugins:
   - serverless-single-page-app-plugin
   - serverless-webpack
   - serverless-dynamodb-autoscaling
+  - serverless-s3-remover
 
 custom:
+  resourceNames: 
+    # change this word to one of your choice, S3 public web buckets needs to be unique.
+    # really... DON'T USE avocado
+    uniqueWord: avocado
+    uniqueStage: ${self:provider.stage}${self:custom.resourceNames.uniqueWord}
+    frontEndBucket: ${self:custom.resourceNames.uniqueStage}-front-end 
+    pictureBucket: ${self:custom.resourceNames.uniqueStage}-picture 
+    pictureTable: ${self:custom.resourceNames.uniqueStage}-picture-table
+    identityPool: ${self:custom.resourceNames.uniqueStage}IdentityPool
+    userPool: ${self:custom.resourceNames.uniqueStage}-user-pool
+    poolClient: ${self:custom.resourceNames.uniqueStage}-user-pool-client
   output:
     handler: scripts/config.handler # Same syntax as you already know
   capacities:
@@ -55,17 +50,20 @@ custom:
         maximum: 10      # Maximum write capacity
         usage: 0.5        # Targeted usage percentage
   client:
-    bucketName: ${self:provider.stage}-front-end
+    bucketName: ${self:custom.resourceNames.frontEndBucket}
     distributionFolder: ../build 
     indexDocument: index.html
     errorDocument: index.html
+  remover:
+     buckets:
+       - ${self:custom.resourceNames.frontEndBucket}
+       - ${self:custom.resourceNames.pictureBucket}
 # you can add packaging information here
 # package:
 #   include:
 #      - src/test.jpg
 #  exclude:
 #    - exclude-me.js
-#    - exclude-me-dir/**
 
 functions: 
     dynamodb-trigger:
@@ -81,7 +79,7 @@ functions:
                 - PicturesTable
                 - StreamArn
       environment: 
-        PICTURE_BUCKET: ${self:provider.stage}-pictures
+        PICTURE_BUCKET: ${self:custom.resourceNames.frontEndBucket}
     image-analysis:
       name: analysis
       handler: src/image.handler
@@ -91,9 +89,7 @@ functions:
             method: post     
             cors: true       
       environment: 
-        PICTURE_BUCKET: ${self:provider.stage}-pictures
-        
-# you can add CloudFormation resource templates here
+        PICTURE_BUCKET: ${self:custom.resourceNames.frontEndBucket}
 resources:
     - ${file(resources/security.yml)}
     - ${file(resources/data-storage.yml)}

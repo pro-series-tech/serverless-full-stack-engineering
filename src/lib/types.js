@@ -24,9 +24,6 @@ export const CRUD_SET_IMAGE_RECORD = 'CRUD_SET_IMAGE_RECORD';
 /* GALLERY TYPES */
 export const GALLERY_SET_IMAGE_RECORDS = 'GALLERY_SET_IMAGE_RECORDS';
 
-/* DATA LAYER TYPES */
-export const DATA_TABLE_NAME = `${ENVIRONMENT}-pictures-table`;
-
 /* Messages and constants */
 export const AUTHENTICATION_INVALID_PWD_MSG = `
 Password must follow:

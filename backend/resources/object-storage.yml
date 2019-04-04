@@ -2,7 +2,7 @@ Resources:
   FrontEndBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: ${self:provider.stage}-front-end
+      BucketName: ${self:custom.resourceNames.frontEndBucket}
       AccessControl: PublicRead
       WebsiteConfiguration:
         IndexDocument: index.html
@@ -16,7 +16,7 @@ Resources:
   PicturesBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: ${self:provider.stage}-pictures
+      BucketName: ${self:custom.resourceNames.pictureBucket}
       CorsConfiguration:
         CorsRules:
         - AllowedHeaders: ['*']

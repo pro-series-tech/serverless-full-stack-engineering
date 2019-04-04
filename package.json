@@ -24,7 +24,7 @@
     "deploy": "cd backend && serverless deploy -v --stage",
     "remove": "cd backend && serverless remove",
     "invoke": "cd backend && serverless invoke --function",
-    "deploy-web": "cd backend && serverless client deploy"
+    "deploy-web": "yarn run build && cd backend && serverless client deploy --no-confirm"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -47,6 +47,7 @@
     "react-app-rewired": "^2.1.0",
     "serverless-dynamodb-autoscaling": "^0.6.2",
     "serverless-finch": "^2.4.2",
+    "serverless-s3-remover": "^0.6.0",
     "serverless-single-page-app-plugin": "^1.0.2",
     "serverless-stack-output": "^0.2.3",
     "serverless-webpack": "^5.2.0",
