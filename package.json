@@ -18,12 +18,13 @@
   },
   "scripts": {
     "start": "env-cmd ./.dev.env react-app-rewired start",
-    "build": "env-cmd ./.pro.env react-app-rewired build",
+    "build": "env-cmd ./.dev.env react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "deploy": "cd backend && serverless deploy -v --stage",
     "remove": "cd backend && serverless remove",
-    "invoke": "cd backend && serverless invoke --function"
+    "invoke": "cd backend && serverless invoke --function",
+    "deploy-web": "cd backend && serverless client deploy"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -45,6 +46,8 @@
     "npm": "^6.8.0",
     "react-app-rewired": "^2.1.0",
     "serverless-dynamodb-autoscaling": "^0.6.2",
+    "serverless-finch": "^2.4.2",
+    "serverless-single-page-app-plugin": "^1.0.2",
     "serverless-stack-output": "^0.2.3",
     "serverless-webpack": "^5.2.0",
     "standard": "^12.0.1",

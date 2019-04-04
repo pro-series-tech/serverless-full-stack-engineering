@@ -36,7 +36,9 @@ provider:
             - "/*"
 plugins:
   - serverless-stack-output
-  #- serverless-webpack
+  - serverless-finch
+  - serverless-single-page-app-plugin
+  - serverless-webpack
   - serverless-dynamodb-autoscaling
 
 custom:
@@ -52,7 +54,11 @@ custom:
         minimum: 1       # Minimum write capacity
         maximum: 10      # Maximum write capacity
         usage: 0.5        # Targeted usage percentage
-
+  client:
+    bucketName: ${self:provider.stage}-front-end
+    distributionFolder: ../build 
+    indexDocument: index.html
+    errorDocument: index.html
 # you can add packaging information here
 # package:
 #   include:
@@ -92,3 +98,4 @@ resources:
     - ${file(resources/security.yml)}
     - ${file(resources/data-storage.yml)}
     - ${file(resources/object-storage.yml)}
+    - ${file(resources/misc.yml)}

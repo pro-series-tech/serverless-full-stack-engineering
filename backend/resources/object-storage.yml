@@ -4,6 +4,9 @@ Resources:
     Properties:
       BucketName: ${self:provider.stage}-front-end
       AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
       CorsConfiguration:
         CorsRules:
         - AllowedHeaders: ['*']
