@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { signUp} from 'actions/authentication';
 import { switchAuthenticationForm } from 'actions/global';
 import {
-	Form, Icon, Input, Button, Checkbox,
+	Form, Icon, Input, Button
 } from 'antd';
 import {
 	NAVIGATION_AUTHENTICATION_SIGN_IN,
@@ -109,7 +109,9 @@ class SignUp extends Component {
 						Sign Up
          			 </Button>
 					<hr/>
-					<a onClick={() => {
+					<a 
+					href="#/"
+					onClick={() => {
 						this.props.switchAuthenticationForm(NAVIGATION_AUTHENTICATION_SIGN_IN);
 					}}>Login Instead</a>
 				</Form.Item>

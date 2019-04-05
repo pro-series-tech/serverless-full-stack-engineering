@@ -5,7 +5,6 @@ import ReactQuill from 'react-quill';
 import nanoid from 'nanoid';
 import { switchModalVisibility } from 'actions/crud';
 import { putImageRecord } from 'actions/gallery';
-import DataStorage from 'lib/data-storage';
 import ObjectStorage from 'lib/object-storage';
 
 import 'react-quill/dist/quill.snow.css';
@@ -44,7 +43,7 @@ class ImageCRUD extends Component {
 				/* get the clients with fresh credentials */
 				let objectStorageClient = new ObjectStorage(this.props.credentials);
 				/* first we insert the picture */
-				let pResult = await objectStorageClient.putPictureFile(this.state.image, `${pictureId}.png`, prg => {
+				await objectStorageClient.putPictureFile(this.state.image, `${pictureId}.png`, prg => {
 					this.setState({
 						uploadPercentage: parseInt((prg.loaded / prg.total) * 100)
 					});

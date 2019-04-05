@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { signOut } from 'actions/authentication';
-import { Popconfirm, Icon, Avatar, Upload, notification } from 'antd';
+import { Popconfirm, Avatar, notification } from 'antd';
 import { PICTURE_BUCKET } from 'lib/environment';
 import ObjectStorage from 'lib/object-storage'
 
@@ -16,7 +16,7 @@ class AvatarSection extends Component {
         /* get the clients with fresh credentials */
         let objectStorageClient = new ObjectStorage(this.props.credentials);
         /* first we insert the picture */
-        let result = await objectStorageClient.putAvatarPictureFile(file);
+        await objectStorageClient.putAvatarPictureFile(file);
         /* force re render  of avatar */
         this.setState({
             avatarUploadCount: this.state.avatarUploadCount + 1
@@ -41,7 +41,6 @@ class AvatarSection extends Component {
                     style={styles.avatarPicture}
                     size={64} 
                     icon='user' 
-                    src={`http`}
                     src={avatarSrc}
                     onClick={()=>{this.fileUpload.click()}}
                 />
@@ -63,7 +62,7 @@ class AvatarSection extends Component {
                     okText='Yes' 
                     cancelText='No'
                 >
-                    <a>Sign Out</a>
+                    <a href="#\">Sign Out</a>
                 </Popconfirm>
             </div>
         )

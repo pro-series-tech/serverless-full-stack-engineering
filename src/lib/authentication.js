@@ -16,6 +16,11 @@ const userPool = new AmazonCognitoIdentity.CognitoUserPool({
  * https://docs.aws.amazon.com/cognito/latest/developerguide/using-amazon-cognito-user-identity-pools-javascript-examples.html
  */
 export default class Authentication {
+	/**
+	 * Build cognito user for given username.
+	 * @param  {string} username
+	 * @returns  {CognitoUser}} Instance of cognito user.
+	 */
 	getCognitoUser = (username) => {
 		/* otherwise return current user in session */
 		return new AmazonCognitoIdentity.CognitoUser({
@@ -23,6 +28,11 @@ export default class Authentication {
 			Pool: userPool
 		});
 	}
+	/**
+	 * Build cognito credentials for the given token.
+	 * @param  {string} token
+	 * @returns {CognitoIdentityCredentials} Cognito credentials object.
+	 */
 	getAWSCredentials = async (token)=>{
 		/* set aws region */
 		AWS.config.region = AWS_REGION;
@@ -42,6 +52,10 @@ export default class Authentication {
 		/* return async credentials */
 		return credentials;
 	}
+	/**
+	 * Get cached user if present.
+	 * @returns {Promise} promise resolve the credentials of cached user.
+	 */
 	getCachedUser = () =>{
 		return new Promise((resolve, reject) => {
 			let user = userPool.getCurrentUser();
@@ -64,9 +78,10 @@ export default class Authentication {
 	}
 	/**
 	 * Sign up user to serverless user pool.
-	 * @param {String} username
-	 * @param {String} password
-	 * @param {String[]} attributes
+	 * @param {string} username
+	 * @param {string} password
+	 * @param {string[]} attributes
+	 * @returns {Promise} promise resolving the username.
 	 */
 	signUp = (username, password, attributes) => {
 		return new Promise((resolve, reject) => {
@@ -89,6 +104,7 @@ export default class Authentication {
 	 * Sign in user to serverless user pool.
 	 * @param {String} username
 	 * @param {String} password
+	 * @returns {promise} promise resolving credentials.
 	 */
 	signIn = (username, password) => {
 		return new Promise(async (resolve, reject) => {
@@ -102,7 +118,6 @@ export default class Authentication {
 				reject('No user cached and no credentials provided');
 				return;
 			}
-
 			/* the authentication details */
 			let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
 				Username: username,
@@ -117,30 +132,26 @@ export default class Authentication {
 					let credentials = await this.getAWSCredentials(token);
 					resolve(credentials);
 				},
-				onFailure: (err) => {
-					reject(err);
-				}
+				onFailure: reject
 			});
 		});
 	}
+	
 	/**
-	 * Sign out user and clears all tokens
+	 * Sign out user and clears all tokens.
 	 */
-	signOut = (credentials) => {
-		return new Promise((resolve, reject) => {
-			/* get cached user */
-			let cognitoUser = userPool.getCurrentUser();
-			if (cognitoUser != null) {
-				/* sign out and clear local storage */
-				cognitoUser.signOut();
-			}
-			/* resolve the promise */
-			resolve();
-		});
+	signOut = async () => {
+		/* get cached user */
+		let cognitoUser = userPool.getCurrentUser();
+		if (cognitoUser != null) {
+			/* sign out and clear local storage */
+			cognitoUser.signOut();
+		}
 	}
 	/**
 	 * 	Resend confirmation code to user email.
 	 * @param {String} username 
+	 * @returns {Promise} Resolves or rejects confirmation async operation.
 	 */
 	resendConfirmation = (username) => {
 		let cognitoUser = this.getCognitoUser(username);
@@ -151,9 +162,10 @@ export default class Authentication {
 		});
 	}
 	/**
-	 * Validate using sign up using code.
+	 * Confirms registration using username and email provided code.
 	 * @param {String} username 
 	 * @param {String} code 
+	 * @returns {Promise} Resolves or rejects account confirmation.
 	 */
 	confirmRegistration = (username, code) => {
 		let cognitoUser = this.getCognitoUser(username);
@@ -164,9 +176,11 @@ export default class Authentication {
 		});
 	}
 	/**
+	 * Changes the user passsword for the given username.
 	 * @param {String} username 
 	 * @param {String} oldPassword 
 	 * @param {String} newPassword 
+	 * @returns {Promise} Resolves or rejects change password outcome.
 	 */
 	changePassword = (username, oldPassword, newPassword) => {
 		let cognitoUser = this.getCognitoUser(username);
@@ -177,19 +191,16 @@ export default class Authentication {
 		});
 	}
 	/**
+	 * Sends the forgot password trigger to the backend.
 	 * @param {String} username 
+	 * @returns {Promise} Resolves or rejects forgot password outcome.
 	 */
 	forgotPassword = (username) => {
 		let cognitoUser = this.getCognitoUser(username);
 		return new Promise((resolve, reject) => {
 			cognitoUser.forgotPassword({
-				onSuccess: (result) => {
-					/* resolve authentication credentials */
-					resolve(result);
-				}, 
-				onFailure: (err) => {
-					reject(err); 
-				}
+				onSuccess: resolve, 
+				onFailure: reject
 			});
 		});
 	}
@@ -202,12 +213,8 @@ export default class Authentication {
 		let cognitoUser = this.getCognitoUser(username);
 		return new Promise((resolve, reject) => {
 			cognitoUser.confirmPassword(verificationCode, newPassword,{
-				onSuccess: (result) => {
-					resolve(result);
-				},
-				onFailure: (err) => {
-					reject(err);
-				}
+				onSuccess: resolve,
+				onFailure: reject
 			});
 		});
 	}

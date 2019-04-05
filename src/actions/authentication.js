@@ -11,34 +11,48 @@ import {
     NAVIGATION_AUTHENTICATION_SWITCH_FORM,
     NAVIGATION_AUTHENTICATION_CONFIRM_ACCOUNT
 } from 'lib/types';
-
 import Authentication from 'lib/authentication';
-/* instantiate authentication object */
+/* Create constant authentication instance */
 const auth = new Authentication();
-const authHelper = async (dispatch, actionType, authFunc, authParams)=>{
-    try{
+/**
+ * This function is helper to reduce redundant code that calls authentication functions.
+ * @param {Function} dispatch Redux-thunk dispatch function.
+ * @param {string} actionType Action value to be dispatches
+ * @param {Function} authFunc The authentication function to be invoked.
+ * @param {Any[]} authParams A list of arguments for the authentication function.
+ * @returns {(string|undefined)} Returns error message if fails on async function call.
+ */
+const authHelper = async (dispatch, actionType, authFunc, authParams) => {
+    try {
         let result = await authFunc(...authParams);
         dispatch({
             type: actionType,
             payload: result
         });
-    }catch(e){
+    } catch (e) {
         return e.message;
     }
 };
+/**
+ * Dispatches sign up action to authentication reducer.
+ * @param {string} username 
+ * @param {string} email 
+ * @param {string} password 
+ * @returns {(string|undefined)} Returns error message if fails on async function call.
+ */
 export const signUp = (username, email, password) => async dispatch => {
     let attributes = [{
         Name: 'email',
         Value: email
     }];
     let error = await authHelper(
-        dispatch, 
-        AUTHENTICATION_SIGN_UP, 
-        auth.signUp, 
+        dispatch,
+        AUTHENTICATION_SIGN_UP,
+        auth.signUp,
         [username, password, attributes]
     );
     /* if sign up succeed, dispatch other actions */
-    if(!error){
+    if (!error) {
         dispatch({
             type: NAVIGATION_AUTHENTICATION_SWITCH_FORM,
             payload: NAVIGATION_AUTHENTICATION_CONFIRM_ACCOUNT
@@ -46,6 +60,12 @@ export const signUp = (username, email, password) => async dispatch => {
     }
     return error;
 };
+/**
+ * Dispatches sign in action to authentication reducer.
+ * @param {string} username 
+ * @param {string} password
+ * @returns {(string|undefined)} Returns error message if fails on async function call.
+ */
 export const signIn = (username, password) => async dispatch => {
     return await authHelper(
         dispatch,
@@ -54,6 +74,12 @@ export const signIn = (username, password) => async dispatch => {
         [username, password]
     );
 };
+/**
+ * Dispatches registration confirmation action to authentication reducer.
+ * @param {string} username 
+ * @param {string} code 
+ * @returns {(string|undefined)} Returns error message if fails on async function call.
+ */
 export const confirmRegistration = (username, code) => async dispatch => {
     return await authHelper(
         dispatch,

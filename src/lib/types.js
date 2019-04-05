@@ -1,5 +1,3 @@
-import { ENVIRONMENT } from 'lib/environment';
-
 /* LOGIN TYPES */
 export const AUTHENTICATION_SIGN_IN = 'AUTHENTICATION_SIGN_IN';
 export const AUTHENTICATION_SIGN_OUT = 'AUTHENTICATION_SIGN_OUT';
@@ -35,4 +33,4 @@ Password must follow:
 `;
 
 /* constant objects */
-export const AUTHENTICATION_PWD_VALIDATION_REGEX = /^(?=.*[0-9])(?=.*[!@#$%^&*\.])[a-zA-Z0-9!@#$%^&*\.]{8,16}$/;
+export const AUTHENTICATION_PWD_VALIDATION_REGEX = /^(?=.*[0-9])(?=.*[!@#$%^&*.])[a-zA-Z0-9!@#$%^&*.]{8,16}$/;

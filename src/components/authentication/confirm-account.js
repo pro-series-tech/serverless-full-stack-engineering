@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { confirmRegistration, resendConfirmation} from 'actions/authentication';
 import { switchAuthenticationForm } from 'actions/global';
 import {
-	Form, Icon, Input, Button, Checkbox,
+	Form, Icon, Input, Button
 } from 'antd';
 import {
 	NAVIGATION_AUTHENTICATION_SIGN_IN,
@@ -60,7 +60,9 @@ class ConfirmAccount extends Component {
 			</Form.Item>
 			<Form.Item>
 				<hr />
-				<a onClick={() => {
+				<a 
+				href="#\"
+				onClick={() => {
 					this.props.switchAuthenticationForm(NAVIGATION_AUTHENTICATION_SIGN_IN);
 				}}>Login Instead</a>
 			</Form.Item>

@@ -1,13 +1,13 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { Button, Layout, Input, Menu, Icon, Affix} from 'antd';
+import { Button, Layout, Input} from 'antd';
 import Gallery from 'components/image/gallery'
 import ImageCRUD from 'components/image/crud'
 import AvatarSection from 'components/sider/avatar';
 import { switchModalVisibility } from 'actions/crud';
 
 const {
-    Header, Content, Footer, Sider,
+    Header, Content, Sider,
 } = Layout;
 
 const initialState = {

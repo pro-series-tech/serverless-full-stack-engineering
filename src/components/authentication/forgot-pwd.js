@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { forgotPassword, confirmPassword} from 'actions/authentication';
 import { switchAuthenticationForm } from 'actions/global';
 import {
-	Form, Icon, Input, Button, Checkbox,
+	Form, Icon, Input, Button
 } from 'antd';
 import {
 	NAVIGATION_AUTHENTICATION_SIGN_IN,
@@ -98,9 +98,12 @@ class ForgotPwd extends Component {
 	renderGoToSignInLink = () =>{
 		return (<Form.Item>
 			<hr />
-			<a onClick={() => {
+			<a 
+				href="#/"
+				onClick={() => {
 				this.props.switchAuthenticationForm(NAVIGATION_AUTHENTICATION_SIGN_IN);
-			}}>Login Instead</a>
+			}}>
+			Login Instead</a>
 		</Form.Item>)
 	}
 	renderCodeRequestNotYetSendForm = () => {
@@ -170,11 +173,14 @@ class ForgotPwd extends Component {
 		)
 	}
 	render(){
-		switch (this.state.workflowStep) {
+		let {workflowStep} = this.state;
+		switch (workflowStep) {
 			case CODE_REQUEST_NOT_YET_SEND:
 				return this.renderCodeRequestNotYetSendForm();
 			case CODE_REQUEST_SEND:
 				return this.renderChangePassword();
+			default:
+				throw new Error(`Unknown workflow step ${workflowStep}`);
 		}
 	}
 }

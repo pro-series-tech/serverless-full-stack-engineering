@@ -8,7 +8,7 @@ import {
 	NAVIGATION_AUTHENTICATION_CONFIRM_ACCOUNT
 } from 'lib/types';
 import {
-	Form, Icon, Input, Button, Checkbox
+	Form, Icon, Input, Button
 } from 'antd';
 
 class SignIn extends Component {
@@ -64,7 +64,9 @@ class SignIn extends Component {
 					)}
 				</Form.Item>
 				<Form.Item>
-					<a onClick={() => {
+					<a 
+					href="#\"
+					onClick={() => {
 						this.props.switchAuthenticationForm(NAVIGATION_AUTHENTICATION_FORGOT_PASSWORD);
 					}}>Forgot Password</a>
 				</Form.Item>
@@ -74,7 +76,9 @@ class SignIn extends Component {
 						Sign In
          			 </Button>
 					<hr/>
-					<a onClick={()=>{
+					<a 
+					href="#\"
+					onClick={()=>{
 						this.props.switchAuthenticationForm(NAVIGATION_AUTHENTICATION_SIGN_UP);
 					}}>Create Account</a>
 				</Form.Item>

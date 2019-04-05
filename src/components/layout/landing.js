@@ -18,7 +18,9 @@ class Landing extends Component {
         });
     }
     determineAuthForm = () =>{
-        switch (this.props.authenticationForm){
+        let {authenticationForm} = this.props;
+
+        switch (authenticationForm){
             case NAVIGATION_AUTHENTICATION_SIGN_IN:
                 return <SignIn switchLoading={this.switchLoading}/>;
             case NAVIGATION_AUTHENTICATION_SIGN_UP:
@@ -27,6 +29,8 @@ class Landing extends Component {
                 return <ForgotPwd switchLoading={this.switchLoading}/>
             case NAVIGATION_AUTHENTICATION_CONFIRM_ACCOUNT:
                 return <ConfirmAccount switchLoading={this.switchLoading}/>
+            default:
+                throw new Error(`Unknown authentication form ${authenticationForm}`);
         }
     }
     render() {

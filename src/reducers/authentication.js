@@ -1,9 +1,3 @@
-import AWS from 'aws-sdk';
-import { 
-    USER_POOL_ID, 
-    IDENTITY_POOL_ID, 
-    AWS_REGION
-} from 'lib/environment';
 import { 
     AUTHENTICATION_SIGN_IN,
     AUTHENTICATION_SIGN_OUT,
