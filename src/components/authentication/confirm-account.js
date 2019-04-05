@@ -61,7 +61,7 @@ class ConfirmAccount extends Component {
 			<Form.Item>
 				<hr />
 				<a 
-				href="#\"
+				href="#/"
 				onClick={() => {
 					this.props.switchAuthenticationForm(NAVIGATION_AUTHENTICATION_SIGN_IN);
 				}}>Login Instead</a>

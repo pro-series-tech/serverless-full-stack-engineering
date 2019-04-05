@@ -65,7 +65,7 @@ class SignIn extends Component {
 				</Form.Item>
 				<Form.Item>
 					<a 
-					href="#\"
+					href="#/"
 					onClick={() => {
 						this.props.switchAuthenticationForm(NAVIGATION_AUTHENTICATION_FORGOT_PASSWORD);
 					}}>Forgot Password</a>
@@ -77,7 +77,7 @@ class SignIn extends Component {
          			 </Button>
 					<hr/>
 					<a 
-					href="#\"
+					href="#/"
 					onClick={()=>{
 						this.props.switchAuthenticationForm(NAVIGATION_AUTHENTICATION_SIGN_UP);
 					}}>Create Account</a>

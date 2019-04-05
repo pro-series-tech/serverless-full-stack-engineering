@@ -62,7 +62,7 @@ class AvatarSection extends Component {
                     okText='Yes' 
                     cancelText='No'
                 >
-                    <a href="#\">Sign Out</a>
+                    <a href="#/">Sign Out</a>
                 </Popconfirm>
             </div>
         )
