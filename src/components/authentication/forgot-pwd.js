@@ -1,57 +1,98 @@
+/* external imports */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Form, Icon, Input, Button } from 'antd';
+/* local imports */
 import { forgotPassword, confirmPassword} from 'actions/authentication';
 import { switchAuthenticationForm } from 'actions/global';
-import {
-	Form, Icon, Input, Button
-} from 'antd';
 import {
 	NAVIGATION_AUTHENTICATION_SIGN_IN,
 	AUTHENTICATION_INVALID_PWD_MSG,
 	AUTHENTICATION_PWD_VALIDATION_REGEX
 } from 'lib/types';
 
-/* local enumerators for forgot password workflow */
+/* local constants for forgot password workflow */
 const CODE_REQUEST_NOT_YET_SEND = 'CODE_REQUEST_NOT_YET_SEND';
 const CODE_REQUEST_SEND = 'CODE_REQUEST_SEND';
-
+/* component initial state constant */
+const initialState = {
+	confirmDirty: false,
+	currentUsername: null,
+	workflowStep: CODE_REQUEST_NOT_YET_SEND
+}
 class ForgotPwd extends Component {
-	state = {
-		confirmDirty: false,
-		currentUsername: null,
-		workflowStep: CODE_REQUEST_NOT_YET_SEND
-	}
+	/* set the instance initial state as initialState clone */
+	state = {...initialState}
+	/**
+	 * Triggers the change on the form, i.e. set to dirty.
+	 * @param  {FocusEvent} e
+	 */
 	handleConfirmBlur = (e) => {
-		const value = e.target.value;
+		/* get the value from the target of the blur event, i.e. the input textbox*/
+		const {value} = e.target;
+		/* set the state of the component to dirty if is already dirty or value is not empty */
 		this.setState({ confirmDirty: this.state.confirmDirty || !!value });
 	}
+	/**
+	 * Matches password with confirm password input field.
+	 * @param  {Object} rule
+	 * @param  {string} value
+	 * @param  {Function} callback
+	 */
 	validateToNextPassword = (rule, value, callback) => {
+		/* get the form object from properties */
 		const {form} = this.props;
+		/* if the value is not empty and has change, force validation */
 		if (value && this.state.confirmDirty) {
 			form.validateFields(['confirm'], { force: true });
 		}
+		/* if the value does not match the regular expression validation, show error message */
 		if (value && !AUTHENTICATION_PWD_VALIDATION_REGEX.test(value)){
+			/* invoke callback with error message, meaning it does not match regex rules */
 			callback(AUTHENTICATION_INVALID_PWD_MSG);
 		}else{
+			/* everything is ok, just invoke the callback without arguments */
 			callback();
 		}
 	}
+	/**
+	 * Matches confirm password with password input field.
+	 * @param  {Object} rule
+	 * @param  {string} value
+	 * @param  {Function} callback
+	 */
 	compareToFirstPassword = (rule, value, callback) => {
+		/* get the form object from properties */
 		const { form } = this.props;
+		/* if passwords input fields don't match, show error */
 		if (value && value !== form.getFieldValue('password')) {
-			callback('Two passwords that you enter is inconsistent!');
+			/* invoke callback with error message */
+			callback(`The two passwords don't match!`);
 		} else {
+			/* everything is ok, just invoke the callback without arguments */
 			callback();
 		}
 	}
+	/**
+	 * Send code request in order to change password. By sending a code to user's email
+	 * we validate that is its actually the legitimate owner of the account.
+	 * @async
+	 */
 	sendCodeRequest = async () =>{
 		/* switch on loading spin on parent component */
 		this.props.switchLoading(true);
+		/* get this form from the properties */
 		const { form } = this.props;
+		/* validate fields before trying to send code */
 		form.validateFields(async (err, values) => {
+						/* if no error, proceed to send code */
 			if (!err) {
+				/* get current username in username field */
 				let username = form.getFieldValue('userName');
+				/* send code using forgot password async function */
 				let error = await this.props.forgotPassword(username);
+				/* if there was an error sending the code, set
+				error message as username input error message */
 				if(error){
 					this.props.form.setFields({
 						userName: {
@@ -60,6 +101,8 @@ class ForgotPwd extends Component {
 						}
 					});
 				} else {
+					/* if code was send, set the current username in the state, and
+					switch to the next step of the workflow using local component state */
 					this.setState({
 						currentUsername: username,
 						workflowStep: CODE_REQUEST_SEND

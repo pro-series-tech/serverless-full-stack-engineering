@@ -34,6 +34,11 @@ class AvatarSection extends Component {
         this.setState({
             avatarUploadCount: this.state.avatarUploadCount + 1
         });
+        /* tell user that the avatar image was successfully uploaded */
+        notification.success({
+            message: 'Avatar Image',
+            description: `Successfully uploaded new avatar image.`
+        });
         /* dont hold the file */
         return false;
     }
@@ -75,9 +80,9 @@ class AvatarSection extends Component {
                     style={styles.fileUpload}
                     type='file' 
                     accept='.png'
-                    ref={(r) => {
-                        this.fileUpload = r;
-                    }}
+                    /* get the reference of this button */
+                    ref={(r) => this.fileUpload = r}
+                    /* when the file is selected, send upload file */
                     onChange={(e) => this.handleAvatarUpload(e.target.files[0])} 
                 />
                 <br />
