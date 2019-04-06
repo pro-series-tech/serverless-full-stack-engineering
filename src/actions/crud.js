@@ -1,8 +1,11 @@
 import {
-    CRUD_SWITCH_MODAL_VISIBILITY,
-    CRUD_SET_IMAGE_RECORD
+    CRUD_SET_IMAGE_RECORD,
+    CRUD_SWITCH_MODAL_VISIBILITY
 } from 'lib/types';
-
+/**
+ * Dispatch switch modal visibility and reset image record to corresponding reducers.
+ * @param {boolean} show 
+ */
 export const switchModalVisibility = (show) => dispatch => {
     dispatch({
         type: CRUD_SWITCH_MODAL_VISIBILITY,
@@ -13,6 +16,10 @@ export const switchModalVisibility = (show) => dispatch => {
         payload: null
     });
 };
+/**
+ * Dispatch set image record to the CRUD reducer.
+ * @param {Object} record 
+ */
 export const setImageRecord = (record) => dispatch => {
     dispatch({
         type: CRUD_SET_IMAGE_RECORD,

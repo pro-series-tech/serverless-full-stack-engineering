@@ -1,8 +1,11 @@
 import {
     NAVIGATION_AUTHENTICATION_SWITCH_FORM
 } from 'lib/types';
-
-export const switchAuthenticationForm = (formType, data) => dispatch => {
+/**
+ * Dispatch the form type to the global reducer in order to switch UI.
+ * @param {string} formType 
+ */
+export const switchAuthenticationForm = (formType) => dispatch => {
     dispatch({
         type: NAVIGATION_AUTHENTICATION_SWITCH_FORM,
         payload: formType

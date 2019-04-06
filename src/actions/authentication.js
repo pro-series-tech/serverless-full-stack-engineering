@@ -16,8 +16,9 @@ import Authentication from 'lib/authentication';
 const auth = new Authentication();
 /**
  * This function is helper to reduce redundant code that calls authentication functions.
+ * @async
  * @param {Function} dispatch Redux-thunk dispatch function.
- * @param {string} actionType Action value to be dispatches
+ * @param {string} actionType Action value to be dispatch.
  * @param {Function} authFunc The authentication function to be invoked.
  * @param {Any[]} authParams A list of arguments for the authentication function.
  * @returns {(string|undefined)} Returns error message if fails on async function call.
@@ -34,7 +35,8 @@ const authHelper = async (dispatch, actionType, authFunc, authParams) => {
     }
 };
 /**
- * Dispatches sign up action to authentication reducer.
+ * Signs up and dispatch sign up action to the authentication reducer.
+ * @async
  * @param {string} username 
  * @param {string} email 
  * @param {string} password 
@@ -61,7 +63,8 @@ export const signUp = (username, email, password) => async dispatch => {
     return error;
 };
 /**
- * Dispatches sign in action to authentication reducer.
+ * Sign in and dispatch sign in action to the authentication reducer.
+ * @async
  * @param {string} username 
  * @param {string} password
  * @returns {(string|undefined)} Returns error message if fails on async function call.
@@ -75,7 +78,8 @@ export const signIn = (username, password) => async dispatch => {
     );
 };
 /**
- * Dispatches registration confirmation action to authentication reducer.
+ * Confirm registration and dispatch registration confirmation action to the authentication reducer.
+ * @async
  * @param {string} username 
  * @param {string} code 
  * @returns {(string|undefined)} Returns error message if fails on async function call.
@@ -88,6 +92,12 @@ export const confirmRegistration = (username, code) => async dispatch => {
         [username, code]
     );
 };
+/**
+ * Dispatch resend email confirmation action to the authentication reducer.
+ * @async
+ * @param {string} username 
+ * @returns {(string|undefined)} Returns error message if fails on async function call.
+ */
 export const resendConfirmation = (username) => async dispatch => {
     return await authHelper(
         dispatch,
@@ -96,6 +106,14 @@ export const resendConfirmation = (username) => async dispatch => {
         [username]
     );
 };
+/**
+ * Dispatch the change password action to the authentication reducer.
+ * @async
+ * @param {string} username 
+ * @param {string} oldPassword 
+ * @param {string} newPassword 
+ * @returns {(string|undefined)} Returns error message if fails on async function call.
+ */
 export const changePassword = (username, oldPassword, newPassword) => async dispatch => {
     return await authHelper(
         dispatch,
@@ -104,6 +122,12 @@ export const changePassword = (username, oldPassword, newPassword) => async disp
         [username, oldPassword, newPassword]
     );
 };
+/**
+ * Dispatch the forgot password action to the authentication reducer.
+ * @async
+ * @param {string} username 
+ * @returns {(string|undefined)} Returns error message if fails on async function call.
+ */
 export const forgotPassword = (username) => async dispatch => {
     return await authHelper(
         dispatch,
@@ -112,6 +136,14 @@ export const forgotPassword = (username) => async dispatch => {
         [username]
     );
 };
+/**
+ * Dispatch the confirm password action to the authentication reducer.
+ * @async
+ * @param {string} username 
+ * @param {string} verificationCode 
+ * @param {string} newPassword 
+ * @returns {(string|undefined)} Returns error message if fails on async function call.
+ */
 export const confirmPassword = (username, verificationCode, newPassword) => async dispatch => {
     return await authHelper(
         dispatch,
@@ -120,6 +152,11 @@ export const confirmPassword = (username, verificationCode, newPassword) => asyn
         [username, verificationCode, newPassword]
     );
 };
+/**
+ * Dispatch the sign out action to the authentication reducer.
+ * @async
+ * @returns {(string|undefined)} Returns error message if fails on async function call.
+ */
 export const signOut = () => async dispatch => {
     return await authHelper(
         dispatch,
@@ -128,6 +165,10 @@ export const signOut = () => async dispatch => {
         []
     );
 };
+/**
+ * Dispatch the set-username action to the authentication reducer.
+ * @param {string} username 
+ */
 export const setUsername = (username) => dispatch => {
     dispatch({
         type: AUTHENTICATION_SET_USERNAME,
