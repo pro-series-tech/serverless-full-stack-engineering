@@ -1,5 +1,8 @@
+/* external imports */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Form, Icon, Input, Button } from 'antd';
+/* local imports */
 import { signIn, setUsername} from 'actions/authentication';
 import { switchAuthenticationForm} from 'actions/global';
 import {
@@ -7,34 +10,50 @@ import {
 	NAVIGATION_AUTHENTICATION_FORGOT_PASSWORD,
 	NAVIGATION_AUTHENTICATION_CONFIRM_ACCOUNT
 } from 'lib/types';
-import {
-	Form, Icon, Input, Button
-} from 'antd';
-
+/* component initial state constant */
+const initialState = {}
 class SignIn extends Component {
+	/* set the instance initial state as initialState clone */
+	state = {...initialState}
+	
+	/**
+	 * Handles the sign in submission
+	 * @param  {Event} e
+	 */
 	handleSubmit = (e) => {
+		/* cancel the form submission, we want to login manually instead */
 		e.preventDefault();
 		/* switch on loading spin on parent component */
 		this.props.switchLoading(true);
 		/* validate fields */
 		this.props.form.validateFields(async (err, values) => {
 			if (!err) {
+				/* try to sign in asynchronously, if success, undefined is returned, otherwise 
+				a string message is returned. */
 				let error = await this.props.signIn(values.userName, values.password);
 				/* if there was an error, and is type is not confirmed */
 				if (error){
 					this.evaluateSignInResult(error, values);
 				}
 			}
-			/* dissable loading */
+			/* dissable loading UI */
 			this.props.switchLoading(false);
 		});
 	}
+	/**
+	 * Helper function to display any error of sign in operation.
+	 * @param  {string} error
+	 * @param  {Object} values
+	 */
 	evaluateSignInResult = (error, values) =>{
+		/* determine the error by evaluating true conditions. */
 		switch (true) {
+			/* the account is not yet confirmed, switch to confirm account form */
 			case error.includes('not confirmed'):
 				this.props.setUsername(values.userName);
 				this.props.switchAuthenticationForm(NAVIGATION_AUTHENTICATION_CONFIRM_ACCOUNT);
 				break;
+			/* there was another error, display error message in password field */
 			default:
 				this.props.form.setFields({
 					password: {

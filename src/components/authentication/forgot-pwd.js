@@ -113,16 +113,27 @@ class ForgotPwd extends Component {
 			this.props.switchLoading(false);
 		});
 	}
+	/**
+	 * Confirm user new password when button is clicked.
+	 */
 	confirmPassword = () =>{
 		/* switch on loading spin on parent component */
 		this.props.switchLoading(true);
+		/* get this form from the properties */
 		const { form } = this.props;
+		/* validate form rields */
 		form.validateFields(async (err, values) => {
+			/* if no error, proceed to password confirmation */
 			if (!err) {
-				let username = this.state.currentUsername;
+				/* destructing state and getting the current username */
+				let { username } = this.state;
+				/* get both password and confirmation code from form */
 				let password = form.getFieldValue('password');
 				let code = form.getFieldValue('codeNumber');
+				/* confirm password asynchronously, returns undefined if no error, string
+				message if error */
 				let error = await this.props.confirmPassword(username, code, password);
+				/* if error was returned, display in the code number field */
 				if (error) {
 					this.props.form.setFields({
 						codeNumber: {
@@ -131,29 +142,40 @@ class ForgotPwd extends Component {
 						}
 					});
 				} else {
+					/* if no error then switch UI to sign in form */
 					this.props.switchAuthenticationForm(NAVIGATION_AUTHENTICATION_SIGN_IN);
 				}
 			}
-			/* dissable loading */
+			/* disable loading */
 			this.props.switchLoading(false);
 		});
 	}
+	/**
+	 * Renders switch to sign in anchor.
+	 * @returns {React.Component}
+	 */
 	renderGoToSignInLink = () =>{
 		return (<Form.Item>
 			<hr />
+			{/* Navigation link to sign in */}
 			<a 
 				href="#/"
 				onClick={() => {
 				this.props.switchAuthenticationForm(NAVIGATION_AUTHENTICATION_SIGN_IN);
-			}}>
-			Login Instead</a>
+			}}>Sign In Instead</a>
 		</Form.Item>)
 	}
+	/**
+	 * Renders code request not yet send form.
+	 * @returns {React.Component}
+	 */
 	renderCodeRequestNotYetSendForm = () => {
+		/* get Ant design form field decorator function for this form */
 		const { getFieldDecorator } = this.props.form;
 		return (
 			<Form >
 				<Form.Item>
+					{/* wrap input into a form field to enter username */}
 					{getFieldDecorator('userName', {
 						rules: [{ required: true, message: 'Please input your username!' }],
 					})(
@@ -161,22 +183,31 @@ class ForgotPwd extends Component {
 					)}
 				</Form.Item>
 				<Form.Item>
+					{/* Butotn to send forgot password code */}
 					<Button type='primary' onClick={this.sendCodeRequest} className='login-form-button'>
 						Send Forgot Request Email
 					</Button>
 				</Form.Item>
+				{/* Render switch to sign in link */}
 				{this.renderGoToSignInLink()}
 			</Form>
 		)
 	}
+    /**
+     * Renders the change password form component.
+     * @returns {React.Component}
+     */
 	renderChangePassword = () => {
+				/* get Ant design form field decorator function for this form */
 		const { getFieldDecorator } = this.props.form;
 		return (
 			<Form >
 				<Form.Item>
+					{/* set the username value in a disabled input field for display purposes */}
 					<Input prefix={<Icon type='user' style={styles.field} />} disabled value={this.state.currentUsername}/>
 				</Form.Item>
 				<Form.Item>
+					{/* wrap input into a form field to enter password */}
 					{getFieldDecorator('password', {
 						rules: [{
 							required: true, message: 'Please input your Password!'
@@ -189,6 +220,7 @@ class ForgotPwd extends Component {
 					)}
 				</Form.Item>
 				<Form.Item>
+					{/* wrap input into a form field to enter confirm password */}
 					{getFieldDecorator('confirm', {
 						rules: [{
 							required: true, message: 'Please confirm your password!',
@@ -200,6 +232,7 @@ class ForgotPwd extends Component {
 					)}
 				</Form.Item>
 				<Form.Item>
+					{/* wrap input into a form field to enter code confirmation number */}
 					{getFieldDecorator('codeNumber', {
 						rules: [{ required: true, message: 'Please enter code number send to your email!' }],
 					})(
@@ -207,14 +240,21 @@ class ForgotPwd extends Component {
 					)}
 				</Form.Item>
 				<Form.Item>
+					{/* wrap input into a form field to enter code confirmation number */}
 					<Button type='primary' onClick={this.confirmPassword} className='login-form-button'>
 						Confirm Password
 					</Button>
 				</Form.Item>
+				{/* Render switch to sign in link */}
 				{this.renderGoToSignInLink()}
 			</Form>
 		)
 	}
+    /**
+     * Renders the code request form or change password form depending
+	 * on the current workflo step.
+     * @returns {React.Component}
+     */
 	render(){
 		let {workflowStep} = this.state;
 		switch (workflowStep) {
@@ -227,7 +267,7 @@ class ForgotPwd extends Component {
 		}
 	}
 }
-
+/* component styles */
 const styles = {
 	field: {
 		color: 'gray'
@@ -236,15 +276,17 @@ const styles = {
 
 /* wrap the form before passing it out to redux connect */
 const WrappeForgotPasswordForm = Form.create({ name: 'normal_login' })(ForgotPwd);
-
+/* redux map state to properties */
 const mapStateToProps = (state, ownProps) => {
 	return {};
 };
+/* redux map dispatch functions to properties */
 const mapDispatchToProps = { 
 	forgotPassword,
 	confirmPassword,
 	switchAuthenticationForm
 };
+/* wrap this component into a redux component */
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
