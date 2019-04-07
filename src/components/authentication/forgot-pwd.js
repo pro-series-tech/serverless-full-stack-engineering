@@ -94,7 +94,7 @@ class ForgotPwd extends Component {
 				/* if there was an error sending the code, set
 				error message as username input error message */
 				if(error){
-					this.props.form.setFields({
+					form.setFields({
 						userName: {
 							value: values.userName,
 							errors: [new Error(error)]
@@ -135,7 +135,7 @@ class ForgotPwd extends Component {
 				let error = await this.props.confirmPassword(username, code, password);
 				/* if error was returned, display in the code number field */
 				if (error) {
-					this.props.form.setFields({
+					form.setFields({
 						codeNumber: {
 							value: values.codeNumber,
 							errors: [new Error(error)]
@@ -198,7 +198,7 @@ class ForgotPwd extends Component {
      * @returns {React.Component}
      */
 	renderChangePassword = () => {
-				/* get Ant design form field decorator function for this form */
+		/* get Ant design form field decorator function for this form */
 		const { getFieldDecorator } = this.props.form;
 		return (
 			<Form >

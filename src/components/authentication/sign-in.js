@@ -15,7 +15,6 @@ const initialState = {}
 class SignIn extends Component {
 	/* set the instance initial state as initialState clone */
 	state = {...initialState}
-	
 	/**
 	 * Handles the sign in submission
 	 * @param  {Event} e
@@ -31,7 +30,7 @@ class SignIn extends Component {
 				/* try to sign in asynchronously, if success, undefined is returned, otherwise 
 				a string message is returned. */
 				let error = await this.props.signIn(values.userName, values.password);
-				/* if there was an error, and is type is not confirmed */
+				/* if there was an error, call helper function */
 				if (error){
 					this.evaluateSignInResult(error, values);
 				}
@@ -63,12 +62,17 @@ class SignIn extends Component {
 				});
 		}
 	}
+    /**
+     * Renders the sign in form component.
+     * @returns {React.Component}
+     */
 	render(){
+		/* get Ant design form field decorator function for this form */
 		const { getFieldDecorator } = this.props.form;
-
 		return (
 			<Form onSubmit={this.handleSubmit} >
 				<Form.Item>
+					{/* wrap input into a form field to enter username */}
 					{getFieldDecorator('userName', {
 						rules: [{ required: true, message: 'Please input your username!' }],
 					})(
@@ -76,6 +80,7 @@ class SignIn extends Component {
 					)}
 				</Form.Item>
 				<Form.Item>
+					{/* wrap input into a form field to enter password */}
 					{getFieldDecorator('password', {
 						rules: [{ required: true, message: 'Please input your Password!' }],
 					})(
@@ -83,6 +88,7 @@ class SignIn extends Component {
 					)}
 				</Form.Item>
 				<Form.Item>
+					{/* render the forgot password link. clicking will switch to the forgot password form. */}
 					<a 
 					href="#/"
 					onClick={() => {
@@ -90,44 +96,44 @@ class SignIn extends Component {
 					}}>Forgot Password</a>
 				</Form.Item>
 				<Form.Item>
-
+					{/* render sign in button, when clicked, an attempt to sing in will executed */}
 					<Button type='primary' htmlType='submit' className='login-form-button'>
 						Sign In
          			 </Button>
 					<hr/>
+					{/* Render switch to sign up link */}
 					<a 
 					href="#/"
 					onClick={()=>{
 						this.props.switchAuthenticationForm(NAVIGATION_AUTHENTICATION_SIGN_UP);
 					}}>Create Account</a>
 				</Form.Item>
-
 			</Form>
 		)
 	}
-
 }
-
+/* component styles */
 const styles = {
 	field: {
 		color: 'gray'
 	}
 };
-
 /* wrap the form before passing it out to redux connect */
 const WrappeSignInForm = Form.create({ name: 'normal_login' })(SignIn);
-
+/* redux map state to properties */
 const mapStateToProps = (state, ownProps) => {
 	return {
 		switchLoading: ownProps.switchLoading,
 		username: state.authentication.username
 	};
 };
+/* redux map dispatch functions to properties */
 const mapDispatchToProps = { 
 	signIn,
 	setUsername,
 	switchAuthenticationForm
 };
+/* wrap this component into a redux component */
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
