@@ -185,14 +185,20 @@ class ImageCRUD extends Component {
 		let nameIsValid = this.state.name.trim() !== '';
 		let descriptionIsValid = this.state.description.trim() !== '';
 		let imageIsValid = this.state.image != null;
-
+		/* if name, description and image are valid */
 		return nameIsValid && descriptionIsValid && imageIsValid;
 	};
-
+	/**
+	 * Renders the CRUD modal component.
+	 * @returns {React.Component}
+	 */
 	render() {
+		/* get properties from current state */
 		let { image, userId, name, description, rating } = this.state;
-
+		/* upload button component variable*/
 		let uploadButton;
+		/* if not image present in state and this is a new image(not user id present)
+		then create a division with a upload button */
 		if (!this.state.image && !userId) {
 			uploadButton = (
 				<div style={styles.uploadDiv}>
@@ -202,10 +208,7 @@ class ImageCRUD extends Component {
 				</div>
 			);
 		}
-		/**
-		 * Renders the CRUD modal component.
-		 * @returns {React.Component}
-		 */
+		/* render the component */
 		return (
 			/* the ant design modal component */
 			<Modal
@@ -226,17 +229,45 @@ class ImageCRUD extends Component {
 			>
 				{/* Fields needed to create/edit an image in serverless backend */}
 				<div style={styles.uploadDiv}>
-					<Upload name='image' accept='.png' listType='picture' className='image-uploader' multiple={false} beforeUpload={this.handleImageRead} onRemove={this.handleImageRemove} disabled={image !== null && image !== undefined}>
+					<Upload 
+						name='image' 
+						accept='.png' 
+						multiple={false} 
+						listType='picture' 
+						className='image-uploader' 
+						onRemove={this.handleImageRemove} 
+						beforeUpload={this.handleImageRead} 
+						disabled={image !== null && image !== undefined}
+					>
 						{uploadButton}
 					</Upload>
 				</div>
-				<Rate style={styles.rating} tooltips={['bad', 'ok', 'good', 'excellent', 'outstanding']} onChange={this.handleRateChange} character={<Icon type='heart' />} value={rating} />
+				{/* Rating component */}
+				<Rate 
+					value={rating} 
+					style={styles.rating} 
+					onChange={this.handleRateChange} 
+					character={<Icon type='heart' />} 
+					tooltips={['bad', 'ok', 'good', 'excellent', 'outstanding']} 
+				/>
 				<br />
-				<Input style={styles.name} value={name} prefix={<Icon type='picture' />} onChange={this.handleNameChange} placeholder='Picture Name' />
+				{/* Picture name input field */}
+				<Input 
+					value={name} 
+					style={styles.name} 
+					placeholder='Picture Name' 
+					prefix={<Icon type='picture' />} 
+					onChange={this.handleNameChange} 
+				/>
 				<br />
 				{/* React quill editor. More info: https://github.com/zenoamaro/react-quill */}
-				<ReactQuill value={description} onChange={this.handleDescriptionChange} placeholder='Picture Description' />
+				<ReactQuill 
+					value={description} 
+					placeholder='Picture Description' 
+					onChange={this.handleDescriptionChange} 
+				/>
 				<br />
+				{/* Progress bar for file upload */}
 				<Progress percent={this.state.uploadPercentage} />
 			</Modal>
 		);
