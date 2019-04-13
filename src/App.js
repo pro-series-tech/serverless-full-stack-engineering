@@ -1,16 +1,23 @@
+/* external imports */
 import React, { Component } from 'react';
-import Layout from 'components/layout';
 import 'antd/dist/antd.css';
+/* local imports */
+import Layout from 'components/layout';
 import './App.css';
 
+/* remove comment for testing of component template */
 //import MyComponent from 'components/componentTemplate';
 
 /*testing modules */
 class App extends Component {
+    /**
+     * Renders the layout component.
+     * @returns {React.Component}
+     */
 	render() {
 		//return <MyComponent ownMessage='My Own message' />
-		 return <Layout />;
+		return <Layout />;
 	}
 }
-
+/* export react component */
 export default App;

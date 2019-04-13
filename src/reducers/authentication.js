@@ -1,15 +1,15 @@
+/* local imports */
 import { 
     AUTHENTICATION_SIGN_IN,
-    AUTHENTICATION_SIGN_OUT,
     AUTHENTICATION_SIGN_UP,
-    AUTHENTICATION_SET_USERNAME,
+    AUTHENTICATION_SIGN_OUT,
+    AUTHENTICATION_SET_USERNAME
 } from 'lib/types';
-
+/* store initial state constant */
 const initialState = {
     username: null,
     credentials: null
 };
-
 export default (state = initialState, action) => {
     switch (action.type) {
         case AUTHENTICATION_SET_USERNAME:

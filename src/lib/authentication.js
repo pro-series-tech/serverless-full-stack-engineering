@@ -1,10 +1,12 @@
+/* external imports */
 import AWS from 'aws-sdk';
 import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
+/* local imports */
 import { 
+	AWS_REGION,
 	USER_POOL_ID, 
-	USER_POOL_CLIENT_ID, 
 	IDENTITY_POOL_ID,
-	AWS_REGION
+	USER_POOL_CLIENT_ID
 } from 'lib/environment';
 /* the user pool for registration and login operations */
 const userPool = new AmazonCognitoIdentity.CognitoUserPool({

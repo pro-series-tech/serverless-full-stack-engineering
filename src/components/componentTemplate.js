@@ -1,16 +1,16 @@
+/* external imports */
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {} from "antd";
+/* local imports */
 import { myAction } from "actions/actionsTemplate";
 /* this component initial state */
 const initialState = {
 	stateMessage: "hello world",
 	counter: 0
 };
-/* react component class definition, extending react Component parent class */
 class MyComponent extends Component {
-	/* set the initial stae */
-	state = initialState;
+    /* set the instance initial state as initialState clone */
+    state = {...initialState}
 	/**
 	 * Handles local state button onClick event.
 	 */
@@ -24,12 +24,16 @@ class MyComponent extends Component {
 			stateMessage
 		});
 	};
+	/**
+	 * Handles the redux action trigger.
+	 */
 	handleReduxClick = () => {
 		this.props.myAction(new Date());
 	};
-	/**
-	 * Renders the react component.
-	 */
+    /**
+     * Renders the template component.
+     * @returns {React.Component}
+     */
 	render() {
 		/* get the component properties and state using destructuring */
 		let { stateMessage } = this.state;
@@ -52,19 +56,19 @@ class MyComponent extends Component {
 /* define the component CSS styles */
 const styles = {
 	div: {
+		fontSize: 48,
+		color: "red",
+		height: '100%',
 		paddingTop: '15%',
 		textAlign: 'center',
-		height: '100%',
-		color: "red",
-		background: "black",
-		fontSize: 48
+		background: "black"
 	}
 };
 /* map the redux state values to component properties */
 const mapStateToProps = (state, ownProps) => {
 	return {
-		propMessage: ownProps.ownMessage,
-		myDate: state.myReducer.myDate
+		myDate: state.myReducer.myDate,
+		propMessage: ownProps.ownMessage
 	};
 };
 /* map the dispatching actions to component properties */

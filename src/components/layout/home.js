@@ -96,6 +96,7 @@ class Home extends Component {
         );
     }
 }
+/* component styles */
 const styles = {
     layoutContainer:{
         minHeight: '100vh'
