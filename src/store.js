@@ -1,23 +1,31 @@
-import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
+/* external imports */
+import { 
+    compose, 
+    createStore, 
+    combineReducers, 
+    applyMiddleware 
+} from 'redux';
 import thunk from 'redux-thunk';
-import global from 'reducers/global';
-import authentication from 'reducers/authentication';
+/* local imports (all our reducers) */
 import crud from 'reducers/crud';
+import global from 'reducers/global';
 import gallery from 'reducers/gallery';
+import authentication from 'reducers/authentication';
+//import myReducer from 'reducers/reducerTemplate';
 
-import myReducer from 'reducers/reducerTemplate';
-
-// Use ES6 object literal shorthand syntax to define the object shape
+/* Use ES6 object literal shorthand syntax to define the object shape.
+ combine all reducers into one big store */
 const rootReducer = combineReducers({
-    myReducer,
-    global,
-    authentication,
+    //myReducer,
     crud,
-    gallery
+    global,
+    gallery,
+    authentication
 });
-
+/* composer enhancers, if Redux Tools are present use it, otherise use
+the imported composer object. For more information about Redux Tools: http://extension.remotedev.io */
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
+/* create store and export */
 export default createStore(
     rootReducer, 
     composeEnhancers(applyMiddleware(thunk))

@@ -1,12 +1,16 @@
+/* external imports */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux'
-import store from './store'
+import { Provider } from 'react-redux';
+/* local imports */
 import './index.css';
 import App from './App';
+import store from './store'
 import * as serviceWorker from './serviceWorker';
 
+/* render the app into the HTML root element */
 ReactDOM.render(
+/* wrap the application into a Redux store provider */
 <Provider store={store}>
     <App />
 </Provider>, 
