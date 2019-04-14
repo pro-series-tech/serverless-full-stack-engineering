@@ -30,27 +30,31 @@ provider:
 # The following plugins are used to easy some functions of the serverless
 # workflow.
 plugins:
-  - serverless-finch                  # 
-  - serverless-webpack
-  - serverless-s3-remover
-  - serverless-stack-output
-  - serverless-dynamodb-autoscaling
-  - serverless-single-page-app-plugin
+  - serverless-finch                  # will deploy app dist to s3 bucket.
+  - serverless-webpack                # will pack lambda functions with webpack.
+  - serverless-s3-remover             # remove s3 bucket after stack is removed.
+  - serverless-stack-output           # will output the stack metadata for .env creation(urls, keys, etc)
+  - serverless-dynamodb-autoscaling   # autoconfigures the dynamodb provision autoscaling.
+  - serverless-single-page-app-plugin # deploys CloudFront distribution with provided S3 bucket name.
 
+# The custom definitions will be used by the plugins and other declarations.
+# Note that the 'resourceNames' area is not required by any plugin but is used
+# to define resource names who's names are long, so this definitions will help
+# simplify referencing all resource names from a single source of truth.
 custom:
   resourceNames: 
     # change this word to one of your choice, S3 public web buckets needs to be unique.
     # really... DON'T USE avocado
-    uniqueWord: avocado
-    uniqueStage: ${self:provider.stage}${self:custom.resourceNames.uniqueWord}
-    frontEndBucket: ${self:custom.resourceNames.uniqueStage}-front-end 
-    pictureBucket: ${self:custom.resourceNames.uniqueStage}-picture 
-    pictureTable: ${self:custom.resourceNames.uniqueStage}-picture-table
-    identityPool: ${self:custom.resourceNames.uniqueStage}IdentityPool
+    uniqueWord: avocado                                           
     userPool: ${self:custom.resourceNames.uniqueStage}-user-pool
+    pictureBucket: ${self:custom.resourceNames.uniqueStage}-picture 
+    identityPool: ${self:custom.resourceNames.uniqueStage}IdentityPool
+    frontEndBucket: ${self:custom.resourceNames.uniqueStage}-front-end 
+    pictureTable: ${self:custom.resourceNames.uniqueStage}-picture-table
     poolClient: ${self:custom.resourceNames.uniqueStage}-user-pool-client
+    uniqueStage: ${self:provider.stage}${self:custom.resourceNames.uniqueWord}
   output:
-    handler: scripts/config.handler # Same syntax as you already know
+    handler: scripts/config.handler # 
   capacities:
     - table: PicturesTable  # DynamoDB Resource
       read:
@@ -62,14 +66,14 @@ custom:
         maximum: 10      # Maximum write capacity
         usage: 0.5        # Targeted usage percentage
   client:
-    bucketName: ${self:custom.resourceNames.frontEndBucket}
-    distributionFolder: ../build 
     indexDocument: index.html
     errorDocument: index.html
+    distributionFolder: ../build 
+    bucketName: ${self:custom.resourceNames.frontEndBucket}
   remover:
      buckets:
-       - ${self:custom.resourceNames.frontEndBucket}
        - ${self:custom.resourceNames.pictureBucket}
+       - ${self:custom.resourceNames.frontEndBucket}
 # you can add packaging information here, include or exclude files that
 # will be deployed to the functions.
 # package:
@@ -104,7 +108,7 @@ functions:
       environment: 
         PICTURE_BUCKET: ${self:custom.resourceNames.pictureBucket}
 resources:
+    - ${file(resources/misc.yml)}
     - ${file(resources/security.yml)}
     - ${file(resources/data-storage.yml)}
     - ${file(resources/object-storage.yml)}
-    - ${file(resources/misc.yml)}
