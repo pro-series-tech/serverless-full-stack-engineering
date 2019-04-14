@@ -35,7 +35,7 @@ plugins:
   - serverless-s3-remover             # remove s3 bucket after stack is removed.
   - serverless-stack-output           # will output the stack metadata for .env creation(urls, keys, etc)
   - serverless-dynamodb-autoscaling   # autoconfigures the dynamodb provision autoscaling.
-  - serverless-single-page-app-plugin # deploys CloudFront distribution with provided S3 bucket name.
+#  - serverless-single-page-app-plugin # deploys CloudFront distribution with provided S3 bucket name.
 
 # The custom definitions will be used by the plugins and other declarations.
 # Note that the 'resourceNames' variable is not required by any plugin but is used
@@ -69,7 +69,8 @@ custom:
         minimum: 1       # Minimum write capacity
         maximum: 10      # Maximum write capacity
         usage: 0.5        # Targeted usage percentage
-  # the client custom variable is used by the ''
+  # the client custom variable is used by the 'serverless-finch' plugin in order to 
+  # upload the Front End application to the S3 bucket.
   client:
     indexDocument: index.html
     errorDocument: index.html

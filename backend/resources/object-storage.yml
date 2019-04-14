@@ -1,4 +1,12 @@
+#############################################################################################
+# This YML file declares the serverless stack's object storage related AWS resources.
+#
+# Author: Victor Santos Uceta
+# License: Attribution-NonCommercial-NoDerivatives 4.0 International
+#############################################################################################
 Resources:
+  # The definition of the front end S3 bucket which will host the web app. For more information on
+  # S3 bucket as web app hosting read: https://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteHosting.html
   FrontEndBucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -13,6 +21,8 @@ Resources:
           AllowedMethods: [GET,HEAD]
           AllowedOrigins: ['*']
           ExposedHeaders: [Date]
+  # Definition of the Picture's storage bucket. For more information about S3 buckets
+  # read: https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingBucket.html
   PicturesBucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -23,6 +33,9 @@ Resources:
           AllowedMethods: [GET,PUT,POST,DELETE,HEAD]
           AllowedOrigins: ['*']
           ExposedHeaders: [Date]
+# when the stack is sucessfully build, it will print the following variables. Which
+# correspond to properties of the created resources. This properties will be used
+# as environment variable via a .env file.
 Outputs:
   FrontEndBucketName:
     Value:

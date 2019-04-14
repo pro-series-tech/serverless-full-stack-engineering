@@ -1,15 +1,25 @@
+#############################################################################################
+# This YML file declares the serverless stack's data storage related AWS resources.
+#
+# Author: Victor Santos Uceta
+# License: Attribution-NonCommercial-NoDerivatives 4.0 International
+#############################################################################################
 Resources:
+  # The definition of the Pictures DynamoDB table. For more information about dynamoDB tables
+  # read: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithTables.html
   PicturesTable:
     Type: "AWS::DynamoDB::Table"
     Properties:
       TableName: ${self:custom.resourceNames.pictureTable}
       AttributeDefinitions:
         - 
-          AttributeName: userId
+          AttributeName: userId # this is the table partition key.
           AttributeType: S
         - 
-          AttributeName: pictureId
+          AttributeName: pictureId # this is the table sort key.
           AttributeType: S
+      # Key schema is very important. For more information on how this works
+      # read: https://aws.amazon.com/blogs/database/choosing-the-right-dynamodb-partition-key
       KeySchema:
         - 
           AttributeName: userId
@@ -17,11 +27,19 @@ Resources:
         - 
           AttributeName: pictureId
           KeyType: RANGE
+      # This is the provision we assign to the table. Read and Write capacity units
+      # for the table. This is important for the scalability of the table and how it is
+      # billed. For more information read: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadWriteCapacityMode.html
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
+      # Stream events are enabled. Any change to the record will provide the old and new version
+      # of the record to the consumer of the event(in this case the 'trigger' lambda function)
       StreamSpecification:
         StreamViewType: NEW_AND_OLD_IMAGES
+# when the stack is sucessfully build, it will print the following variables. Which
+# correspond to properties of the created resources. This properties will be used
+# as environment variable via a .env file.
 Outputs:
   PicturesTableName:
     Value:

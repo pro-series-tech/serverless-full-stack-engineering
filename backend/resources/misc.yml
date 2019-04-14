@@ -1,14 +1,26 @@
+#############################################################################################
+# This YML file declares the serverless stack's miscellaneous AWS resources.
+#
+# Author: Victor Santos Uceta
+# License: Attribution-NonCommercial-NoDerivatives 4.0 International
+#############################################################################################
 Resources:
+  # Definition for the CloudFront distribution. This will create a new cloudfront
+  # distribution which will pull from the Picture S3 bucket and redistribute
+  # the webapp via AWS CDN to the edges around the world. It also takes care
+  # of certificates and other important aspects of using CDN in producitn applications.
   ProServerlessCloudFrontDistribution:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
         Origins:
+            # the webapp files will be pulled from the Front End bucket.
           - DomainName: ${self:custom.resourceNames.frontEndBucket}.s3.amazonaws.com
             Id: ProServerless
             CustomOriginConfig:
               HTTPPort: 80
               HTTPSPort: 443
+              # the application will be served via HTTPS only.
               OriginProtocolPolicy: https-only
         Enabled: "true"
         DefaultRootObject: index.html
@@ -18,21 +30,27 @@ Resources:
             ResponsePagePath: /index.html
         DefaultCacheBehavior:
           AllowedMethods:
-            - DELETE
+#            - DELETE
             - GET
             - HEAD
             - OPTIONS
             - PATCH
             - POST
             - PUT
+          # the target id of the origin defined above.
           TargetOriginId: ProServerless
           ForwardedValues:
             QueryString: "false"
             Cookies:
               Forward: none
+          # if accessed via HTTP, redirect to HTTPS
           ViewerProtocolPolicy: redirect-to-https
+        # use certificate provided by cloudfront(free)
         ViewerCertificate:
           CloudFrontDefaultCertificate: "true"
+# when the stack is sucessfully build, it will print the following variables. Which
+# correspond to properties of the created resources. This properties will be used
+# as environment variable via a .env file.
 Outputs:
   ProServerlessCloudFrontDistribution:
     Value:
