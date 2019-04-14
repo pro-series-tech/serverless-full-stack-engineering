@@ -1,4 +1,30 @@
+#############################################################################################
+# This YML file declares the serverless stack security and user base related AWS resources.
+#
+# Author: Victor Santos Uceta
+# License: Attribution-NonCommercial-NoDerivatives 4.0 International
+#############################################################################################
 Resources:
+  # the Cognito User Pool is where we store our users. AWS handles many complex logic
+  # and provides lots of useful functionality which makes it easy to create
+  # services that requires industry standard authentication. For more information
+  # read: https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-identity-pools.html
+  CognitoUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      # Generate a name based on the stage
+      UserPoolName: ${self:custom.resourceNames.userPool}
+      # Set email as an alias
+      AliasAttributes:
+        - preferred_username
+      AutoVerifiedAttributes:
+        - email
+  # the Cognito Identity Pool is a way to provide authenticated users(can come from a Cognito
+  # user pool, Google, Facebook, or other user pools) with temporary credentials to AWS resources
+  # by using AWS provided security and APIs. This is very useful when we need users to access only
+  # their respective AWS resource, storage, etc. This is independent of Cognito User Pool, they are
+  # related in a way, but it is not requried to have a User Pool in order to create a Indentity pool.
+  # For more nformation read: https://docs.aws.amazon.com/cognito/latest/developerguide/identity-pools.html
   CognitoIdentityPool:
     Type: AWS::Cognito::IdentityPool
     Properties:
@@ -12,16 +38,9 @@ Resources:
             Ref: CognitoUserPoolClient
           ProviderName:
             Fn::GetAtt: [ "CognitoUserPool", "ProviderName" ]
-  CognitoUserPool:
-    Type: AWS::Cognito::UserPool
-    Properties:
-      # Generate a name based on the stage
-      UserPoolName: ${self:custom.resourceNames.userPool}
-      # Set email as an alias
-      AliasAttributes:
-        - preferred_username
-      AutoVerifiedAttributes:
-        - email
+  # The user pool client is a Client API definition connected to the defined User Pool above. This is
+  # necessary to provide our Front End application access to the User Pool in order to sign in, sing up,
+  # and do many other operations provided by the User Pool.
   CognitoUserPoolClient:
     Type: AWS::Cognito::UserPoolClient
     Properties:
@@ -32,7 +51,9 @@ Resources:
       ExplicitAuthFlows:
         - ADMIN_NO_SRP_AUTH
       GenerateSecret: false
-  # IAM roles
+  # This is the settings that specify the IAM role to assign to the Identity Pool. 
+  # Basically this tells the Identity Pool that any credential provided to the 
+  # users will follow the 'CognitoAuthRole' security rules.
   CognitoIdentityPoolRoles:
     Type: AWS::Cognito::IdentityPoolRoleAttachment
     Properties:
@@ -41,7 +62,10 @@ Resources:
       Roles:
         authenticated:
           Fn::GetAtt: [CognitoAuthRole, Arn]
-    # IAM role used for authenticated users
+    # The Congnito authentication IAM role. This declares all the security rules that
+    # any user or resource will follow if the 'CognitoAuthRole' is assigned to it.
+    # Think of it like a list of what a user or resource can do or cannot. For more
+    # information bout IAM Roles read: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html
   CognitoAuthRole:
     Type: AWS::IAM::Role
     Properties:
@@ -60,6 +84,7 @@ Resources:
                   Ref: CognitoIdentityPool
               'ForAnyValue:StringLike':
                 'cognito-identity.amazonaws.com:amr': authenticated
+      # The policies(permissions) to follow.
       Policies:
         - PolicyName: 'CognitoAuthorizedPolicy'
           PolicyDocument:
@@ -93,6 +118,9 @@ Resources:
                   ForAllValues:StringEquals:
                     dynamodb:LeadingKeys: 
                       Fn::Join: ['', ['$', '{cognito-identity.amazonaws.com:sub}']]
+# when the stack is sucessfully build, it will print the following variables. Which
+# correspond to properties of the created resources. This properties will be used
+# as environment variable via a .env file.
 Outputs:
   IdentityPoolId:
     Value:

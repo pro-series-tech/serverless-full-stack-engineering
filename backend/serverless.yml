@@ -38,7 +38,7 @@ plugins:
   - serverless-single-page-app-plugin # deploys CloudFront distribution with provided S3 bucket name.
 
 # The custom definitions will be used by the plugins and other declarations.
-# Note that the 'resourceNames' area is not required by any plugin but is used
+# Note that the 'resourceNames' variable is not required by any plugin but is used
 # to define resource names who's names are long, so this definitions will help
 # simplify referencing all resource names from a single source of truth.
 custom:
@@ -53,8 +53,12 @@ custom:
     pictureTable: ${self:custom.resourceNames.uniqueStage}-picture-table
     poolClient: ${self:custom.resourceNames.uniqueStage}-user-pool-client
     uniqueStage: ${self:provider.stage}${self:custom.resourceNames.uniqueWord}
+  # the output custom variable is used by the 'serverless-stack-output' to 
+  # determine where is script for output post processing.
   output:
-    handler: scripts/config.handler # 
+    handler: scripts/config.handler # The output post processing script which will build the .env file.
+  # The capacities environment variable is used by the 'serverless-dynamodb-autoscaling ' plugin to
+  # define the dynamodb autoscaling specifications.
   capacities:
     - table: PicturesTable  # DynamoDB Resource
       read:
@@ -65,50 +69,64 @@ custom:
         minimum: 1       # Minimum write capacity
         maximum: 10      # Maximum write capacity
         usage: 0.5        # Targeted usage percentage
+  # the client custom variable is used by the ''
   client:
     indexDocument: index.html
     errorDocument: index.html
     distributionFolder: ../build 
     bucketName: ${self:custom.resourceNames.frontEndBucket}
+  # the remover custom variable is used by the 'serverless-s3-remover' plugin in order to specify
+  # which buckets should be deleted when the serverless stack is removed. Note that buckets with
+  # content are not removed by default and will in fact stop the stack removing process.
   remover:
      buckets:
        - ${self:custom.resourceNames.pictureBucket}
        - ${self:custom.resourceNames.frontEndBucket}
-# you can add packaging information here, include or exclude files that
-# will be deployed to the functions.
+# you can add packaging information here, include or exclude files that will be 
+# included or excluded from the server less function deployment package.
 # package:
 #   include:
-#      - src/test.jpg
+#      - src/test.png
 #  exclude:
 #    - exclude-me.js
 
+# Here is the definition of the serverless functions. This will create one lambda function by
+# definition and will automatically create a API Gateway endpoint if the event is 'http'. There
+# are many type of events that can trigger a lambda function, for more details
+# read: https://serverless.com/framework/docs/providers/aws/events
 functions: 
-    dynamodb-trigger:
-      name: trigger
+    dynamodb-trigger:                 # the table stream event, which is used to delete
+      name: trigger                   # the image file after the table record is deleted.
       handler: src/trigger.handler 
       events:
-        - stream:
-            type: dynamodb
+        - stream:                     # when something happens in the dynamoDB picture table
+            type: dynamodb            # trigger this function.
             batchSize: 1
             startingPosition: LATEST
             arn:
               Fn::GetAtt:
                 - PicturesTable
                 - StreamArn
-      environment: 
+      environment:                    # pass this environment variable to the function.
         PICTURE_BUCKET: ${self:custom.resourceNames.pictureBucket}
-    image-analysis:
-      name: analysis
+    image-analysis:                   # the image analyis http trigger. This function will be trigger
+      name: analysis                  # when the provided http endpoint is called via POST.
       handler: src/image.handler
       events:
         - http:
             path: image/analysis
             method: post     
             cors: true       
-      environment: 
+      environment:                    # pass this environment variable to the function.
         PICTURE_BUCKET: ${self:custom.resourceNames.pictureBucket}
+
+# The resources section will follows the AWS cloudformation syntax and it is used
+# to define additional AWS resources which you desire to use in your serverless
+# stack. You can directly define these resources down here but it is good practice
+# to split the resources definition into separate files to prevent overly large
+# yml files hard to maintain and read.
 resources:
-    - ${file(resources/misc.yml)}
+    - ${file(resources/misc.yml)}     # this is how we specify that this file will be append in this section.
     - ${file(resources/security.yml)}
     - ${file(resources/data-storage.yml)}
     - ${file(resources/object-storage.yml)}
