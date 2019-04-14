@@ -30,10 +30,10 @@ provider:
 # The following plugins are used to easy some functions of the serverless
 # workflow.
 plugins:
+  - serverless-stack-output           # will output the stack metadata for .env creation(urls, keys, etc)
   - serverless-finch                  # will deploy app dist to s3 bucket.
   - serverless-webpack                # will pack lambda functions with webpack.
   - serverless-s3-remover             # remove s3 bucket after stack is removed.
-  - serverless-stack-output           # will output the stack metadata for .env creation(urls, keys, etc)
   - serverless-dynamodb-autoscaling   # autoconfigures the dynamodb provision autoscaling.
 #  - serverless-single-page-app-plugin # deploys CloudFront distribution with provided S3 bucket name.
 

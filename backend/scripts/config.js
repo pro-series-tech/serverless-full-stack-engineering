@@ -25,6 +25,8 @@ function handler (data, serverless, options) {
     `REACT_APP_PICTURES_BUCKET=${data.PicturesBucketName}`,
     `REACT_APP_FRONT_END_BUCKET=${data.FrontEndBucketName}`,
     `REACT_APP_USER_POOL_CLIENT_ID=${data.UserPoolClientId}`,
+    `REACT_APP_CLOUDFRONT_URL=https://${data.ProServerlessCloudFrontDistribution}`,
+    `REACT_APP_FRONT_END_S3_URL=http://${data.FrontEndBucketName}.s3.amazonaws.com`
   ].join('\n')
   /* write configuration to file */
   fs.writeFileSync(path.join(__dirname, `../../.${options.stage}.env`), config)

@@ -30,7 +30,7 @@ Resources:
             ResponsePagePath: /index.html
         DefaultCacheBehavior:
           AllowedMethods:
-#            - DELETE
+            - DELETE
             - GET
             - HEAD
             - OPTIONS
