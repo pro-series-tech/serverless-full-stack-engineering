@@ -1,8 +1,13 @@
+/**
+ * This script exports the Authentication class which wraps the Cognito Identity SDK.
+ * 
+ * @author Victor Santos Uceta
+ * @license Attribution-NonCommercial-NoDerivatives 4.0 International
+ */
 /* external imports */
 import AWS from 'aws-sdk';
 /* local imports */
 import { AWS_REGION, PICTURE_TABLE } from 'lib/environment';
-
 export default class DataStorage{
     /**
      * Constructor for DataStorage class.

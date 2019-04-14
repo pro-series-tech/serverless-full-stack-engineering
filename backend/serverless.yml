@@ -1,24 +1,36 @@
-service: pro-series-serverless # NOTE: update this with your service name
+#############################################################################################
+# This YML file declares the serverless stack which will be automatically deployed in AWS
+# uppon running: $ serverless deploy <environment>.
+#
+# Author: Victor Santos Uceta
+# License: Attribution-NonCommercial-NoDerivatives 4.0 International
+#############################################################################################
+# name of the service
+service: pro-series-serverless
+# reinforce the serverless framework version
 frameworkVersion: "=1.38.0"
+# the provider specification. We will deploy the stack using AWS.
 provider:
-  name: aws
-  stage: ${opt:stage, 'dev'}
-  runtime: nodejs8.10
-  region: us-east-1
-  iamRoleStatements:
+  name: aws                   # the name of the service(AWS in this case).
+  stage: ${opt:stage, 'dev'}  # the stage default, if not provided it will be 'dev'
+  runtime: nodejs8.10         # we want the default runtime of the functions to be Node.js 8.10.
+  region: us-east-1           # the AWS region where the deployment will reside.
+  iamRoleStatements:          # declaration of the permission applied to the serverless functions.
     - Effect: Allow
       Action:
         - s3:DeleteObject
         - s3:GetObject
-      Resource:
+      Resource:               # allow delete and get on S3 Picture bucket.
          - Fn::Join:
            - ""
            - 
             - "arn:aws:s3:::"
             - Ref: PicturesBucket
             - "/*"
+# The following plugins are used to easy some functions of the serverless
+# workflow.
 plugins:
-  - serverless-finch
+  - serverless-finch                  # 
   - serverless-webpack
   - serverless-s3-remover
   - serverless-stack-output
@@ -58,7 +70,8 @@ custom:
      buckets:
        - ${self:custom.resourceNames.frontEndBucket}
        - ${self:custom.resourceNames.pictureBucket}
-# you can add packaging information here
+# you can add packaging information here, include or exclude files that
+# will be deployed to the functions.
 # package:
 #   include:
 #      - src/test.jpg

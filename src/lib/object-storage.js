@@ -1,8 +1,14 @@
+/**
+ * This script exports ObjectStorage wrapper class which ease the use of the 
+ * S3 AWS SDK.
+ * 
+ * @author Victor Santos Uceta
+ * @license Attribution-NonCommercial-NoDerivatives 4.0 International
+ */
 /* external imports */
 import AWS from 'aws-sdk';
 /* local imports */
 import { AWS_REGION, PICTURE_BUCKET } from 'lib/environment';
-
 export default class ObjectStorage {
     /**
      * Constructor for ObjectStorage class.

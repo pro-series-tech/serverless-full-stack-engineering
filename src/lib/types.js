@@ -1,3 +1,10 @@
+/**
+ * This script exports ObjectStorage wrapper class which ease the use of the 
+ * S3 AWS SDK.
+ * 
+ * @author Victor Santos Uceta
+ * @license Attribution-NonCommercial-NoDerivatives 4.0 International
+ */
 /* LOGIN TYPES */
 export const AUTHENTICATION_SIGN_IN = 'AUTHENTICATION_SIGN_IN';
 export const AUTHENTICATION_SIGN_UP = 'AUTHENTICATION_SIGN_UP';

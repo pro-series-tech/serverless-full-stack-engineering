@@ -1,3 +1,9 @@
+/**
+ * This script exports the Redux store which will be provided to the application component.
+ * 
+ * @author Victor Santos Uceta
+ * @license Attribution-NonCommercial-NoDerivatives 4.0 International
+ */
 /* external imports */
 import { 
     compose, 

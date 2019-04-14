@@ -1,3 +1,9 @@
+/**
+ * This script exports the Gallery actions.
+ * 
+ * @author Victor Santos Uceta
+ * @license Attribution-NonCommercial-NoDerivatives 4.0 International
+ */
 import {
     CRUD_SET_IMAGE_RECORD,
     GALLERY_SET_IMAGE_RECORDS

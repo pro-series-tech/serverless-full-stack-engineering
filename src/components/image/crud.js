@@ -1,3 +1,9 @@
+/**
+ * This script exports the Image CRUD component.
+ * 
+ * @author Victor Santos Uceta
+ * @license Attribution-NonCommercial-NoDerivatives 4.0 International
+ */
 /* external imports */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';

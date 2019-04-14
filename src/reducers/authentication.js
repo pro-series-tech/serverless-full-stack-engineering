@@ -1,3 +1,9 @@
+/**
+ * This script exports the Authentication reducer.
+ * 
+ * @author Victor Santos Uceta
+ * @license Attribution-NonCommercial-NoDerivatives 4.0 International
+ */
 /* local imports */
 import { 
     AUTHENTICATION_SIGN_IN,

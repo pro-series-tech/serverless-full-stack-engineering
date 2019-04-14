@@ -1,3 +1,9 @@
+/**
+ * This script exports the Gallery reducer.
+ * 
+ * @author Victor Santos Uceta
+ * @license Attribution-NonCommercial-NoDerivatives 4.0 International
+ */
 /* external imports */
 import lunr from 'lunr';
 /* local imports */

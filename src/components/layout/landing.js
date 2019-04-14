@@ -1,3 +1,9 @@
+/**
+ * This script exports Landing layout component which renders one of the authentication components.
+ * 
+ * @author Victor Santos Uceta
+ * @license Attribution-NonCommercial-NoDerivatives 4.0 International
+ */
 /* external imports */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';

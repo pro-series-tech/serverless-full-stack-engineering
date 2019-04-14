@@ -1,3 +1,9 @@
+/**
+ * This script exports the Global actions.
+ * 
+ * @author Victor Santos Uceta
+ * @license Attribution-NonCommercial-NoDerivatives 4.0 International
+ */
 import {
     NAVIGATION_AUTHENTICATION_SWITCH_FORM
 } from 'lib/types';

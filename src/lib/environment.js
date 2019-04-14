@@ -1,4 +1,10 @@
-
+/**
+ * This script exports the all the environment constants imported via the corresponding
+ * .env file.
+ * 
+ * @author Victor Santos Uceta
+ * @license Attribution-NonCommercial-NoDerivatives 4.0 International
+ */
 /* exporting environment variables */
 /* endpoint for the serverless functions */
 export const API_ENDPOINT = process.env.REACT_APP_ENDPOINT;

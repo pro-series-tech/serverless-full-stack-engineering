@@ -1,3 +1,9 @@
+/**
+ * This script exports the Template reducer.
+ * 
+ * @author Victor Santos Uceta
+ * @license Attribution-NonCommercial-NoDerivatives 4.0 International
+ */
 /* store initial state constant */
 const initialState = {
     otherValue: 'hello',

@@ -1,3 +1,9 @@
+/**
+ * This script exports the CRUD actions.
+ * 
+ * @author Victor Santos Uceta
+ * @license Attribution-NonCommercial-NoDerivatives 4.0 International
+ */
 import {
     CRUD_SET_IMAGE_RECORD,
     CRUD_SWITCH_MODAL_VISIBILITY

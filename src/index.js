@@ -1,3 +1,9 @@
+/**
+ * This script renders the application into the #root div element of the DOM.
+ * 
+ * @author Victor Santos Uceta
+ * @license Attribution-NonCommercial-NoDerivatives 4.0 International
+ */
 /* external imports */
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -8,7 +14,8 @@ import App from './App';
 import store from './store'
 import * as serviceWorker from './serviceWorker';
 
-/* render the app into the HTML root element */
+/* render the app into the HTML #root div element, see public/index.html
+to understand exactly where it will be rendered */
 ReactDOM.render(
 /* wrap the application into a Redux store provider */
 <Provider store={store}>

@@ -1,3 +1,9 @@
+/**
+ * This script exports the Home layout component.
+ * 
+ * @author Victor Santos Uceta
+ * @license Attribution-NonCommercial-NoDerivatives 4.0 International
+ */
 /* external imports */
 import { connect } from 'react-redux';
 import React, { Component } from 'react';

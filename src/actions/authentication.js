@@ -1,3 +1,9 @@
+/**
+ * This script exports the authentication actions.
+ * 
+ * @author Victor Santos Uceta
+ * @license Attribution-NonCommercial-NoDerivatives 4.0 International
+ */
 import {
     AUTHENTICATION_SIGN_IN,
     AUTHENTICATION_SIGN_UP,
