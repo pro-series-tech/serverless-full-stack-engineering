@@ -1,3 +1,10 @@
+/**
+ * This script exports the lambda function to extract image file information
+ * using ImageMagick.
+ * 
+ * @author Victor Santos Uceta
+ * @license Attribution-NonCommercial-NoDerivatives 4.0 International
+ */
 'use strict';
 const fs = require('fs')
 const path = require('path');
@@ -21,7 +28,7 @@ module.exports.handler = async (event, context, callback) => {
     let features = await new Promise((resolve, reject) => {
         im.identify(filePath, (err, features) => (err)?reject(err):resolve(features))
     });
-    /* return object */
+    /* return object in response */
     return { 
         statusCode: 200, 
         headers: {

@@ -18,12 +18,12 @@ provider:
             - Ref: PicturesBucket
             - "/*"
 plugins:
-  - serverless-stack-output
   - serverless-finch
-  - serverless-single-page-app-plugin
   - serverless-webpack
-  - serverless-dynamodb-autoscaling
   - serverless-s3-remover
+  - serverless-stack-output
+  - serverless-dynamodb-autoscaling
+  - serverless-single-page-app-plugin
 
 custom:
   resourceNames: 

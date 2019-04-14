@@ -1,7 +1,11 @@
+/**
+ * This script exports the webpack configuration to pack up lambda functions.
+ * 
+ * @author Victor Santos Uceta
+ * @license Attribution-NonCommercial-NoDerivatives 4.0 International
+ */
 const path = require('path');
-// eslint-disable-next-line import/no-extraneous-dependencies
 const nodeExternals = require('webpack-node-externals');
-// eslint-disable-next-line import/no-extraneous-dependencies
 const slsw = require('serverless-webpack');
 
 module.exports = {
