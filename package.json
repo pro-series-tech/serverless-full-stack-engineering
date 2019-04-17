@@ -19,7 +19,7 @@
   },
   "scripts": {
     "eject": "react-scripts eject",
-    "test": "react-app-rewired test",
+    "test": "env-cmd ./.dev.env react-app-rewired test",
     "remove": "cd backend && serverless remove",
     "start": "env-cmd ./.dev.env react-app-rewired start",
     "build": "env-cmd ./.dev.env react-app-rewired build",
@@ -30,6 +30,15 @@
   "eslintConfig": {
     "extends": "react-app"
   },
+  "jest": {
+    "moduleNameMapper": {
+      "^actions(.*)$": "<rootDir>/src/actions$1",
+      "^components(.*)$": "<rootDir>/src/components$1",
+      "^lib(.*)$": "<rootDir>/src/lib$1",
+      "^reducers(.*)$": "<rootDir>/src/reducers$1",
+      "^media(.*)$": "<rootDir>/src/media$1"
+    }
+  },
   "browserslist": [
     ">0.2%",
     "not dead",
@@ -38,7 +47,6 @@
   ],
   "devDependencies": {
     "npm": "^6.8.0",
-    "jest": "^24.7.1",
     "enzyme": "^3.9.0",
     "webpack": "4.28.3",
     "env-cmd": "^8.0.2",
