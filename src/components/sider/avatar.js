@@ -7,6 +7,7 @@
 /* external imports */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Popconfirm, Avatar, notification } from 'antd';
 /* local imports */
 import { signOut } from 'actions/authentication';
@@ -74,17 +75,19 @@ class AvatarSection extends Component {
             <div style={styles.avatarDiv}>
                 {/* The avatar component */}
                 <Avatar 
-                    style={styles.avatarPicture}
                     size={64} 
                     icon='user' 
                     src={avatarSrc}
+                    data-test='avatar'
+                    style={styles.avatarPicture}
                     onClick={()=>{this.fileUpload.click()}}
                 />
                 {/* hidden input button to upload the avatar */}
                 <input 
-                    style={styles.fileUpload}
                     type='file' 
                     accept='.png'
+                    data-test='upload-input'
+                    style={styles.fileUpload}
                     /* get the reference of this button */
                     ref={(r) => this.fileUpload = r}
                     /* when the file is selected, send upload file */
@@ -94,11 +97,12 @@ class AvatarSection extends Component {
                 <br />
                 {/* Pop Confirm to confirm user intent to sing out */}
                 <Popconfirm 
-                    placement='bottomLeft'
-                    title='Are you sure you want to sign out?' 
-                    onConfirm={this.confirmSignOut} 
                     okText='Yes' 
                     cancelText='No'
+                    placement='bottomLeft'
+                    data-test='popup-confirm'
+                    onConfirm={this.confirmSignOut} 
+                    title='Are you sure you want to sign out?' 
                 >
                     <a href="#/">Sign Out</a>
                 </Popconfirm>
@@ -106,6 +110,7 @@ class AvatarSection extends Component {
         )
     }
 }
+
 /* component styles */
 const styles = {
     avatarDiv: {
@@ -121,6 +126,18 @@ const styles = {
         display: 'none'
     }
 };
+
+/* PropTypes for data type validation */
+AvatarSection.propTypes = {
+    credentials: PropTypes.shape({
+        expired: PropTypes.bool,
+        expireTime: PropTypes.instanceOf(Date),
+        accessKeyId: PropTypes.string,
+        sessionToken: PropTypes.string,
+        params: PropTypes.object,
+        data: PropTypes.object
+    }).isRequired
+}
 /* redux map state to properties */
 const mapStateToProps = (state, ownProps) => {
     return {
