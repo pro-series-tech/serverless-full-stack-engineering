@@ -23,7 +23,7 @@
     "remove": "cd backend && serverless remove",
     "start": "env-cmd ./.dev.env react-app-rewired start",
     "build": "env-cmd ./.dev.env react-app-rewired build",
-    "deploy": "cd backend && serverless deploy -v --stage",
+    "deploy": "cd backend && serverless deploy -v --stage dev",
     "invoke": "cd backend && serverless invoke --function",
     "deploy-web": "yarn run build && cd backend && serverless client deploy --no-confirm --no-cors-change"
   },
