@@ -13,20 +13,13 @@ import {
 } from 'redux';
 import thunk from 'redux-thunk';
 /* local imports (all our reducers) */
-import crud from 'reducers/crud';
-import global from 'reducers/global';
-import gallery from 'reducers/gallery';
-import authentication from 'reducers/authentication';
-//import myReducer from 'reducers/reducerTemplate';
+import * as reducers from 'reducers';
+
 
 /* Use ES6 object literal shorthand syntax to define the object shape.
  combine all reducers into one big store */
 const rootReducer = combineReducers({
-    //myReducer,
-    crud,
-    global,
-    gallery,
-    authentication
+    ...reducers
 });
 /* composer enhancers, if Redux Tools are present use it, otherise use
 the imported composer object. For more information about Redux Tools: http://extension.remotedev.io */

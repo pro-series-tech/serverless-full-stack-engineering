@@ -7,7 +7,6 @@
 /* external imports */
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Button, Layout, Input} from 'antd';
 /* local imports */
 import {Avatar} from 'components/sider';

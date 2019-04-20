@@ -282,6 +282,8 @@ const styles = {
 
 /* wrap the form before passing it out to redux connect */
 const WrappeForgotPasswordForm = Form.create({ name: 'normal_login' })(ForgotPwd);
+/* PropTypes for data type validation */
+WrappeForgotPasswordForm.propTypes = {}
 /* redux map state to properties */
 const mapStateToProps = (state, ownProps) => {
 	return {};

@@ -7,6 +7,7 @@
 /* external imports */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Form, Icon, Input, Button } from 'antd';
 /* local imports */
 import { signUp} from 'actions/authentication';
@@ -179,6 +180,11 @@ const styles = {
 
 /* wrap the form before passing it out to redux connect */
 const WrappeSignUpForm = Form.create({ name: 'normal_login' })(SignUp);
+/* PropTypes for data type validation */
+WrappeSignUpForm.propTypes = {
+	switchLoading:  PropTypes.func,
+	username: PropTypes.string
+}
 /* redux map state to properties */
 const mapStateToProps = (state, ownProps) => {
 	return {

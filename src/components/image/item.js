@@ -19,7 +19,6 @@ import {
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 /* local imports */
 import { setImageRecord } from 'actions/crud';
-import { localPropTypes } from 'lib/prop-types';
 import { deleteGalleryImageRecord } from 'actions/gallery';
 import { PICTURE_BUCKET, API_ENDPOINT } from 'lib/environment';
 /* import react lazy image load css */

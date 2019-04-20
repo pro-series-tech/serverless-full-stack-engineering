@@ -7,6 +7,7 @@
 /* external imports */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Form, Icon, Input, Button } from 'antd';
 /* local imports */
 import { confirmRegistration, resendConfirmation} from 'actions/authentication';
@@ -111,6 +112,10 @@ const styles = {
 };
 /* wrap the form before passing it out to redux connect */
 const WrappeConfirmAccountForm = Form.create({ name: 'normal_login' })(ConfirmAccount);
+/* PropTypes for data type validation */
+WrappeConfirmAccountForm.propTypes = {
+	username: PropTypes.string
+}
 /* redux map state to properties */
 const mapStateToProps = (state, ownProps) => {
 	return {

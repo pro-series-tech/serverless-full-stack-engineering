@@ -7,6 +7,7 @@
 /* external imports */
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import PropTypes from 'prop-types';
 /* local imports */
 import { myAction } from "actions/actionsTemplate";
 /* this component initial state */
@@ -70,6 +71,11 @@ const styles = {
 		background: "black"
 	}
 };
+/* PropTypes for data type validation */
+MyComponent.propTypes = {
+	myDate: PropTypes.instanceOf(Date),
+	propMessage: PropTypes.string
+}
 /* map the redux state values to component properties */
 const mapStateToProps = (state, ownProps) => {
 	return {
