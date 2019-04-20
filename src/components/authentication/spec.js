@@ -1,3 +1,9 @@
+/**
+ * This script tests the authentication components.
+ * 
+ * @author Victor Santos Uceta
+ * @license Attribution-NonCommercial-NoDerivatives 4.0 International
+ */
 import { 
     SignIn, 
     SignUp, 

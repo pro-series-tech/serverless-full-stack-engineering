@@ -1,3 +1,9 @@
+/**
+ * This script tests the main layout components.
+ * 
+ * @author Victor Santos Uceta
+ * @license Attribution-NonCommercial-NoDerivatives 4.0 International
+ */
 import Layout from 'components/layout';
 import HomeLayout from 'components/layout/home';
 import LandingLayout from 'components/layout/landing';

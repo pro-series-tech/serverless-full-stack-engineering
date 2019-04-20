@@ -1,3 +1,9 @@
+/**
+ * This script tests the redux thunk actions.
+ * 
+ * @author Victor Santos Uceta
+ * @license Attribution-NonCommercial-NoDerivatives 4.0 International
+ */
 import thunk from "redux-thunk";
 import configureMockStore from "redux-mock-store";
 

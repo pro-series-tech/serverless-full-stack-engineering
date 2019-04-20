@@ -1,3 +1,9 @@
+/**
+ * This script tests the sider components.
+ * 
+ * @author Victor Santos Uceta
+ * @license Attribution-NonCommercial-NoDerivatives 4.0 International
+ */
 import  AvatarSection from 'components/sider/avatar';
 import { localPropTypesMockData } from 'lib/prop-types';
 import {findByTestAttr, setUpComponent} from 'lib/spec-utils';

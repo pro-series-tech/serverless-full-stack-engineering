@@ -1,3 +1,9 @@
+/**
+ * This script tests the image components.
+ * 
+ * @author Victor Santos Uceta
+ * @license Attribution-NonCommercial-NoDerivatives 4.0 International
+ */
 import  {Gallery, ImageCRUD, ImageItem} from 'components/image';
 
 import {findByTestAttr, findByTag, setUpComponent} from 'lib/spec-utils';
