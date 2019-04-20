@@ -41,7 +41,7 @@ const buildIndex = (records = [])=>{
 const initialState = {
     records: [],
     /* build the initial empty index */
-    index: buildIndex()
+    searchIndex: buildIndex()
 };
 export default (state = initialState, action) => {
     switch (action.type) {
@@ -51,7 +51,7 @@ export default (state = initialState, action) => {
                 records: action.payload,
                 /* rebuild index when the records array
                 changes */
-                index: buildIndex(action.payload)
+                searchIndex: buildIndex(action.payload)
             }
         case AUTHENTICATION_SIGN_OUT:
             return initialState;

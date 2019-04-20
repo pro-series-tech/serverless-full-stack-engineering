@@ -8,9 +8,11 @@
 /* external imports */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 /* local imports */
 import HomeLayout from './home';
 import LandingLayout from './landing';
+import { localPropTypes } from 'lib/prop-types';
 import { signIn } from 'actions/authentication';
 /* component initial state constant */
 const initialState = {};
@@ -33,11 +35,15 @@ class Layout extends Component {
         /* if credentials are present, render home component,
         else render landing page for login, create account, etc. */
         if (this.props.credentials){
-            return <HomeLayout/>
+            return <div test-data='home-layout'><HomeLayout/></div>
         }else{
-            return <LandingLayout/>
+            return <div test-data='landing-layout'><LandingLayout/></div>
         }
     }
+}
+/* PropTypes for data type validation */
+Layout.propTypes = {
+    credentials: localPropTypes.credentials
 }
 /* wrap the form before passing it out to redux connect */
 const mapStateToProps = (state, ownProps) => {

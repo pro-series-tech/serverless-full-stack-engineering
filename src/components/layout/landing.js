@@ -8,6 +8,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Row, Col, Spin } from 'antd';
+import PropTypes from 'prop-types';
 /* local imports */
 import { 
     SignIn, 
@@ -122,6 +123,10 @@ const styles = {
         textAlign: 'center'
     }
 };
+/* PropTypes for data type validation */
+Landing.propTypes = {
+    authenticationForm: PropTypes.string.isRequired
+}
 /* wrap the form before passing it out to redux connect */
 const mapStateToProps = (state, ownProps) => {
     return {

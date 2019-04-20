@@ -7,6 +7,7 @@
 /* external imports */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { 
 	Icon, 
 	Rate, 
@@ -21,6 +22,7 @@ import nanoid from 'nanoid';
 import ReactQuill from 'react-quill';
 /* local imports */
 import ObjectStorage from 'lib/object-storage';
+import { localPropTypes } from 'lib/prop-types';
 import { putImageRecord } from 'actions/gallery';
 import { switchModalVisibility } from 'actions/crud';
 /* import react quill editor css */
@@ -221,6 +223,7 @@ class ImageCRUD extends Component {
 				centered={true}
 				cancelText='Cancel'
 				destroyOnClose={true}
+				data-test='modal-component'
 				onOk={this.handleCreateEdit}
 				onCancel={this.handleCancel}
 				okText={userId ? 'Edit' : 'Create'}
@@ -295,6 +298,12 @@ const styles = {
 		marginBottom: 15
 	}
 };
+/* PropTypes for data type validation */
+ImageCRUD.propTypes = {
+    record: PropTypes.array,
+    visible: PropTypes.bool,
+    credentials: localPropTypes.credentials.isRequired
+}
 /* wrap the form before passing it out to redux connect */
 const mapStateToProps = (state, ownProps) => {
 	return {

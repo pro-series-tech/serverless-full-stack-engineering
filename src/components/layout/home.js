@@ -7,11 +7,12 @@
 /* external imports */
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Button, Layout, Input} from 'antd';
 /* local imports */
-import ImageCRUD from 'components/image/crud'
-import Gallery from 'components/image/gallery'
-import AvatarSection from 'components/sider/avatar';
+import {Avatar} from 'components/sider';
+import { localPropTypes } from 'lib/prop-types';
+import { ImageCRUD, Gallery } from 'components/image'
 import { switchModalVisibility } from 'actions/crud';
 /* destruct layout to optain header, content and sider components */
 const {
@@ -67,7 +68,7 @@ class Home extends Component {
                 > 
                     {/* Custom avatar component which wraps other ant design components 
                     in order to provide user picture */}
-                    <AvatarSection/>
+                    <Avatar/>
                 </Sider>
                 {/* Sublayout component to arrange the main section of the web app. This
                 layout encapsulates the */}
@@ -126,6 +127,10 @@ const styles = {
         width: 300 
     }
 };
+/* PropTypes for data type validation */
+Layout.propTypes = {
+    credentials: localPropTypes.credentials
+}
 /* wrap the form before passing it out to redux connect */
 const mapStateToProps = (state, ownProps) => {
     return {

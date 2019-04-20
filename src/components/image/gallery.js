@@ -7,8 +7,10 @@
 /* external imports */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 /* local imports */
-import Item from 'components/image/item';
+import { ImageItem } from 'components/image';
+import { localPropTypes } from 'lib/prop-types';
 import { fetchGalleryImageRecords} from 'actions/gallery';
 /* component initial state constant */
 const initialState = {};
@@ -28,14 +30,14 @@ class Gallery extends Component {
 	 */
     render() {
         /* destruct and asign variables from properties object */
-        let { records, index, searchText } = this.props;
+        let { records, searchIndex, searchText } = this.props;
         /* if there is something to search(string not empty, null, or undefined) */
         if (searchText){
             /* build the wildcard filter */
             let filter = `*${searchText}*`;
             /* search with filter, then map list of results to ref property.
             this will yield a array of id's*/
-            let matches = index.search(filter).map((m) =>m.ref);
+            let matches = searchIndex.search(filter).map((m) =>m.ref);
             /* create a set of id's (for O(1) search complexity in the next
             instruction) */
             let set = new Set(matches);
@@ -45,11 +47,14 @@ class Gallery extends Component {
         /* create a list of Item components(Cards) by mapping each
         record in the array to a react component */
         const items = records.map((record, i) => {
-            return <Item key={i} record={record} />
+            return <ImageItem key={i} record={record} />
         });
         /* render the component with items(cards) */
         return (
-            <div style={styles.container}>
+            <div 
+                data-test='container'
+                style={styles.container}
+                >
                 {items}
             </div>
         )
@@ -64,12 +69,20 @@ const styles = {
       alignItems: 'baseline'
   }
 };
+
+/* PropTypes for data type validation */
+Gallery.propTypes = {
+    records: PropTypes.array,
+    searchText: PropTypes.string,
+    searchIndex: PropTypes.object,
+    credentials: localPropTypes.credentials.isRequired
+}
 /* wrap the form before passing it out to redux connect */
 const mapStateToProps = (state, ownProps) => {
     return {
-        index: state.gallery.index,
         records: state.gallery.records,
         searchText: ownProps.searchText,
+        searchIndex: state.gallery.searchIndex,
         credentials: state.authentication.credentials
     };
 };

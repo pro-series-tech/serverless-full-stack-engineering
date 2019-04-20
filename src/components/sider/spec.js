@@ -1,17 +1,11 @@
 import  AvatarSection from 'components/sider/avatar';
+import { localPropTypesMockData } from 'lib/prop-types';
 import {findByTestAttr, setUpComponent} from 'lib/spec-utils';
 
 /* mocking the initial state of the store */
 const initialState = {
     authentication:{
-        credentials:{
-            expired: false,
-            expireTime: new Date(),
-            accessKeyId: 'mock accessKeyId',
-            sessionToken: 'mock sessionToken',
-            params: {mock: 'params'},
-            data: {mock: 'data'}
-        }
+        credentials: localPropTypesMockData.credentials
     }
 };
 
@@ -21,7 +15,7 @@ describe('Avatar Component', () => {
     beforeEach(() => {
         component = setUpComponent(AvatarSection, initialState);
         //console.log(component.debug());
-    });
+    }); 
 
     it('It should render a avatar component', ()=>{
         const wrapper = findByTestAttr(component, 'avatar');

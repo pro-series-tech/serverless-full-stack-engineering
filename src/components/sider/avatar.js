@@ -7,12 +7,12 @@
 /* external imports */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { Popconfirm, Avatar, notification } from 'antd';
 /* local imports */
 import { signOut } from 'actions/authentication';
-import ObjectStorage from 'lib/object-storage';
 import { PICTURE_BUCKET } from 'lib/environment';
+import ObjectStorage from 'lib/object-storage';
+import { localPropTypes } from 'lib/prop-types';
 /* component initial state constant */
 const initialState = {
     /* the avatar upload count is used to prevent caching
@@ -129,14 +129,7 @@ const styles = {
 
 /* PropTypes for data type validation */
 AvatarSection.propTypes = {
-    credentials: PropTypes.shape({
-        expired: PropTypes.bool,
-        expireTime: PropTypes.instanceOf(Date),
-        accessKeyId: PropTypes.string,
-        sessionToken: PropTypes.string,
-        params: PropTypes.object,
-        data: PropTypes.object
-    }).isRequired
+    credentials: localPropTypes.credentials
 }
 /* redux map state to properties */
 const mapStateToProps = (state, ownProps) => {

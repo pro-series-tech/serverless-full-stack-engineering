@@ -7,6 +7,7 @@
 /* external imports */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { 
     Card, 
     Icon, 
@@ -18,6 +19,7 @@ import {
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 /* local imports */
 import { setImageRecord } from 'actions/crud';
+import { localPropTypes } from 'lib/prop-types';
 import { deleteGalleryImageRecord } from 'actions/gallery';
 import { PICTURE_BUCKET, API_ENDPOINT } from 'lib/environment';
 /* import react lazy image load css */
@@ -113,6 +115,7 @@ class Item extends Component {
                 hoverable
                 key={index}
                 style={styles.card}
+                test-data='item-card'
                 /* the following visual elements at the bottom of the card.
                    Each one is a component with their own properties and event handlers.
                    Note that the Card component automatically position these elements. 
@@ -181,6 +184,11 @@ const styles = {
         color: 'red'
     }
 };
+/* PropTypes for data type validation */
+Item.propTypes = {
+    index: PropTypes.number,
+    record: PropTypes.object
+}
 /* wrap the form before passing it out to redux connect */
 const mapStateToProps = (state, ownProps) => {
     return {
