@@ -17,7 +17,7 @@ const initialState = {
 describe('SignIn Component', () => {
     let component;
     beforeEach(() => {
-        component = setUpComponent(SignIn, initialState, {switchLoading:false});
+        component = setUpComponent(SignIn, initialState, {switchLoading:()=>{}});
     });
     it('It should render the SignIn component', ()=>{
         const wrapper = findByTag(component, 'SignIn'); 
@@ -28,7 +28,7 @@ describe('SignIn Component', () => {
 describe('SignUp Component', () => {
     let component;
     beforeEach(() => {
-        component = setUpComponent(SignUp, initialState, {switchLoading:false});
+        component = setUpComponent(SignUp, initialState, {switchLoading:()=>{}});
     });
     it('It should render the SignUp component', ()=>{
         const wrapper = findByTag(component, 'SignUp'); 
@@ -39,7 +39,7 @@ describe('SignUp Component', () => {
 describe('ForgotPwd Component', () => {
     let component;
     beforeEach(() => {
-        component = setUpComponent(ForgotPwd, initialState, {switchLoading:false});
+        component = setUpComponent(ForgotPwd, initialState, {switchLoading:()=>{}});
     });
     it('It should render the ForgotPwd component', ()=>{
         const wrapper = findByTag(component, 'ForgotPwd'); 
@@ -50,7 +50,7 @@ describe('ForgotPwd Component', () => {
 describe('ConfirmAccount Component', () => {
     let component;
     beforeEach(() => {
-        component = setUpComponent(ConfirmAccount, initialState, {switchLoading:false});
+        component = setUpComponent(ConfirmAccount, initialState, {switchLoading:()=>{}});
     });
     it('It should render the ConfirmAccount component', ()=>{
         const wrapper = findByTag(component, 'ConfirmAccount'); 
