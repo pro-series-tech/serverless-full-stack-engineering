@@ -22,9 +22,8 @@
     "test": "env-cmd ./.dev.env react-app-rewired test",
     "start": "env-cmd ./.dev.env react-app-rewired start",
     "build": "env-cmd ./.dev.env react-app-rewired build",
-    "deploy": "cd backend && serverless deploy -v",
-    "remove": "cd backend && serverless remove -v",
-    "invoke": "cd backend && serverless invoke --function",
+    "deploy": "cd backend && serverless deplo -v --stage",
+    "remove": "cd backend && serverless remove -v --stage",
     "deploy-web": "yarn run build && cd backend && serverless client deploy --no-confirm --no-cors-change"
   },
   "eslintConfig": {
