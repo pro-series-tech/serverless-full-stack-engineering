@@ -15,8 +15,27 @@ import {
 } from 'lib/types';
 import * as CRUDActions from 'actions/crud';
 import * as GlobalActions from 'actions/global';
+import * as TemplateActions from 'actions/actionsTemplate';
+import * as AuthActions from 'actions/authentication';
+/* credentials for test user */
+const username = 'testuser';
+const password = 'Password1.';
+let page;
 
 export const mockStore = configureMockStore([thunk]);
+
+describe("Template actions", () => {
+    it("It should dispatch the example template action", async () => {
+        const date = new Date();
+        const store = mockStore();
+        await store.dispatch(TemplateActions.myAction(date));
+        const actions = store.getActions();
+        expect(actions[0]).toEqual({
+            type: "SET_DATE", 
+            payload: date
+        });
+    });
+});
 
 describe("CRUD actions", () => {
     it("It should dispatch the switch modal visibility and reset record", async () => {

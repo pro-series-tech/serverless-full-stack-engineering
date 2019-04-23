@@ -34,9 +34,9 @@ class Layout extends Component {
         /* if credentials are present, render home component,
         else render landing page for login, create account, etc. */
         if (this.props.credentials){
-            return <div test-data='home-layout'><HomeLayout/></div>
+            return <HomeLayout/>
         }else{
-            return <div test-data='landing-layout'><LandingLayout/></div>
+            return <LandingLayout/>
         }
     }
 }
