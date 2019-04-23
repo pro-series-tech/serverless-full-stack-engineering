@@ -57,6 +57,7 @@ custom:
   # determine where is script for output post processing.
   output:
     handler: scripts/config.handler # The output post processing script which will build the .env file.
+    file: .build/env.json
   # The capacities environment variable is used by the 'serverless-dynamodb-autoscaling ' plugin to
   # define the dynamodb autoscaling specifications.
   capacities:
@@ -127,7 +128,7 @@ functions:
 # to split the resources definition into separate files to prevent overly large
 # yml files hard to maintain and read.
 resources:
-    - ${file(resources/misc.yml)}     # this is how we specify that this file will be append in this section.
+    # - ${file(resources/misc.yml)}     # this is how we specify that this file will be append in this section.
     - ${file(resources/security.yml)}
     - ${file(resources/data-storage.yml)}
     - ${file(resources/object-storage.yml)}
