@@ -30,7 +30,7 @@ provider:
 # The following plugins are used to easy some functions of the serverless
 # workflow.
 plugins:
-  - serverless-stack-output           # will output the stack metadata for .env creation(urls, keys, etc)
+  - '@anttiviljami/serverless-stack-output'        # will output the stack metadata for .env creation(urls, keys, etc)
   - serverless-finch                  # will deploy app dist to s3 bucket.
   - serverless-webpack                # will pack lambda functions with webpack.
   - serverless-s3-remover             # remove s3 bucket after stack is removed.
@@ -57,7 +57,7 @@ custom:
   # determine where is script for output post processing.
   output:
     handler: scripts/config.handler # The output post processing script which will build the .env file.
-    file: .build/env.json
+    # file: ../env.json
   # The capacities environment variable is used by the 'serverless-dynamodb-autoscaling ' plugin to
   # define the dynamodb autoscaling specifications.
   capacities:
