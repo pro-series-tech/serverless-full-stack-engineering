@@ -9,6 +9,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { 
+	Spin,
 	Icon, 
 	Rate, 
 	Modal, 
@@ -19,6 +20,7 @@ import {
 	notification 
 } from 'antd';
 import nanoid from 'nanoid';
+import * as nsfwjs from 'nsfwjs'
 import ReactQuill from 'react-quill';
 /* local imports */
 import ObjectStorage from 'lib/object-storage';
@@ -35,11 +37,22 @@ const initialState = {
 	userId: null,
 	description: '',
 	uploadPercentage: 0,
-	confirmLoading: false
+	confirmLoading: false,
+	model: null
 };
 class ImageCRUD extends Component {
 	/* set the instance initial state as initialState clone */
 	state = {...initialState}
+	/* load NSFW model in component will mount */
+	componentWillMount() {
+		/* load the NSFW model */
+		setTimeout(async() => {
+			/* load model */
+			initialState.model = await nsfwjs.load();
+			/* set the model into the state */
+			this.setState(initialState);
+		}, 1);
+	}
 	/**
 	 * The next state object with update props. This function will be triggered each time
 	 * a component's property changes,. i.e. any property listed in mapStateToProps. The
@@ -135,6 +148,18 @@ class ImageCRUD extends Component {
 	 * @returns {boolean}
 	 */
 	handleImageRead = (file) => {
+
+		let fr = new FileReader();
+		fr.onload = () => {
+			let img = new Image();
+			img.src = fr.result;
+			img.onload = async ()=> {
+				const predictions = await this.state.model.classify(img)
+				console.log('Predictions: ', predictions)
+			 }
+		}
+		fr.readAsDataURL(file);
+	
 		/* set the image state */
 		this.setState({
 			image: file
@@ -236,48 +261,53 @@ class ImageCRUD extends Component {
 					disabled: !this.dataIsValid() && !userId
 				}}
 			>
-				{/* Fields needed to create/edit an image in serverless backend */}
-				<div style={styles.uploadDiv}>
-					<Upload 
-						name='image' 
-						accept='.png' 
-						multiple={false} 
-						listType='picture' 
-						className='image-uploader' 
-						onRemove={this.handleImageRemove} 
-						beforeUpload={this.handleImageRead} 
-						disabled={image !== null && image !== undefined}
-					>
-						{uploadButton}
-					</Upload>
-				</div>
-				{/* Rating component */}
-				<Rate 
-					value={rating} 
-					style={styles.rating} 
-					onChange={this.handleRateChange} 
-					character={<Icon type='heart' />} 
-					tooltips={['bad', 'ok', 'good', 'excellent', 'outstanding']} 
-				/>
-				<br />
-				{/* Picture name input field */}
-				<Input 
-					value={name} 
-					style={styles.name} 
-					placeholder='Picture Name' 
-					prefix={<Icon type='picture' />} 
-					onChange={this.handleNameChange} 
-				/>
-				<br />
-				{/* React quill editor. More info: https://github.com/zenoamaro/react-quill */}
-				<ReactQuill 
-					value={description} 
-					placeholder='Picture Description' 
-					onChange={this.handleDescriptionChange} 
-				/>
-				<br />
-				{/* Progress bar for file upload */}
-				<Progress percent={this.state.uploadPercentage} />
+				<Spin 
+					tip="loading model..."
+					spinning={this.state.model == null}
+				>
+					{/* Fields needed to create/edit an image in serverless backend */}
+					<div style={styles.uploadDiv}>
+						<Upload 
+							name='image' 
+							accept='.png' 
+							multiple={false} 
+							listType='picture' 
+							className='image-uploader' 
+							onRemove={this.handleImageRemove} 
+							beforeUpload={this.handleImageRead} 
+							disabled={image !== null && image !== undefined}
+						>
+							{uploadButton}
+						</Upload>
+					</div>
+					{/* Rating component */}
+					<Rate 
+						value={rating} 
+						style={styles.rating} 
+						onChange={this.handleRateChange} 
+						character={<Icon type='heart' />} 
+						tooltips={['bad', 'ok', 'good', 'excellent', 'outstanding']} 
+					/>
+					<br />
+					{/* Picture name input field */}
+					<Input 
+						value={name} 
+						style={styles.name} 
+						placeholder='Picture Name' 
+						prefix={<Icon type='picture' />} 
+						onChange={this.handleNameChange} 
+					/>
+					<br />
+					{/* React quill editor. More info: https://github.com/zenoamaro/react-quill */}
+					<ReactQuill 
+						value={description} 
+						placeholder='Picture Description' 
+						onChange={this.handleDescriptionChange} 
+					/>
+					<br />
+					{/* Progress bar for file upload */}
+					<Progress percent={this.state.uploadPercentage} />
+				</Spin>
 			</Modal>
 		);
 	}

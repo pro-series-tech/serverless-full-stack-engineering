@@ -59,7 +59,7 @@ export default class DataStorage{
      */
     putPictureRecord = ({ name, description, rating, pictureId})=>{
         /* the TTL of the image record  for 30 minutes */
-        let ttl = Date.now() + 60*30*1000;
+        let ttl = Math.floor((Date.now()+ 60*30*1000) / 1000);
         /* put record parameters */
         let params = {
             TableName: PICTURE_TABLE,
