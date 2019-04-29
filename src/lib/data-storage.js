@@ -58,6 +58,8 @@ export default class DataStorage{
      * @returns {Promise}
      */
     putPictureRecord = ({ name, description, rating, pictureId})=>{
+        /* the TTL of the image record  for 30 minutes */
+        let ttl = Date.now() + 60*30*1000;
         /* put record parameters */
         let params = {
             TableName: PICTURE_TABLE,
@@ -66,7 +68,8 @@ export default class DataStorage{
                 pictureId,
                 name,
                 description,
-                rating
+                rating,
+                ttl
             }
         };  
         /* insert/update the object in the serverless column store.

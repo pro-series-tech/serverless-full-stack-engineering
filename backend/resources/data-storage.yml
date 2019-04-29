@@ -37,6 +37,9 @@ Resources:
       # of the record to the consumer of the event(in this case the 'trigger' lambda function)
       StreamSpecification:
         StreamViewType: NEW_AND_OLD_IMAGES
+      TimeToLiveSpecification:
+        AttributeName: ttl
+        Enabled: True
 # when the stack is sucessfully build, it will print the following variables. Which
 # correspond to properties of the created resources. This properties will be used
 # as environment variable via a .env file.
