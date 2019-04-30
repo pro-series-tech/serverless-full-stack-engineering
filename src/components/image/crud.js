@@ -47,10 +47,13 @@ class ImageCRUD extends Component {
 	componentWillMount() {
 		/* load the NSFW model */
 		setTimeout(async() => {
+			console.time("model_load");
 			/* load model */
 			initialState.model = await nsfwjs.load();
 			/* set the model into the state */
 			this.setState(initialState);
+			/* login model loaded */
+			console.timeEnd("model_load");
 		}, 1);
 	}
 	/**
