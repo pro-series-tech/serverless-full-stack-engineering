@@ -13,7 +13,7 @@ frameworkVersion: "=1.38.0"
 provider:
   name: aws                   # the name of the service(AWS in this case).
   stage: ${opt:stage, 'dev'}  # the stage default, if not provided it will be 'dev'
-  runtime: nodejs8.10         # we want the default runtime of the functions to be Node.js 8.10.
+  runtime: nodejs10.x        # we want the default runtime of the functions to be Node.js 8.10.
   region: us-east-1           # the AWS region where the deployment will reside.
   iamRoleStatements:          # declaration of the permission applied to the serverless functions.
     - Effect: Allow
