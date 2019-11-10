@@ -1,6 +1,6 @@
 <h1 align="center">
-  Serverless Fullstack Engineering Course
-  </h1>
+  Serverless Fullstack Engineering
+</h1>
 
 <img alt="pro series logo" style="width:100%;border: 3px solid orange;" src="https://proseries-assets.s3.amazonaws.com/fsse-map.png" />
 
@@ -11,7 +11,7 @@
   </a>
 </p>
 
-> A comprehensive course on how to build full-stack serverless applications using AWS, Serverless Framework, React, Redux, and Node.js.
+> This repository contains the codebase for the serverless gallery application, part of a comprehensive course on how to build full-stack serverless applications using AWS, Serverless Framework, React, Redux, Ant-Design, and Node.js.
 
 
 
@@ -30,7 +30,7 @@
 #### DEPENDENCIES
 
 - Node.js 8.10+
-  To install, I recomend [NVM for Linux and Mac](https://github.com/nvm-sh/nvm), or [NVM-WINDOWS for Windows](https://github.com/coreybutler/nvm-windows)
+  To install, I recommend [NVM for Linux and Mac](https://github.com/nvm-sh/nvm), or [NVM-WINDOWS for Windows](https://github.com/coreybutler/nvm-windows)
 
 - Serverless framework 1.38.0
 
@@ -88,7 +88,7 @@ Github: [@pro-series-tech](https://github.com/pro-series-tech)
 
 ## <img alt="logo" width="40" src="https://proseries-assets.s3.amazonaws.com/handshake.png"> Contributing
 
-Contributions, issues and feature requests are welcome! 
+Issues, and feature requests are welcome! 
 
 **Note**: This codebase evolves along with the course, features will be added as lectures are created.
 
@@ -100,7 +100,7 @@ Feel free to check [issues page](https://github.com/pro-series-tech/serverless-f
 
 Give a <img alt="logo" width="30" src="https://proseries-assets.s3.amazonaws.com/star.png"> if this project helped you!
 
-If you are planning to use this project to your startup or commercial project, please consider to support ProSeries by becoming a patreon. It will greatly help us develop more valuable content.
+If you are planning to use this project for your startup or commercial project, please consider supporting ProSeries by becoming a Patreon. It will greatly help us develop more valuable content.
 
 <a href="https://www.patreon.com/proseries">
   <img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160"></a>
