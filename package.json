@@ -1,6 +1,6 @@
 {
   "name": "serverless-full-stack-engineering",
-  "license": "Attribution-NonCommercial-NoDerivatives 4.0 International",
+  "license": "GNU General Public License v3 (GPL-3)",
   "version": "1.0.0",
   "private": false,
   "dependencies": {
@@ -19,11 +19,11 @@
   },
   "scripts": {
     "eject": "react-scripts eject",
-    "test": "env-cmd ./.dev.env react-app-rewired test",
-    "start": "env-cmd ./.dev.env react-app-rewired start",
-    "build": "env-cmd ./.dev.env react-app-rewired build",
-    "deploy": "cd backend && serverless deploy -v --stage",
-    "remove": "cd backend && serverless remove -v --stage",
+    "test": "env-cmd ./.demo.env react-app-rewired test",
+    "start": "env-cmd ./.demo.env react-app-rewired start",
+    "build": "env-cmd ./.demo.env react-app-rewired build",
+    "deploy": "cd backend && serverless deploy -v",
+    "remove": "cd backend && serverless remove -v",
     "deploy-web": "yarn run build && cd backend && serverless client deploy --no-confirm --no-cors-change"
   },
   "eslintConfig": {
