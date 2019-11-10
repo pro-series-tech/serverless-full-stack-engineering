@@ -2,7 +2,7 @@
   Serverless Fullstack Engineering Course
   </h1>
 
-<img alt="pro series logo" width="800" style="border: 3px solid orange;" src="https://proseries-assets.s3.amazonaws.com/fsse-map.png" />
+<img alt="pro series logo" style="width:100%;border: 3px solid orange;" src="https://proseries-assets.s3.amazonaws.com/fsse-map.png" />
 
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
