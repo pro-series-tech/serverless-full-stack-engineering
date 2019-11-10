@@ -1,6 +1,8 @@
 <h1 align="center">
   Serverless Fullstack Engineering Course
-</h1>
+  </h1>
+
+<img alt="pro series logo" width="800" style="border: 3px solid orange;" src="https://proseries-assets.s3.amazonaws.com/fsse-map.png" />
 
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
@@ -21,19 +23,54 @@
 
 
 
-## Install npm packages
+## <img alt="logo" width="40" src="https://proseries-assets.s3.amazonaws.com/instructions.png"> Instructions
+
+
+
+#### DEPENDENCIES
+
+- Node.js 8.10+
+  To install, I recomend [NVM for Linux and Mac](https://github.com/nvm-sh/nvm), or [NVM-WINDOWS for Windows](https://github.com/coreybutler/nvm-windows)
+
+- Serverless framework 1.38.0
+
+  ```sh
+  npm install -g serverless@1.38.0
+  ```
+
+- AWS credentials configured in your system. Follow [these instructions](https://serverless.com/framework/docs/providers/aws/guide/credentials/) or follow [this video tutorial](https://www.youtube.com/watch?v=HSd9uYj2LJA)
+
+
+
+#### STEPS
+
+First, install all dependencies listed above, then execute each of the following steps:
+
+##### Clone this repository
+
+```sh
+git clone https://github.com/pro-series-tech/serverless-full-stack-engineering.git
+```
+
+##### Change directory
+
+```sh
+cd serverless-full-stack-engineering
+```
+
+##### Install npm packages
 
 ```sh
 npm install
 ```
 
-## Start the local development server
+##### Start the local development server
 
 ```sh
 npm run start
 ```
 
-## Run tests
+##### Run tests
 
 ```sh
 npm run test
@@ -51,7 +88,11 @@ Github: [@pro-series-tech](https://github.com/pro-series-tech)
 
 ## <img alt="logo" width="40" src="https://proseries-assets.s3.amazonaws.com/handshake.png"> Contributing
 
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/pro-series-tech/serverless-full-stack-engineering/issues).
+Contributions, issues and feature requests are welcome! 
+
+**Note**: This codebase evolves along with the course, features will be added as lectures are created.
+
+Feel free to check [issues page](https://github.com/pro-series-tech/serverless-full-stack-engineering/issues).
 
 
 
@@ -68,7 +109,7 @@ If you are planning to use this project to your startup or commercial project, p
 
 ## <img alt="logo" width="40" src="https://proseries-assets.s3.amazonaws.com/license.png"> License
 
-Copyright © 2019 [Victor O. Santos Uceta](https://github.com/pro-series-tech).<br />
+Copyright © 2019 [Victor O. Santos Uceta](https://github.com/pro-series-tech).
 This project is [GNU General Public License v3 (GPL--3)](https://www.gnu.org/licenses/gpl-3.0.en.html) licensed.
 
 
