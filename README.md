@@ -15,11 +15,13 @@
 
 
 
-### <img alt="pro series logo" width="40" src="https://proseries-assets.s3.amazonaws.com/Logo+Quare.png" />  [ProSeries Website](proseriestech.com)
+###  [<img alt="logo" width="40" src="https://proseries-assets.s3.amazonaws.com/udemy-logo.png">Udemy Course Page](crs.fsse.proseriestech.com)
 
-###  <img alt="logo" width="40" src="https://proseries-assets.s3.amazonaws.com/udemy-logo.png"> [Udemy Course Page](crs.fsse.proseriestech.com)
+###  [<img alt="pro series logo" width="40" src="https://proseries-assets.s3.amazonaws.com/Logo+Quare.png" />ProSeries Website](proseriestech.com)
 
-###  <img alt="logo" width="40" src="https://proseries-assets.s3.amazonaws.com/app-demo.png"> [Demo](crs.fsse.proseriestech.com)
+###  [<img alt="logo" width="40" src="https://proseries-assets.s3.amazonaws.com/youtube.png">Youtube Channel](https://www.youtube.com/channel/UC7bG0T8kuwHfTnzA8xD6Jmg/featured?view_as=subscriber)
+
+###  [<img alt="logo" width="40" src="https://proseries-assets.s3.amazonaws.com/app-demo.png">Demo](crs.fsse.proseriestech.com)
 
 
 
