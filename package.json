@@ -62,7 +62,7 @@
     "jest-enzyme": "7.0.2",
     "jest-prop-type-error": "1.1.0",
     "moxios": "0.4.0",
-    "npm": "6.8.0",
+    "npm": "6.13.4",
     "puppeteer": "1.14.0",
     "react-app-rewired": "2.1.0",
     "react-scripts": "2.1.5",
