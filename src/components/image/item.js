@@ -58,14 +58,14 @@ class Item extends Component {
             body: JSON.stringify({ key })
         });
         /* wait for data object, then destruct to get the desired properties */
-        let {depth, geometry, colorspace, filesize} = await response.json();
+        let {width, height, depth, alpha} = await response.json();
         /* render the incoming data into a component */
         let info = (
             <ul>
-                <li>Depth {depth}</li>
-                <li>Geometry: {geometry}</li>
-                <li>Colorspace: {colorspace}</li>
-                <li>File Size: {filesize}</li>
+                <li>Width {width}</li>
+                <li>Height: {height}</li>
+                <li>Depth: {depth}</li>
+                <li>Alpha: {alpha?"yes":"no"}</li>
             </ul>
         );
         /* save the information in the current state */

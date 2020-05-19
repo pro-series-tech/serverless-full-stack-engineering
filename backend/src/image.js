@@ -9,7 +9,7 @@
 const fs = require('fs')
 const path = require('path');
 const AWS = require("aws-sdk");
-const im = require('imagemagick');
+const PNG = require("pngjs").PNG;
 
 module.exports.handler = async (event, context, callback) => {
     /* the S3 sdk object */
@@ -26,7 +26,14 @@ module.exports.handler = async (event, context, callback) => {
     fs.writeFileSync(filePath, data.Body);
     /* extract image metadata */
     let features = await new Promise((resolve, reject) => {
-        im.identify(filePath, (err, features) => (err)?reject(err):resolve(features))
+        fs.createReadStream(filePath)
+        .pipe(new PNG())
+        .on("metadata", (metadata)=> {
+            if(metadata)
+                resolve(metadata);
+            else
+                reject("Cannot retrieve image metadata");
+        });
     });
     /* return object in response */
     return { 
