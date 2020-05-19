@@ -98,7 +98,7 @@ custom:
 # read: https://serverless.com/framework/docs/providers/aws/events
 functions: 
     dynamodb-trigger:                 # the table stream event, which is used to delete
-      name: trigger                   # the image file after the table record is deleted.
+      name: ${self:custom.resourceNames.uniqueStage}-trigger                   # the image file after the table record is deleted.
       handler: src/trigger.handler 
       events:
         - stream:                     # when something happens in the dynamoDB picture table
@@ -112,7 +112,7 @@ functions:
       environment:                    # pass this environment variable to the function.
         PICTURE_BUCKET: ${self:custom.resourceNames.pictureBucket}
     image-analysis:                   # the image analyis http trigger. This function will be trigger
-      name: analysis                  # when the provided http endpoint is called via POST.
+      name: ${self:custom.resourceNames.uniqueStage}-analysis                  # when the provided http endpoint is called via POST.
       handler: src/image.handler
       events:
         - http:
