@@ -2,7 +2,7 @@
   Serverless Fullstack Engineering
 </h1>
 
-<img alt="pro series logo" style="width:100%;border: 3px solid orange;" src="https://proseries-assets.s3.amazonaws.com/fsse-map.png" />
+<img alt="pro series logo" style="width:100%;border: 3px solid orange;" src="https://proseries-assets.s3.amazonaws.com/fsse-map-published.png" />
 
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
@@ -15,13 +15,9 @@
 
 
 
-###  [<img alt="logo" width="40" src="https://proseries-assets.s3.amazonaws.com/udemy-logo.png">Udemy Course Page](crs.fsse.proseriestech.com)
+###  [<img alt="logo" width="40" src="https://proseries-assets.s3.amazonaws.com/udemy-logo.png">Udemy Course Page](https://www.udemy.com/course/proseries-fullstack-serverless)
 
-###  [<img alt="pro series logo" width="40" src="https://proseries-assets.s3.amazonaws.com/Logo+Quare.png" />ProSeries Website](proseriestech.com)
-
-###  [<img alt="logo" width="40" src="https://proseries-assets.s3.amazonaws.com/youtube.png">Youtube Channel](https://www.youtube.com/channel/UC7bG0T8kuwHfTnzA8xD6Jmg/featured?view_as=subscriber)
-
-###  [<img alt="logo" width="40" src="https://proseries-assets.s3.amazonaws.com/app-demo.png">Demo](crs.fsse.proseriestech.com)
+###  [<img alt="logo" width="40" src="https://proseries-assets.s3.amazonaws.com/app-demo.png">Demo](http://demoavocado-front-end.s3-website-us-east-1.amazonaws.com/)
 
 
 
