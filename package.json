@@ -6,7 +6,7 @@
   "dependencies": {
     "amazon-cognito-identity-js": "3.0.7",
     "antd": "3.13.4",
-    "aws-sdk": "2.419.0",
+    "aws-sdk": "2.814.0",
     "lunr": "2.3.6",
     "nanoid": "2.0.1",
     "pngjs": "^5.0.0",
